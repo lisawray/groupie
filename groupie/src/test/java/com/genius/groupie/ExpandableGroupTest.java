@@ -13,11 +13,14 @@ import static junit.framework.Assert.assertFalse;
 public class ExpandableGroupTest {
 
     @Mock GroupAdapter groupAdapter;
-    ExpandableItem parent = new ExpandableItem() {
-        @Override public int getLayout() {
-            return 0;
+
+    class DummyExpandableItem extends DummyItem implements ExpandableItem {
+
+        @Override public void setExpandableGroup(ExpandableGroup onToggleListener) {
+
         }
-    };
+    }
+    DummyExpandableItem parent = new DummyExpandableItem();
 
     @Test
     public void collapsedByDefault() throws Exception {
