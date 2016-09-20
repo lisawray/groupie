@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#444</color>
+    <color name="colorPrimaryDark">#333</color>
+    <color name="colorAccent">#fff</color>
+    <color name="background">#eee</color>
+    <color name="white">#fff</color>
+    <color name="red_200">#ef9a9a</color>
+    <color name="pink_200">#F48FB1</color>
+    <color name="purple_200">#CE93D8</color>
+    <color name="deep_purple_200">#B39DDB</color>
+    <color name="indigo_200">#9FA8DA</color>
+    <color name="blue_200">#90CAF9</color>
+    <color name="gray">#eeeeeeee</color>
+    <color name="transparent">#00000000</color>
+</resources>

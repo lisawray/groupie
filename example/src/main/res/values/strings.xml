@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Groupie</string>
+    <string name="expanding_group">Expanding group</string>
+    <string name="carousel">Carousel</string>
+    <string name="vertical_columns">Vertical columns</string>
+    <string name="full_bleed_item">A full bleed item</string>
+    <string name="multiple_columns">Multiple columns with even spacing</string>
+    <string name="infinite_loading">Infinite loading</string>
+    <string name="expanding_group_subtitle">Tap on the header to expand or contract the group.</string>
+    <string name="carousel_subtitle">Swipe this section horizontally to scroll its items.</string>
+    <string name="swipe_to_delete">Swipe to delete</string>
+    <string name="updating_group">Updating group</string>
+    <string name="updating_group_subtitle">Click the shuffle icon to update the list with a random set of changes.</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="show_bounds">Show bounds</string>
+    <string name="show_offsets">Show offsets</string>
+</resources>
