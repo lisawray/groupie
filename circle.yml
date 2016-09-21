@@ -1,0 +1,8 @@
+machine:
+  environment:
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter build-tools-24.0.1
+    - echo y | android update sdk --no-ui --filter extra-android-m2repository
+    - echo y | android update sdk --no-ui --filter android-24
