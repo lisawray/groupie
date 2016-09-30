@@ -11,32 +11,40 @@ Groupie was developed as an internal library at Genius because none of the exist
 
 Groupie is available on jcenter as an alpha version:
 
-    compile 'com.genius:groupie:0.1.0'
+```gradle
+compile 'com.genius:groupie:0.1.0'
+```
     
 ## Setup
 
 Use a `GroupAdapter` anywhere you would normally use a `RecyclerView.Adapter`, and attach it to your RecyclerView as usual.
 
-    GroupAdapter adapter = new GroupAdapter();
-    recyclerView.setAdapter(adapter);
+```java
+GroupAdapter adapter = new GroupAdapter();
+recyclerView.setAdapter(adapter);
+```
     
 ## Groups
 
 Groups are the building block of Groupie.  An individual `Item` (the unit which an adapter inflates and recycles) is a Group of 1.  You can add Groups and Items interchangeably to the adapter.
 
-    groupAdapter.add(new HeaderItem());
-    groupAdapter.add(new CommentItem());
-    
-    Section section = new Section();
-    section.setHeader(new HeaderItem());
-    section.addAll(bodyItems);
-    groupAdapter.add(section);
+```java
+groupAdapter.add(new HeaderItem());
+groupAdapter.add(new CommentItem());
+
+Section section = new Section();
+section.setHeader(new HeaderItem());
+section.addAll(bodyItems);
+groupAdapter.add(section);
+```
     
 Modifying the contents of the GroupAdapter in any way automatically sends change notifications.  Adding an item calls `notifyItemAdded()`; adding a group calls `notifyItemRangeAdded()`, etc.
 
 Modifying the contents of a Group automatically notifies its parent.  When notifications reach the GroupAdapter, it dispatches final change notifications.  There's never a need to manually notify or keep track of indices, no matter how you structure your data.
 
-    section.setHeader(null); // results in a remove event for header and move event for all following items
+```java
+section.setHeader(null); // results in a remove event for header and move event for all following items
+```
     
 We've provided a few simple implementations of Groups within the library:
 - `Section`, a list of body content with an optional header group and footer group.  
@@ -45,19 +53,20 @@ We've provided a few simple implementations of Groups within the library:
     
 Groups are flexible and composable.  They can be combined and nested to arbitrary depth.  For example, you could make an UpdatingSection by adding a single UpdatingGroup to the content of a Section. 
 
+```java
+public class UpdatingSection extends Section {
+    private final UpdatingGroup updatingGroup;
 
-    public class UpdatingSection extends Section {
-        private final UpdatingGroup updatingGroup;
-      
-        public UpdatingSection() {
-            setHeader(new HeaderItem("Updating section!");
-            updatingGroup = new UpdatingGroup();
-        }
-      
-        public void update(List<Item> list) {
-            updatingGroup.update(list);
-        }
+    public UpdatingSection() {
+        setHeader(new HeaderItem("Updating section!");
+        updatingGroup = new UpdatingGroup();
     }
+
+    public void update(List<Item> list) {
+        updatingGroup.update(list);
+    }
+}
+```
     
 At Genius, we found that our groups were rarely exactly the same.  Groups are designed so that making new ones and defining their behavior is easy.  We think you should make many small, simple, custom groups as the need strikes you.
 
@@ -67,21 +76,23 @@ You can implement the Group interface directly if you want.  However, we've prov
 
 Groupie abstracts the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
 
-    public class SongItem extends Item<SongBinding> {    
-        private final Song song;   
-        
-        public SongItem(Song song) {     
-            this(song);
-        }    
-        
-        @Override public void bind(SongBinding binding, int position) {
-            binding.setSong(song);
-        }
-        
-        @Override public int getLayout() {
-            return R.layout.song;
-        }
+```java
+public class SongItem extends Item<SongBinding> {
+
+    public SongItem(Song song) {
+        this(song);
+    }    
+
+    @Override public void bind(SongBinding binding, int position) {
+        binding.setSong(song);
     }
+
+    @Override public int getLayout() {
+        return R.layout.song;
+    }
+}
+
+```
 
 Items can also declare their own column span and whether they are draggable or swipeable.  
 
