@@ -64,20 +64,26 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(section, headerSize + 1, footerSize);
     }
 
-    @Test public void settingNullFooterNotifiesPreviousFooterRemoved() {
+    @Test public void removingFooterNotifiesPreviousFooterRemoved() {
         Section section = new Section();
         section.setHeader(header);
         section.add(new DummyItem());
         section.setFooter(footer);
         section.setGroupDataObserver(groupAdapter);
-        section.setFooter(null);
+        section.removeFooter();
 
         verify(groupAdapter).onItemRangeRemoved(section, headerSize + 1, footerSize);
     }
 
-    @Test public void footerCountIs0WhenThereIsNoFooter() {
+    @Test(expected=NullPointerException.class)
+    public void settingNullFooterThrowsNullPointerException(){
         Section section = new Section();
         section.setFooter(null);
+    }
+
+    @Test public void footerCountIs0WhenThereIsNoFooter() {
+        Section section = new Section();
+        section.removeFooter();
 
         assertEquals(0, section.getItemCount());
     }
@@ -97,18 +103,24 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(section, 0, headerSize);
     }
 
-    @Test public void settingNullHeaderNotifiesPreviousHeaderRemoved() {
+    @Test public void RemovingHeaderNotifiesPreviousHeaderRemoved() {
         Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
         section.setHeader(header);
-        section.setHeader(null);
+        section.removeHeader();
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, headerSize);
     }
 
+    @Test(expected=NullPointerException.class)
+    public void settingNullHeaderThrowsNullPointerException(){
+        Section section = new Section();
+        section.setFooter(null);
+    }
+
     @Test public void headerCountIs0WhenThereIsNoHeader() {
         Section section = new Section();
-        section.setHeader(null);
+        section.removeHeader();
 
         assertEquals(0, section.getItemCount());
     }
