@@ -43,7 +43,7 @@ Modifying the contents of the GroupAdapter in any way automatically sends change
 Modifying the contents of a Group automatically notifies its parent.  When notifications reach the GroupAdapter, it dispatches final change notifications.  There's never a need to manually notify or keep track of indices, no matter how you structure your data.
 
 ```java
-section.setHeader(null); // results in a remove event for header and move event for all following items
+section.removeHeader(); // results in a remove event for 1 item in the adapter, at position 2
 ```
     
 We've provided a few simple implementations of Groups within the library:
