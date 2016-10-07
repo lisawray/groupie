@@ -1,6 +1,5 @@
 package com.genius.groupie;
 
-import android.databinding.repacked.google.common.base.Preconditions;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -160,7 +159,7 @@ public class Section extends NestedGroup {
     }
 
     public void setHeader(@NonNull Group header) {
-        Preconditions.checkNotNull(header);
+        if (header == null) throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = header;
         notifyHeaderItemsChanged(previousHeaderItemCount);
@@ -184,7 +183,7 @@ public class Section extends NestedGroup {
 
 
     public void setFooter(@NonNull Group footer) {
-        Preconditions.checkNotNull(footer);
+        if (footer == null) throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
         int previousFooterItemCount = getFooterItemCount();
         this.footer = footer;
         notifyFooterItemsChanged(previousFooterItemCount);
