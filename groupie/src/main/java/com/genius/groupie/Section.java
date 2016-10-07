@@ -1,5 +1,6 @@
 package com.genius.groupie;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -157,9 +158,20 @@ public class Section extends NestedGroup {
         return -1;
     }
 
-    public void setHeader(Group header) {
+    public void setHeader(@NonNull Group header) {
+        if (header == null) throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = header;
+        notifyHeaderItemsChanged(previousHeaderItemCount);
+    }
+
+    public void removeHeader(){
+        int previousHeaderItemCount = getHeaderItemCount();
+        this.header = null;
+        notifyHeaderItemsChanged(previousHeaderItemCount);
+    }
+
+    private void notifyHeaderItemsChanged(int previousHeaderItemCount) {
         int newHeaderItemCount = getHeaderItemCount();
         if (previousHeaderItemCount > 0) {
             notifyItemRangeRemoved(0, previousHeaderItemCount);
@@ -169,9 +181,21 @@ public class Section extends NestedGroup {
         }
     }
 
-    public void setFooter(Group footer) {
+
+    public void setFooter(@NonNull Group footer) {
+        if (footer == null) throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
         int previousFooterItemCount = getFooterItemCount();
         this.footer = footer;
+        notifyFooterItemsChanged(previousFooterItemCount);
+    }
+
+    public void removeFooter(){
+        int previousFooterItemCount = getFooterItemCount();
+        this.footer = null;
+        notifyFooterItemsChanged(previousFooterItemCount);
+    }
+
+    private void notifyFooterItemsChanged(int previousFooterItemCount) {
         int newFooterItemCount = getFooterItemCount();
         if (previousFooterItemCount > 0) {
             notifyItemRangeRemoved(getItemCountWithoutFooter(), previousFooterItemCount);
