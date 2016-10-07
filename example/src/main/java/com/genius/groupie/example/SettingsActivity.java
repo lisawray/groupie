@@ -15,14 +15,19 @@ public class SettingsActivity extends AppCompatActivity {
         ActivitySettingsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         final Prefs prefs = Prefs.get(this);
 
+        binding.showBounds.theSwitch.setChecked(prefs.getShowBounds());
+        binding.showOffsets.theSwitch.setChecked(prefs.getShowOffsets());
+
         binding.showBounds.theSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean showBounds) {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean showBounds) {
                 prefs.setShowBounds(showBounds);
             }
         });
 
         binding.showOffsets.theSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean showOffsets) {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean showOffsets) {
                 prefs.setShowOffsets(showOffsets);
             }
         });
