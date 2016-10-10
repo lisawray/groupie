@@ -3,17 +3,16 @@ package com.genius.groupie;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * The base unit of content for a GroupAdapter.
- *
+ * <p>
  * Because an Item is a Group of size one, you don't need to use Groups directly if you don't want;
  * simply mix and match Items and add directly to the adapter.
- *
+ * <p>
  * If you want to use Groups, because Item extends Group, you can mix and match adding Items and
  * other Groups directly to the adapter.
  *
@@ -23,7 +22,7 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
 
     protected GroupDataObserver parentDataObserver;
 
-    public void bind(RecyclerView.ViewHolder viewHolder, int position, View.OnClickListener onItemClickListener) {
+    public void bind(RecyclerView.ViewHolder viewHolder, int position, List<Object> payloads) {
         ViewHolder<T> holder = (ViewHolder<T>) viewHolder;
         if (getExtras() != null) {
             holder.getExtras().putAll(getExtras());
@@ -31,20 +30,6 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         holder.setDragDirs(getDragDirs());
         holder.setSwipeDirs(getSwipeDirs());
         T binding = holder.binding;
-        binding.getRoot().setOnClickListener(isClickable() ? onItemClickListener : null);
-        bind(binding, position);
-        binding.executePendingBindings();
-    }
-
-    public void bind(RecyclerView.ViewHolder viewHolder, int position, List<Object> payloads, View.OnClickListener onItemClickListener) {
-        ViewHolder<T> holder = (ViewHolder<T>) viewHolder;
-        if (getExtras() != null) {
-            holder.getExtras().putAll(getExtras());
-        }
-        holder.setDragDirs(getDragDirs());
-        holder.setSwipeDirs(getSwipeDirs());
-        T binding = holder.binding;
-        binding.getRoot().setOnClickListener(isClickable() ? onItemClickListener : null);
         bind(binding, position, payloads);
         binding.executePendingBindings();
     }
@@ -93,13 +78,11 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         return this == item ? 0 : -1;
     }
 
-    public boolean isClickable() {
-        return true;
-    }
 
     /**
      * A set of key/value pairs stored on the ViewHolder that can be useful for distinguishing
      * items of the same view type.
+     *
      * @return
      */
     public Map<String, Object> getExtras() {

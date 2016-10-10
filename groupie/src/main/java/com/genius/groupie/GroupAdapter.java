@@ -5,7 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -15,13 +14,11 @@ import java.util.List;
  * An adapter that holds a list of Groups.
  */
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Group.GroupDataObserver {
-    private final View.OnClickListener onItemClickListener;
+
     private final List<Group> groups = new ArrayList<>();
     private int spanCount = 1;
 
-    public GroupAdapter(View.OnClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
+    public GroupAdapter() { }
 
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
         @Override public int getSpanSize(int position) {
@@ -53,13 +50,12 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Item contentItem = getItem(position);
-        contentItem.bind(holder, position, onItemClickListener);
     }
 
-    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
         Item contentItem = getItem(position);
-        contentItem.bind(holder, position, payloads, onItemClickListener);
+        contentItem.bind(holder, position, payloads);
     }
 
     @Override public int getItemViewType(int position) {
@@ -78,7 +74,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         throw new IndexOutOfBoundsException("Requested position " + position + "in group adapter " +
-                "but there are only " + count + " items");
+                                                    "but there are only " + count + " items");
     }
 
     public int getAdapterPosition(Item contentItem) {
