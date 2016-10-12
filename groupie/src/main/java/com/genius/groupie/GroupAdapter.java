@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Group.GroupDataObserver {
 
     private final List<Group> groups = new ArrayList<>();
+    private View.OnClickListener onItemClickListener;
     private int spanCount = 1;
 
     public GroupAdapter() { }
@@ -43,6 +45,15 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return spanCount;
     }
 
+    /**
+     * register a {@link android.view.View.OnClickListener} that listens to click at the root of
+     * each Item where {@link Item#isClickable()} returns true
+     */
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+
     @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int layoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutResId, parent, false);
@@ -55,7 +66,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
         Item contentItem = getItem(position);
-        contentItem.bind(holder, position, payloads);
+        contentItem.bind(holder, position, payloads, onItemClickListener);
     }
 
     @Override public int getItemViewType(int position) {
