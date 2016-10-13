@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gray = ContextCompat.getColor(this, R.color.background);
         betweenPadding = getResources().getDimensionPixelSize(R.dimen.padding_small);
 
-        groupAdapter = new GroupAdapter(this);
+        groupAdapter = new GroupAdapter();
         groupAdapter.setSpanCount(12);
         populateAdapter();
         layoutManager = new GridLayoutManager(this, groupAdapter.getSpanCount());
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private CarouselItem makeCarouselItem() {
         CarouselItemDecoration carouselDecoration = new CarouselItemDecoration(gray, betweenPadding);
-        GroupAdapter carouselAdapter = new GroupAdapter(this);
+        GroupAdapter carouselAdapter = new GroupAdapter();
         for (int i = 0; i < 30; i++) {
             carouselAdapter.add(new CarouselCardItem(R.color.deep_purple_200));
         }

@@ -16,7 +16,7 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
         public void run() {
             onLoadMore(currentPage);
         }
-    }
+    };
 
     public InfiniteScrollListener(LinearLayoutManager linearLayoutManager) {
         this.linearLayoutManager = linearLayoutManager;
