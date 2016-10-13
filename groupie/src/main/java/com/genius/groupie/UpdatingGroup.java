@@ -10,8 +10,14 @@ import java.util.List;
  * A group which accepts a list of items and diffs them against its previous contents,
  * generating the correct remove, add, move and change notifications to its parent observer,
  * to create an animated item-level update.
+ *
+ * Item comparisons are made using:
+ * - Item.getId() (are items the same?)
+ * - Item.equals() (are contents the same?)
+ * If you don't customize getId() or equals(), the default implementations will return false,
+ * meaning your Group will consider every update a complete change of everything.  
  */
-public class UpdatingGroup<T extends Item & UpdatingGroup.Comparable<T>> extends NestedGroup {
+public class UpdatingGroup extends NestedGroup {
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override public void onInserted(int position, int count) {
@@ -31,10 +37,10 @@ public class UpdatingGroup<T extends Item & UpdatingGroup.Comparable<T>> extends
         }
     };
 
-    private List<T> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
-    public void update(List<T> newItems) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(items, newItems));
+    public void update(List<? extends Item> newItems) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(newItems));
         items.clear();
         items.addAll(newItems);
         diffResult.dispatchUpdatesTo(listUpdateCallback);
@@ -49,42 +55,23 @@ public class UpdatingGroup<T extends Item & UpdatingGroup.Comparable<T>> extends
     }
 
     @Override public int getPosition(Group group) {
-        return items.indexOf((T) group);
-    }
-
-    public interface Comparable<T> {
-
-        /**
-         * Whether the items will be visually the same (e.g. whether onChanged()
-         * should be called)
-         *
-         * @param other
-         * @return
-         */
-        boolean areContentsTheSame(T other);
-
-        /**
-         * Whether the items represent the same content, even if its appearance has
-         * changed.  Usually this will compare the id of the model object.
-         *
-         * @param other
-         * @return
-         */
-        boolean areItemsTheSame(T other);
+        if (group instanceof Item) {
+            return items.indexOf(group);
+        } else {
+            return -1;
+        }
     }
 
     private class UpdatingCallback extends DiffUtil.Callback {
 
-        private List<T> oldList;
-        private List<T> newList;
+        private List<? extends Item> newList;
 
-        UpdatingCallback(List<T> oldList, List<T> newList) {
-            this.oldList = oldList;
+        UpdatingCallback(List<? extends Item> newList) {
             this.newList = newList;
         }
 
         @Override public int getOldListSize() {
-            return oldList.size();
+            return items.size();
         }
 
         @Override public int getNewListSize() {
@@ -92,15 +79,18 @@ public class UpdatingGroup<T extends Item & UpdatingGroup.Comparable<T>> extends
         }
 
         @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            T oldItem = oldList.get(oldItemPosition);
-            T newItem = newList.get(newItemPosition);
-            return oldItem.areItemsTheSame(newItem);
+            Item oldItem = items.get(oldItemPosition);
+            Item newItem = newList.get(newItemPosition);
+            if (oldItem.getLayout() != newItem.getLayout()) {
+                return false;
+            }
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            T oldItem = oldList.get(oldItemPosition);
-            T newItem = newList.get(newItemPosition);
-            return oldItem.areContentsTheSame(newItem);
+            Item oldItem = items.get(oldItemPosition);
+            Item newItem = newList.get(newItemPosition);
+            return oldItem.equals(newItem);
         }
     }
 }
