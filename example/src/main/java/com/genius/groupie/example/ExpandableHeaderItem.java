@@ -1,5 +1,7 @@
 package com.genius.groupie.example;
 
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -18,7 +20,10 @@ public class ExpandableHeaderItem extends HeaderItem implements ExpandableItem {
 
     @Override public void bind(final ItemHeaderBinding viewBinding, int position) {
         super.bind(viewBinding, position);
-        bindIcon(viewBinding);
+
+        // Initial icon state -- not animated.
+        viewBinding.icon.setVisibility(View.VISIBLE);
+        viewBinding.icon.setImageResource(expandableGroup.isExpanded() ? R.drawable.collapse : R.drawable.expand);
         viewBinding.icon.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 expandableGroup.onToggleExpanded();
@@ -29,8 +34,9 @@ public class ExpandableHeaderItem extends HeaderItem implements ExpandableItem {
 
     private void bindIcon(ItemHeaderBinding viewBinding) {
         viewBinding.icon.setVisibility(View.VISIBLE);
-        viewBinding.icon.setImageResource(
-                expandableGroup.isExpanded() ? R.drawable.collapse : R.drawable.expand);
+        viewBinding.icon.setImageResource(expandableGroup.isExpanded() ? R.drawable.collapse_animated : R.drawable.expand_animated);
+        Animatable drawable = (Animatable) viewBinding.icon.getDrawable();
+        drawable.start();
     }
 
     @Override public void setExpandableGroup(ExpandableGroup onToggleListener) {
