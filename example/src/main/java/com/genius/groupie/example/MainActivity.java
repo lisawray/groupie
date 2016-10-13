@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<UpdatableItem> updatableItems;
 
     // Hold a reference to the updating group, so we can, well, update it
-    private UpdatingGroup<UpdatableItem> updatingGroup;
+    private UpdatingGroup updatingGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 R.drawable.shuffle,
                 onShuffleClicked);
         updatingSection.setHeader(updatingHeader);
-        updatingGroup = new UpdatingGroup<>();
+        updatingGroup = new UpdatingGroup();
         updatableItems = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             updatableItems.add(new UpdatableItem(R.color.blue_200, i));
