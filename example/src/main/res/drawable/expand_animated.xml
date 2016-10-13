@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:drawable="@drawable/expand">
+    <target
+        android:animation="@animator/rotation_collapse_to_expand"
+        android:name="group"/>
+</animated-vector>
