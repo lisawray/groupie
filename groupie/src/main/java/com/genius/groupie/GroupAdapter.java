@@ -15,14 +15,11 @@ import java.util.List;
  * An adapter that holds a list of Groups.
  */
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Group.GroupDataObserver {
-    private final View.OnClickListener onItemClickListener;
+
     private final List<Group> groups = new ArrayList<>();
+    private View.OnClickListener onItemClickListener;
     private int spanCount = 1;
-
-    public GroupAdapter(View.OnClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
+    
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
         @Override public int getSpanSize(int position) {
             try {
@@ -45,6 +42,15 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getSpanCount() {
         return spanCount;
     }
+
+    /**
+     * register a {@link android.view.View.OnClickListener} that listens to click at the root of
+     * each Item where {@link Item#isClickable()} returns true
+     */
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
 
     @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int layoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
