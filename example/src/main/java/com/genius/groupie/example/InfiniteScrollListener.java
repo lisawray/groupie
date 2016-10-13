@@ -9,8 +9,14 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
     private boolean loading = true; // True if we are still waiting for the last set of data to load.
     private final int visibleThreshold = 5; // The minimum amount of items to have below your current scroll position before loading more.
     private int firstVisibleItem, visibleItemCount, totalItemCount;
-    private int current_page = 0;
+    private int currentPage = 0;
     private LinearLayoutManager linearLayoutManager;
+    private Runnable loadMore = new Runnable() {
+        @Override
+        public void run() {
+            onLoadMore(currentPage);
+        }
+    }
 
     public InfiniteScrollListener(LinearLayoutManager linearLayoutManager) {
         this.linearLayoutManager = linearLayoutManager;
@@ -21,9 +27,8 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
         visibleItemCount = recyclerView.getChildCount();
         totalItemCount = linearLayoutManager.getItemCount();
         firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
@@ -37,8 +42,8 @@ public abstract class InfiniteScrollListener extends RecyclerView.OnScrollListen
 
         // End has been reached
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            current_page++;
-            onLoadMore(current_page);
+            currentPage++;
+            recyclerView.post(loadMore);
             loading = true;
         }
     }
