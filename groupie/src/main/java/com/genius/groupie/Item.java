@@ -25,6 +25,14 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
     private static AtomicLong ID_COUNTER = new AtomicLong(0);
     protected GroupDataObserver parentDataObserver;
     private final long id;
+    private OnItemClickListener onItemClickListener;
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(Item.this, v);
+        }
+    };
 
     public Item() {
         this(ID_COUNTER.decrementAndGet());
@@ -34,29 +42,17 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         this.id = id;
     }
 
-    public void bind(RecyclerView.ViewHolder viewHolder, int position, View.OnClickListener onItemClickListener) {
+    public void bind(RecyclerView.ViewHolder viewHolder, int position, List<Object> payloads, OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
         ViewHolder<T> holder = (ViewHolder<T>) viewHolder;
         if (getExtras() != null) {
             holder.getExtras().putAll(getExtras());
         }
         holder.setDragDirs(getDragDirs());
         holder.setSwipeDirs(getSwipeDirs());
+        viewHolder.itemView.setOnClickListener(isClickable() && onItemClickListener != null ? onClickListener : null);
         T binding = holder.binding;
-        binding.getRoot().setOnClickListener(isClickable() ? onItemClickListener : null);
-        bind(binding, position);
-        binding.executePendingBindings();
-    }
 
-    public void bind(RecyclerView.ViewHolder viewHolder, int position, List<Object> payloads, View.OnClickListener onItemClickListener) {
-        ViewHolder<T> holder = (ViewHolder<T>) viewHolder;
-        if (getExtras() != null) {
-            holder.getExtras().putAll(getExtras());
-        }
-        holder.setDragDirs(getDragDirs());
-        holder.setSwipeDirs(getSwipeDirs());
-        T binding = holder.binding;
-        boolean hasClickListener = isClickable() && onItemClickListener != null;
-        binding.getRoot().setOnClickListener(hasClickListener ? onItemClickListener : null);
         bind(binding, position, payloads);
         binding.executePendingBindings();
     }

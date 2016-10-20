@@ -5,7 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Group.GroupDataObserver {
 
     private final List<Group> groups = new ArrayList<>();
-    private View.OnClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
     private int spanCount = 1;
     
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
@@ -44,13 +43,13 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     /**
-     * register a {@link android.view.View.OnClickListener} that listens to click at the root of
+     * Optionally register an {@link OnItemClickListener} that listens to click at the root of
      * each Item where {@link Item#isClickable()} returns true
+     * @param onItemClickListener
      */
-    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
 
     @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int layoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -59,8 +58,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Item contentItem = getItem(position);
-        contentItem.bind(holder, position, onItemClickListener);
+        // Never called (all binds go through the version with payload)
     }
 
     @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
