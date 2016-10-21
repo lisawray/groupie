@@ -2,6 +2,7 @@ package com.genius.groupie;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -133,14 +134,21 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void add(Group group) {
+    public void add(@NonNull Group group) {
+        if (group == null) throw new RuntimeException("Group cannot be null");
         int itemCountBeforeGroup = getItemCount();
         group.setGroupDataObserver(this);
         groups.add(group);
         notifyItemRangeInserted(itemCountBeforeGroup, group.getItemCount());
     }
 
-    public void addAll(List<Group> groups) {
+    /**
+     * Adds the contents of the list of groups, in order, to the end of the adapter contents.
+     * All groups in the list must be non-null.
+     * @param groups
+     */
+    public void addAll(@NonNull List<Group> groups) {
+        if (groups.contains(null)) throw new RuntimeException("List of groups can't contain null!");
         int itemCountBeforeGroup = getItemCount();
         int additionalSize = 0;
         for (Group group : groups) {
@@ -151,7 +159,8 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyItemRangeInserted(itemCountBeforeGroup, additionalSize);
     }
 
-    public void remove(Group group) {
+    public void remove(@NonNull Group group) {
+        if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
         int count = groups.get(position).getItemCount();
         group.setGroupDataObserver(null);
@@ -159,7 +168,8 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyItemRangeRemoved(position, count);
     }
 
-    public void putGroup(int index, Group group) {
+    public void putGroup(@NonNull int index, Group group) {
+        if (group == null) throw new RuntimeException("Group cannot be null");
         group.setGroupDataObserver(this);
         groups.add(index, group);
         int itemCountBeforeGroup = getItemCountBeforeGroup(index);
