@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.genius.groupie.ExpandableGroup;
 import com.genius.groupie.GroupAdapter;
 import com.genius.groupie.Item;
+import com.genius.groupie.OnItemClickListener;
 import com.genius.groupie.Section;
 import com.genius.groupie.TouchCallback;
 import com.genius.groupie.UpdatingGroup;
@@ -37,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String INSET_TYPE_KEY = "inset_type";
     public static final String FULL_BLEED = "full_bleed";
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         betweenPadding = getResources().getDimensionPixelSize(R.dimen.padding_small);
 
         groupAdapter = new GroupAdapter();
+        groupAdapter.setOnItemClickListener(onItemClickListener);
         groupAdapter.setSpanCount(12);
         populateAdapter();
         layoutManager = new GridLayoutManager(this, groupAdapter.getSpanCount());
@@ -212,9 +216,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return carouselItem;
     }
 
-    @Override public void onClick(View view) {
-
-    }
+    private OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(Item item, View view) {
+            if (item instanceof CardItem) {
+                CardItem cardItem = (CardItem) item;
+                if (!TextUtils.isEmpty(cardItem.getText())) {
+                    Toast.makeText(MainActivity.this, cardItem.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
     @Override protected void onDestroy() {
         prefs.unregisterListener(onSharedPrefChangeListener);
