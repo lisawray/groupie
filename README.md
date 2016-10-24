@@ -12,7 +12,7 @@ Groupie was developed as an internal library at Genius because none of the exist
 Groupie is available on jcenter as an alpha version:
 
 ```gradle
-compile 'com.genius:groupie:0.1.0'
+compile 'com.genius:groupie:0.3.0'
 ```
     
 ## Setup
