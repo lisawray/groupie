@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,6 +33,7 @@ import com.genius.groupie.example.item.CarouselItem;
 import com.genius.groupie.example.item.ColumnItem;
 import com.genius.groupie.example.item.FullBleedCardItem;
 import com.genius.groupie.example.item.HeaderItem;
+import com.genius.groupie.example.item.HeartCardItem;
 import com.genius.groupie.example.item.SmallCardItem;
 import com.genius.groupie.example.item.SwipeToDeleteItem;
 import com.genius.groupie.example.item.UpdatableItem;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int gray;
     private int betweenPadding;
+    private int[] rainbow200;
+    private int[] rainbow500;
 
     private Section infiniteLoadingSection;
     private Section swipeSection;
@@ -72,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         gray = ContextCompat.getColor(this, R.color.background);
         betweenPadding = getResources().getDimensionPixelSize(R.dimen.padding_small);
+        rainbow200 = getResources().getIntArray(R.array.rainbow_200);
+        rainbow500 = getResources().getIntArray(R.array.rainbow_500);
 
         groupAdapter = new GroupAdapter();
         groupAdapter.setOnItemClickListener(onItemClickListener);
@@ -87,9 +93,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DebugItemDecoration(this));
         recyclerView.setAdapter(groupAdapter);
         recyclerView.addOnScrollListener(new InfiniteScrollListener(layoutManager) {
-            @Override public void onLoadMore(int current_page) {
+            @Override public void onLoadMore(int currentPage) {
+                int color = rainbow200[currentPage % rainbow200.length];
                 for (int i = 0; i < 5; i++) {
-                    infiniteLoadingSection.add(new CardItem(R.color.blue_200));
+                    infiniteLoadingSection.add(new CardItem(color));
                 }
             }
         });
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         updatingGroup = new UpdatingGroup();
         updatableItems = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
-            updatableItems.add(new UpdatableItem(R.color.blue_200, i));
+            updatableItems.add(new UpdatableItem(rainbow200[i], i));
         }
         updatingGroup.update(updatableItems);
         updatingSection.add(updatingGroup);
@@ -148,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         ExpandableHeaderItem expandableHeaderItem = new ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle);
         ExpandableGroup expandableGroup = new ExpandableGroup(expandableHeaderItem);
         for (int i = 0; i < 2; i++) {
-            expandableGroup.add(new CardItem(R.color.red_200));
+            expandableGroup.add(new CardItem(rainbow200[1]));
         }
         groupAdapter.add(expandableGroup);
 
@@ -161,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
         // Group showing even spacing with multiple columns
         Section multipleColumnsSection = new Section(new HeaderItem(R.string.multiple_columns));
         for (int i = 0; i < 12; i++) {
-            multipleColumnsSection.add(new SmallCardItem(R.color.indigo_200));
+            multipleColumnsSection.add(new SmallCardItem(rainbow200[5]));
         }
         groupAdapter.add(multipleColumnsSection);
 
         // Swipe to delete (with add button in header)
         swipeSection = new Section(new HeaderItem(R.string.swipe_to_delete));
         for (int i = 0; i < 3; i++) {
-            swipeSection.add(new SwipeToDeleteItem(R.color.blue_200));
+            swipeSection.add(new SwipeToDeleteItem(rainbow200[6]));
         }
         groupAdapter.add(swipeSection);
 
@@ -178,29 +185,28 @@ public class MainActivity extends AppCompatActivity {
         carouselSection.add(carouselItem);
         groupAdapter.add(carouselSection);
 
+        // Update with payload
+        Section updateWithPayloadSection = new Section(new HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle));
+        for (int i = 0; i < rainbow500.length; i++) {
+            updateWithPayloadSection.add(new HeartCardItem(rainbow200[i], i, onFavoriteListener));
+
+        }
+        groupAdapter.add(updateWithPayloadSection);
+
         // Infinite loading section
         infiniteLoadingSection = new Section(new HeaderItem(R.string.infinite_loading));
         groupAdapter.add(infiniteLoadingSection);
-
-
-
-
-
-        // if I have time ... multiple column group (doesn't have hanging items / no widows)
-
-        // if I have time ... proper drag & drop support
-//        HeaderItem dragDropHeader = new HeaderItem(R.string.multiple_columns);
-//        groupAdapter.add(dragDropHeader);
-//        for (int i = 0; i < 12; i++) {
-//            groupAdapter.add(new DragDropItem(R.color.indigo_200, i));
-//        }
-
     }
 
     private ColumnGroup makeColumnGroup() {
         List<ColumnItem> columnItems = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            columnItems.add(new ColumnItem(R.color.pink_200, i));
+        for (int i = 1; i <= 5; i++) {
+            // First five items are red -- they'll end up in a vertical column
+            columnItems.add(new ColumnItem(rainbow200[0], i));
+        }
+        for (int i = 6; i <= 10; i++) {
+            // Next five items are pink
+            columnItems.add(new ColumnItem(rainbow200[1], i));
         }
         return new ColumnGroup(columnItems);
     }
@@ -209,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         CarouselItemDecoration carouselDecoration = new CarouselItemDecoration(gray, betweenPadding);
         GroupAdapter carouselAdapter = new GroupAdapter();
         for (int i = 0; i < 30; i++) {
-            carouselAdapter.add(new CarouselCardItem(R.color.deep_purple_200));
+            carouselAdapter.add(new CarouselCardItem(rainbow200[7]));
         }
         CarouselItem carouselItem = new CarouselItem(carouselDecoration);
         carouselItem.setAdapter(carouselAdapter);
@@ -253,5 +259,21 @@ public class MainActivity extends AppCompatActivity {
                     groupAdapter.notifyDataSetChanged();
                 }
             };
+
+    private Handler handler = new Handler();
+    private HeartCardItem.OnFavoriteListener onFavoriteListener = new HeartCardItem.OnFavoriteListener() {
+        @Override
+        public void onFavorite(final HeartCardItem item, final boolean favorite) {
+            // Pretend to make a network request
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Network request was successful!
+                    item.setFavorite(favorite);
+                    item.notifyChanged(HeartCardItem.FAVORITE);
+                }
+            }, 1000);
+        }
+    };
 
 }

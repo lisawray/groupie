@@ -1,10 +1,10 @@
 package com.genius.groupie.example.item;
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 public class SwipeToDeleteItem extends CardItem {
-    public SwipeToDeleteItem(@ColorRes int colorRes) {
+    public SwipeToDeleteItem(@ColorInt int colorRes) {
         super(colorRes);
     }
 

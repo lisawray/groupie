@@ -1,6 +1,6 @@
 package com.genius.groupie.example.item;
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.ColorInt;
 
 import com.genius.groupie.example.MainActivity;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ColumnItem extends CardItem {
 
-    public ColumnItem(@ColorRes int colorRes, int index) {
+    public ColumnItem(@ColorInt int colorRes, int index) {
         super(colorRes, String.valueOf(index));
     }
 

@@ -10,9 +10,9 @@ import java.util.List;
  *
  * It provides support for notifying the adapter about changes which happen in its child groups.
  */
-public abstract class NestedGroup implements Group, Group.GroupDataObserver {
+public abstract class NestedGroup implements Group, GroupDataObserver {
 
-    private Group.GroupDataObserver parentDataObserver;
+    private GroupDataObserver parentDataObserver;
 
     public int getItemCount() {
         int size = 0;
@@ -73,7 +73,7 @@ public abstract class NestedGroup implements Group, Group.GroupDataObserver {
 
     public abstract int getPosition(Group group);
 
-    @Override public final void setGroupDataObserver(Group.GroupDataObserver groupDataObserver) {
+    @Override public final void setGroupDataObserver(GroupDataObserver groupDataObserver) {
         this.parentDataObserver = groupDataObserver;
     }
 
@@ -126,6 +126,13 @@ public abstract class NestedGroup implements Group, Group.GroupDataObserver {
     @Override public final void onItemChanged(Group group, int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, getPosition(group) + position);
+        }
+    }
+
+    @Override
+    public void onItemChanged(Group group, int position, Object payload) {
+        if (parentDataObserver != null) {
+            parentDataObserver.onItemChanged(this, getPosition(group) + position, payload);
         }
     }
 
@@ -199,6 +206,12 @@ public abstract class NestedGroup implements Group, Group.GroupDataObserver {
     public void notifyItemChanged(int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, position);
+        }
+    }
+
+    public void notifyItemChanged(int position, Object payload) {
+        if (parentDataObserver != null) {
+            parentDataObserver.onItemChanged(this, position, payload);
         }
     }
 

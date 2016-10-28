@@ -105,6 +105,18 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         return true;
     }
 
+    public void notifyChanged() {
+        if (parentDataObserver != null) {
+            parentDataObserver.onItemChanged(this, 0);
+        }
+    }
+
+    public void notifyChanged(Object payload) {
+        if (parentDataObserver != null) {
+            parentDataObserver.onItemChanged(this, 0, payload);
+        }
+    }
+
     /**
      * A set of key/value pairs stored on the ViewHolder that can be useful for distinguishing
      * items of the same view type.
