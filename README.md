@@ -14,6 +14,17 @@ Groupie is available on jcenter as an alpha version:
 ```gradle
 compile 'com.genius:groupie:0.3.0'
 ```
+
+Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app's top-level build.gradle.
+
+```gradle
+android {
+    dataBinding {
+        enabled = true
+    }
+}
+```
+Bindings are only generated for layouts wrapped with `<layout/>` tags, so there's no need to convert the rest of your project (unless you want to).  
     
 ## Setup
 
@@ -76,6 +87,8 @@ You can implement the Group interface directly if you want.  However, we've prov
 
 Groupie abstracts the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
 
+The `Item` class gives you simple callbacks to bind your model object to the generated binding.  
+
 ```java
 public class SongItem extends Item<SongBinding> {
 
@@ -91,14 +104,49 @@ public class SongItem extends Item<SongBinding> {
         return R.layout.song;
     }
 }
-
 ```
+
+If you're converting existing code, you can reference any named views (e.g. `R.id.title`) directly from the binding instead.  
+```java
+    @Override public void bind(SongBinding binding, int position) {
+        binding.title.setText(song.getTitle());
+    }
+}
+```
+
+Because of data binding, there's no need to write a view holder.  Just wrap your layout in `<layout>` tags.  (The `<data>` section is optional.)  
+
+`layout/item_song.xml`
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="song" type="com.example.Song" />
+    </data>
+
+    <FrameLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{song.title}"
+            tools:text="A Song Title" />
+
+    </FrameLayout>
+</layout>
+```
+
+We like to add a `<data>` section to directly bind a model or ViewModel, but you don't have to.  The generated view bindings alone are a huge time saver.  
 
 Items can also declare their own column span and whether they are draggable or swipeable.  
 
 # Limitations
 - groupie is not tested (well)
-- groupie requires you to use data binding. (for now)
+- groupie requires you to use data binding (for now)
 - groupie's API will definitely change.
 
 If you try it out, we'd love to know what you think! Please hit up Lisa at lisa@genius.com.
