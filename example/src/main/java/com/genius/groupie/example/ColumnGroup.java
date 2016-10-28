@@ -1,6 +1,7 @@
 package com.genius.groupie.example;
 
 import com.genius.groupie.Group;
+import com.genius.groupie.GroupDataObserver;
 import com.genius.groupie.Item;
 
 import java.util.ArrayList;

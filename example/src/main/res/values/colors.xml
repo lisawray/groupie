@@ -11,6 +11,73 @@
     <color name="deep_purple_200">#B39DDB</color>
     <color name="indigo_200">#9FA8DA</color>
     <color name="blue_200">#90CAF9</color>
+    <color name="light_blue_200">#81D4FA</color>
+    <color name="cyan_200">#80DEEA</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="green_200">#A5D6A7</color>
+    <color name="light_green_200">#C5E1A5</color>
+    <color name="lime_200">#E6EE9C</color>
+    <color name="yellow_200">#FFF59D</color>
+    <color name="amber_200">#FFE082</color>
+    <color name="orange_200">#FFCC80</color>
+    <color name="deep_orange_200">#FFAB91</color>
+
+    <array name="rainbow_200">
+        <item>@color/red_200</item>
+        <item>@color/pink_200</item>
+        <item>@color/purple_200</item>
+        <item>@color/deep_purple_200</item>
+        <item>@color/indigo_200</item>
+        <item>@color/blue_200</item>
+        <item>@color/light_blue_200</item>
+        <item>@color/cyan_200</item>
+        <item>@color/teal_200</item>
+        <item>@color/green_200</item>
+        <item>@color/light_green_200</item>
+        <item>@color/lime_200</item>
+        <item>@color/yellow_200</item>
+        <item>@color/amber_200</item>
+        <item>@color/orange_200</item>
+        <item>@color/deep_orange_200</item>
+    </array>
+
+    <array name="rainbow_500">
+        <item>@color/red_500</item>
+        <item>@color/pink_500</item>
+        <item>@color/purple_500</item>
+        <item>@color/deep_purple_500</item>
+        <item>@color/indigo_500</item>
+        <item>@color/blue_500</item>
+        <item>@color/light_blue_500</item>
+        <item>@color/cyan_500</item>
+        <item>@color/teal_500</item>
+        <item>@color/green_500</item>
+        <item>@color/light_green_500</item>
+        <item>@color/lime_500</item>
+        <item>@color/yellow_500</item>
+        <item>@color/amber_500</item>
+        <item>@color/orange_500</item>
+        <item>@color/deep_orange_500</item>
+    </array>
+
+
     <color name="gray">#eeeeeeee</color>
     <color name="transparent">#00000000</color>
+
+    <color name="red_500">#f44336</color>
+    <color name="pink_500">#E91E63</color>
+    <color name="purple_500">#9C27B0</color>
+    <color name="deep_purple_500">#673AB7</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="cyan_500">#00BCD4</color>
+    <color name="teal_500">#009688</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="light_green_500">#8BC34A</color>
+    <color name="lime_500">#CDDC39</color>
+    <color name="yellow_500">#FFEB3B</color>
+    <color name="amber_500">#FFC107</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="deep_orange_500">#FF5722</color>
 </resources>

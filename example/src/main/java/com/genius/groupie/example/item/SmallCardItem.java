@@ -1,14 +1,14 @@
 package com.genius.groupie.example.item;
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.ColorInt;
 
 public class SmallCardItem extends CardItem {
 
-    public SmallCardItem(@ColorRes int colorRes) {
+    public SmallCardItem(@ColorInt int colorRes) {
         super(colorRes);
     }
 
-    public SmallCardItem(@ColorRes int colorRes, CharSequence text) {
+    public SmallCardItem(@ColorInt int colorRes, CharSequence text) {
         super(colorRes, text);
     }
 

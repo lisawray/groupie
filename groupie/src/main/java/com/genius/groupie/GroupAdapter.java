@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * An adapter that holds a list of Groups.
  */
-public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Group.GroupDataObserver {
+public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements GroupDataObserver {
 
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
@@ -220,6 +220,10 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override public void onItemChanged(Group group, int position) {
         notifyItemChanged(getAdapterPosition(group) + position);
+    }
+
+    @Override public void onItemChanged(Group group, int position, Object payload) {
+        notifyItemChanged(getAdapterPosition(group) + position, payload);
     }
 
     @Override public void onItemRemoved(Group group, int position) {

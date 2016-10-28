@@ -14,4 +14,6 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="show_bounds">Show bounds</string>
     <string name="show_offsets">Show offsets</string>
+    <string name="update_with_payload">Update with payload</string>
+    <string name="update_with_payload_subtitle">These items demonstrate robust, efficient partial asynchronous updates</string>
 </resources>

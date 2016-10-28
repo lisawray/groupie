@@ -1,6 +1,6 @@
 package com.genius.groupie.example.item;
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.ColorInt;
 
 import com.genius.groupie.Item;
 import com.genius.groupie.example.databinding.ItemSquareCardBinding;
@@ -10,9 +10,9 @@ import com.genius.groupie.example.databinding.ItemSquareCardBinding;
  */
 public class CarouselCardItem extends Item<ItemSquareCardBinding> {
 
-    @ColorRes private int colorRes;
+    @ColorInt private int colorRes;
 
-    public CarouselCardItem(@ColorRes int colorRes) {
+    public CarouselCardItem(@ColorInt int colorRes) {
         this.colorRes = colorRes;
     }
 
