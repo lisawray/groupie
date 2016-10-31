@@ -4,3 +4,7 @@ machine:
 dependencies:
   pre:
     - echo y | android update sdk --no-ui --all --filter android-`grep -oP '(?<=compileSdkVersion )[0-9].*[0-9]' groupie/build.gradle`,extra-android-m2repository,build-tools-`grep -oP "(?<=buildToolsVersion .)[0-9].*[0-9]" groupie/build.gradle`
+test:
+  post:
+    - cp -r groupie/build/test-results/* $CIRCLE_TEST_REPORTS
+
