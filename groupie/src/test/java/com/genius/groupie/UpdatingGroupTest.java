@@ -33,7 +33,7 @@ public class UpdatingGroupTest {
     }
 
     @Test
-    public void john() {
+    public void updateGroupChangesRange() {
         List<Item> children = new ArrayList<Item>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
