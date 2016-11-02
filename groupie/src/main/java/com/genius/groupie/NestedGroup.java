@@ -223,7 +223,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     public void notifyItemRangeChanged(int positionStart, int itemCount) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeRemoved(this, positionStart, itemCount);
+            parentDataObserver.onItemRangeChanged(this, positionStart, itemCount);
         }
     }
 }
