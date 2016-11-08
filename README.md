@@ -9,13 +9,13 @@ Groupie was developed as an internal library at Genius because none of the exist
 
 # Try it out:
 
-Groupie is available on jcenter as an alpha version:
+Groupie is available on jcenter:
 
 ```gradle
-compile 'com.genius:groupie:0.3.0'
+compile 'com.genius:groupie:0.4.0'
 ```
 
-Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app's top-level build.gradle.
+Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app module's build.gradle.
 
 ```gradle
 android {
