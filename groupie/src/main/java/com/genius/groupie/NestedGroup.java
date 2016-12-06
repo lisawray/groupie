@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * A base implementation of the Group interface, which supports nesting of Groups to arbitrary depth.
  * You can make a NestedGroup which contains only Items, one which contains Groups, or a mixture.
- *
+ * <p>
  * It provides support for notifying the adapter about changes which happen in its child groups.
  */
 public abstract class NestedGroup implements Group, GroupDataObserver {
@@ -73,7 +73,8 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     public abstract int getPosition(Group group);
 
-    @Override public final void setGroupDataObserver(GroupDataObserver groupDataObserver) {
+    @Override
+    public final void setGroupDataObserver(GroupDataObserver groupDataObserver) {
         this.parentDataObserver = groupDataObserver;
     }
 
@@ -111,24 +112,31 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      *
      * @param group
      */
-    @Override public final void onChanged(Group group) {
+    @CallSuper
+    @Override
+    public void onChanged(Group group) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeChanged(this, getPosition(group), group.getItemCount());
         }
     }
 
-    @Override public final void onItemInserted(Group group, int position) {
+    @CallSuper
+    @Override
+    public void onItemInserted(Group group, int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemInserted(this, getPosition(group) + position);
         }
     }
 
-    @Override public final void onItemChanged(Group group, int position) {
+    @CallSuper
+    @Override
+    public void onItemChanged(Group group, int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, getPosition(group) + position);
         }
     }
 
+    @CallSuper
     @Override
     public void onItemChanged(Group group, int position, Object payload) {
         if (parentDataObserver != null) {
@@ -136,31 +144,41 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         }
     }
 
-    @Override public final void onItemRemoved(Group group, int position) {
+    @CallSuper
+    @Override
+    public void onItemRemoved(Group group, int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRemoved(this, getPosition(group) + position);
         }
     }
 
-    @Override public final void onItemRangeChanged(Group group, int positionStart, int itemCount) {
+    @CallSuper
+    @Override
+    public void onItemRangeChanged(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeChanged(this, getPosition(group) + positionStart, itemCount);
         }
     }
 
-    @Override public final void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+    @CallSuper
+    @Override
+    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeInserted(this, getPosition(group) + positionStart, itemCount);
         }
     }
 
-    @Override public final void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+    @CallSuper
+    @Override
+    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeRemoved(this, getPosition(group) + positionStart, itemCount);
         }
     }
 
-    @Override public final void onItemMoved(Group group, int fromPosition, int toPosition) {
+    @CallSuper
+    @Override
+    public void onItemMoved(Group group, int fromPosition, int toPosition) {
         if (parentDataObserver != null) {
             int groupPosition = getPosition(group);
             parentDataObserver.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
@@ -170,57 +188,67 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     /**
      * A group should use this to notify that there is a change in itself.
+     *
      * @param positionStart
      * @param itemCount
      */
+    @CallSuper
     public void notifyItemRangeInserted(int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeInserted(this, positionStart, itemCount);
         }
     }
 
+    @CallSuper
     public void notifyItemRangeRemoved(int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeRemoved(this, positionStart, itemCount);
         }
     }
 
+    @CallSuper
     public void notifyItemMoved(int fromPosition, int toPosition) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemMoved(this, fromPosition, toPosition);
         }
     }
 
+    @CallSuper
     public void notifyChanged() {
         if (parentDataObserver != null) {
             parentDataObserver.onChanged(this);
         }
     }
 
+    @CallSuper
     public void notifyItemInserted(int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemInserted(this, position);
         }
     }
 
+    @CallSuper
     public void notifyItemChanged(int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, position);
         }
     }
 
+    @CallSuper
     public void notifyItemChanged(int position, Object payload) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, position, payload);
         }
     }
 
+    @CallSuper
     public void notifyItemRemoved(int position) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRemoved(this, position);
         }
     }
 
+    @CallSuper
     public void notifyItemRangeChanged(int positionStart, int itemCount) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemRangeChanged(this, positionStart, itemCount);
