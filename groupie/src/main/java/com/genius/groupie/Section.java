@@ -10,11 +10,16 @@ import java.util.List;
  * A group which has a list of contents and an optional header and footer.
  */
 public class Section extends NestedGroup {
-    private @Nullable Group header;
-    private @Nullable Group footer;
+    @Nullable
+    private Group header;
+    @Nullable
+    private Group footer;
+    @Nullable
+    private Group placeholder;
     private final ArrayList<Group> children = new ArrayList<>();
     private boolean hideWhenEmpty = false;
-    private boolean isHidden = false;
+    private boolean isHeaderAndFooterVisible = true;
+    private boolean isPlaceholderVisible = false;
 
     public Section() {
         this(null, new ArrayList<Group>());
@@ -33,40 +38,79 @@ public class Section extends NestedGroup {
         addAll(children);
     }
 
-    @Override public void add(int position, Group group) {
+    @Override
+    public void add(int position, Group group) {
         super.add(position, group);
         children.add(position, group);
         notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
-        showHeadersAndFootersIfNecessary();
+        configureEmptyState();
     }
 
-    @Override public void addAll(int position, List<Group> groups) {
+    @Override
+    public void addAll(List<Group> groups) {
+        if (groups.isEmpty()) return;
+        super.addAll(groups);
+        int position = getItemCountWithoutFooter();
+        this.children.addAll(groups);
+        notifyItemRangeInserted(position, getItemCount(groups));
+        configureEmptyState();
+    }
+
+    @Override
+    public void addAll(int position, List<Group> groups) {
         super.addAll(position, groups);
         this.children.addAll(position, groups);
         notifyItemRangeInserted(getHeaderItemCount() + position, getItemCount(groups));
-        showHeadersAndFootersIfNecessary();
+        configureEmptyState();
     }
 
-    @Override public void add(Group group) {
+    @Override
+    public void add(Group group) {
         super.add(group);
         int position = getItemCountWithoutFooter();
         children.add(group);
         notifyItemInserted(getHeaderItemCount() + position);
-        showHeadersAndFootersIfNecessary();
+        configureEmptyState();
     }
 
-    @Override public void remove(Group group) {
+    @Override
+    public void remove(Group group) {
         super.remove(group);
         int position = getPosition(group);
         children.remove(group);
         notifyItemRangeRemoved(position, group.getItemCount());
-        hideHeadersAndFootersIfNecessary();
+        configureEmptyState();
     }
 
-    protected void hideHeadersAndFootersIfNecessary() {
-        if (hideWhenEmpty && isEmpty() && !isHidden) {
-            hideHeadersAndFooters();
-        }
+    /**
+     * Optional. Set a placeholder for when the section's body is empty.
+     * <p>
+     * If setHideWhenEmpty(true) is set, then the empty placeholder will not be shown.
+     *
+     * @param placeholder A placeholder to be shown when there is no body content
+     */
+    public void setPlaceholder(@NonNull Group placeholder) {
+        if (placeholder == null)
+            throw new NullPointerException("Placeholder can't be null.  Please use removePlaceholder() instead!");
+        this.placeholder = placeholder;
+        configureEmptyState();
+    }
+
+    public void removePlaceholder() {
+        hidePlaceholder();
+        this.placeholder = null;
+    }
+
+    private void showPlaceholder() {
+        if (isPlaceholderVisible || placeholder == null) return;
+        isPlaceholderVisible = true;
+        notifyItemRangeInserted(getHeaderItemCount(), placeholder.getItemCount());
+    }
+
+    private void hidePlaceholder() {
+        if (!isPlaceholderVisible || placeholder == null) return;
+        isPlaceholderVisible = false;
+        notifyItemRangeRemoved(getHeaderItemCount(), placeholder.getItemCount());
     }
 
     /**
@@ -78,94 +122,132 @@ public class Section extends NestedGroup {
         return children.isEmpty() || getItemCount(children) == 0;
     }
 
-    private void hideHeadersAndFooters() {
-        isHidden = true;
-        int count = getHeaderItemCount() + getFooterItemCount();
+    private void hideDecorations() {
+        if (!isHeaderAndFooterVisible && !isPlaceholderVisible) return;
+        int count = getHeaderItemCount() + getPlaceholderItemCount() + getFooterItemCount();
+        isHeaderAndFooterVisible = false;
+        isPlaceholderVisible = false;
         notifyItemRangeRemoved(0, count);
     }
 
-    protected void showHeadersAndFootersIfNecessary() {
-        if (hideWhenEmpty && isHidden && !isEmpty()) {
+    private void configureEmptyState() {
+        boolean isEmpty = isEmpty();
+        if (isEmpty) {
+            if (hideWhenEmpty) {
+                hideDecorations();
+            } else {
+                showPlaceholder();
+                showHeadersAndFooters();
+            }
+        } else {
+            hidePlaceholder();
             showHeadersAndFooters();
         }
     }
 
     private void showHeadersAndFooters() {
-        isHidden = false;
+        if (isHeaderAndFooterVisible) return;
+        isHeaderAndFooterVisible = true;
         notifyItemRangeInserted(0, getHeaderItemCount());
         notifyItemRangeInserted(getItemCountWithoutFooter(), getFooterItemCount());
     }
 
-    @Override public void addAll(List<Group> groups) {
-        if (groups.isEmpty()) return;
-        super.addAll(groups);
-        int position = getItemCountWithoutFooter();
-        this.children.addAll(groups);
-        notifyItemRangeInserted(position, getItemCount(groups));
-        showHeadersAndFootersIfNecessary();
+    private int getBodyItemCount() {
+        return isPlaceholderVisible ? getPlaceholderItemCount() : getItemCount(children);
     }
 
     private int getItemCountWithoutFooter() {
-        return children.size() + getHeaderItemCount();
+        return getBodyItemCount() + getHeaderItemCount();
     }
 
     private int getHeaderCount() {
-        return header == null ? 0 : 1;
+        return header == null || !isHeaderAndFooterVisible ? 0 : 1;
     }
 
     private int getHeaderItemCount() {
-        return header == null ? 0 : header.getItemCount();
+        return getHeaderCount() == 0 ? 0 : header.getItemCount();
     }
 
     private int getFooterItemCount() {
-        return footer == null ? 0 : footer.getItemCount();
+        return getFooterCount() == 0 ? 0 : footer.getItemCount();
     }
 
     private int getFooterCount() {
-        return footer == null ? 0 : 1;
+        return footer == null || !isHeaderAndFooterVisible ? 0 : 1;
     }
 
-    @Override public Group getGroup(int position) {
-        if (header != null && position == 0) return header;
+    private int getPlaceholderCount() {
+        return isPlaceholderVisible ? 1 : 0;
+    }
+
+    @Override
+    public Group getGroup(int position) {
+        if (isHeaderShown() && position == 0) return header;
         position -= getHeaderCount();
+        if (isPlaceholderShown() && position == 0) return placeholder;
+        position -= getPlaceholderCount();
         if (position == children.size()) {
-            return footer;
+            if (isFooterShown()) {
+                return footer;
+            } else {
+                return null;
+            }
         } else {
             return children.get(position);
         }
     }
 
-    @Override public int getGroupCount() {
-        if (hideWhenEmpty && isEmpty()) {
-            return 0;
-        }
-
-        return getHeaderCount() + getFooterCount() + children.size();
+    @Override
+    public int getGroupCount() {
+        return getHeaderCount() + getFooterCount() + getPlaceholderCount() + children.size();
     }
 
-    @Override public int getPosition(Group group) {
+    @Override
+    public int getPosition(Group group) {
         int count = 0;
-        if (header != null) {
+        if (isHeaderShown()) {
             if (group == header) return count;
-            count++;
         }
+        count += getHeaderCount();
+        if (isPlaceholderShown()) {
+            if (group == placeholder) return count;
+        }
+        count += getPlaceholderCount();
+
         int index = children.indexOf(group);
         if (index >= 0) return count + index;
         count += children.size();
-        if (footer == group) {
-            return count;
+
+        if (isFooterShown()) {
+            if (footer == group) {
+                return count;
+            }
         }
+
         return -1;
     }
 
+    private boolean isHeaderShown() {
+        return getHeaderCount() > 0;
+    }
+
+    private boolean isFooterShown() {
+        return getFooterCount() > 0;
+    }
+
+    private boolean isPlaceholderShown() {
+        return getPlaceholderCount() > 0;
+    }
+
     public void setHeader(@NonNull Group header) {
-        if (header == null) throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
+        if (header == null)
+            throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = header;
         notifyHeaderItemsChanged(previousHeaderItemCount);
     }
 
-    public void removeHeader(){
+    public void removeHeader() {
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = null;
         notifyHeaderItemsChanged(previousHeaderItemCount);
@@ -183,13 +265,14 @@ public class Section extends NestedGroup {
 
 
     public void setFooter(@NonNull Group footer) {
-        if (footer == null) throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
+        if (footer == null)
+            throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
         int previousFooterItemCount = getFooterItemCount();
         this.footer = footer;
         notifyFooterItemsChanged(previousFooterItemCount);
     }
 
-    public void removeFooter(){
+    public void removeFooter() {
         int previousFooterItemCount = getFooterItemCount();
         this.footer = null;
         notifyFooterItemsChanged(previousFooterItemCount);
@@ -207,31 +290,38 @@ public class Section extends NestedGroup {
 
     public void setHideWhenEmpty(boolean hide) {
         if (hideWhenEmpty == hide) return;
-        if (!hide && isHidden) {
-            showHeadersAndFooters();
-        }
-
         hideWhenEmpty = hide;
-        hideHeadersAndFootersIfNecessary();
+        configureEmptyState();
     }
 
-    @Override public void notifyItemRangeInserted(int positionStart, int itemCount) {
-        super.notifyItemRangeInserted(positionStart, itemCount);
-        showHeadersAndFootersIfNecessary();
+    @Override
+    public void onItemInserted(Group group, int position) {
+        super.onItemInserted(group, position);
+        configureEmptyState();
     }
 
-    @Override public void notifyItemRangeRemoved(int positionStart, int itemCount) {
-        super.notifyItemRangeRemoved(positionStart, itemCount);
-        hideHeadersAndFootersIfNecessary();
+    @Override
+    public void onItemRemoved(Group group, int position) {
+        super.onItemRemoved(group, position);
+        configureEmptyState();
     }
 
-    @Override public void notifyItemInserted(int position) {
-        super.notifyItemInserted(position);
-        showHeadersAndFootersIfNecessary();
+    @Override
+    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+        super.onItemRangeInserted(group, positionStart, itemCount);
+        configureEmptyState();
     }
 
-    @Override public void notifyItemRemoved(int position) {
-        super.notifyItemRemoved(position);
-        hideHeadersAndFootersIfNecessary();
+    @Override
+    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+        super.onItemRangeRemoved(group, positionStart, itemCount);
+        configureEmptyState();
+    }
+
+    private int getPlaceholderItemCount() {
+        if (isPlaceholderVisible && placeholder != null) {
+            return placeholder.getItemCount();
+        }
+        return 0;
     }
 }
