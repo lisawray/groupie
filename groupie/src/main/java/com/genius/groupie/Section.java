@@ -43,7 +43,7 @@ public class Section extends NestedGroup {
         super.add(position, group);
         children.add(position, group);
         notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Section extends NestedGroup {
         int position = getItemCountWithoutFooter();
         this.children.addAll(groups);
         notifyItemRangeInserted(position, getItemCount(groups));
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Section extends NestedGroup {
         super.addAll(position, groups);
         this.children.addAll(position, groups);
         notifyItemRangeInserted(getHeaderItemCount() + position, getItemCount(groups));
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Section extends NestedGroup {
         int position = getItemCountWithoutFooter();
         children.add(group);
         notifyItemInserted(getHeaderItemCount() + position);
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Section extends NestedGroup {
         int position = getPosition(group);
         children.remove(group);
         notifyItemRangeRemoved(position, group.getItemCount());
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     /**
@@ -93,7 +93,7 @@ public class Section extends NestedGroup {
         if (placeholder == null)
             throw new NullPointerException("Placeholder can't be null.  Please use removePlaceholder() instead!");
         this.placeholder = placeholder;
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     public void removePlaceholder() {
@@ -130,7 +130,7 @@ public class Section extends NestedGroup {
         notifyItemRangeRemoved(0, count);
     }
 
-    private void configureEmptyState() {
+    protected void refreshEmptyState() {
         boolean isEmpty = isEmpty();
         if (isEmpty) {
             if (hideWhenEmpty) {
@@ -291,31 +291,31 @@ public class Section extends NestedGroup {
     public void setHideWhenEmpty(boolean hide) {
         if (hideWhenEmpty == hide) return;
         hideWhenEmpty = hide;
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
     public void onItemInserted(Group group, int position) {
         super.onItemInserted(group, position);
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
     public void onItemRemoved(Group group, int position) {
         super.onItemRemoved(group, position);
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
     public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
         super.onItemRangeInserted(group, positionStart, itemCount);
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     @Override
     public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
         super.onItemRangeRemoved(group, positionStart, itemCount);
-        configureEmptyState();
+        refreshEmptyState();
     }
 
     private int getPlaceholderItemCount() {
