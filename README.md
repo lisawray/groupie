@@ -2,7 +2,7 @@
 
 Groupie helps you display and manage complex RecyclerView layouts.  It lets you treat your content as logical groups and handles change notifications for you -- think sections with headers and footers, expandable groups, blocks of vertical columns, and much more.  It makes it easy to handle asynchronous content updates and insertions and user-driven content changes.  At the item level, it abstracts the boilerplate of item view types, item layouts, viewholders, and span sizes.  
 
-Groupie was developed as an internal library at Genius because none of the existing solutions for multiple view types or groups were simple or flexible enough for us.  We decided to make it public at this early stage in order to encourage discussion about managing and developing complex, rich user interfaces with RecyclerView. 
+Groupie was developed as an internal library at Genius because none of the existing solutions for multiple view types or groups were simple or flexible enough for us.  We decided to make it public to encourage discussion about managing and developing complex, rich user interfaces with RecyclerView. 
  
 
 <img src="http://i.imgur.com/eftOE0v.gif" width="300px"/>
@@ -12,7 +12,7 @@ Groupie was developed as an internal library at Genius because none of the exist
 Groupie is available on jcenter:
 
 ```gradle
-compile 'com.genius:groupie:0.4.0'
+compile 'com.genius:groupie:0.5.0'
 ```
 
 Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app module's build.gradle.
@@ -85,7 +85,7 @@ You can implement the Group interface directly if you want.  However, we've prov
     
 ## Items
 
-Groupie abstracts the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
+Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
 
 The `Item` class gives you simple callbacks to bind your model object to the generated binding.  
 
@@ -145,8 +145,7 @@ We like to add a `<data>` section to directly bind a model or ViewModel, but you
 Items can also declare their own column span and whether they are draggable or swipeable.  
 
 # Limitations
-- groupie is not tested (well)
 - groupie requires you to use data binding (for now)
-- groupie's API will definitely change.
+- groupie is in beta and its API may still change.
 
 If you try it out, we'd love to know what you think! Please hit up Lisa at lisa@genius.com.
