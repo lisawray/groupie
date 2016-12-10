@@ -398,4 +398,54 @@ public class SectionTest {
 
         assertNull(section.getGroup(0));
     }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void addAllAtNonZeroPositionWhenEmptyThrowIndexOutOfBoundsException() {
+        final Section section = new Section();
+        section.setGroupDataObserver(groupAdapter);
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+    }
+
+    @Test
+    public void addAllAtPositionWhenEmptyNotifiesAdapterAtIndexZero() {
+        final Section section = new Section();
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 2);
+    }
+
+    @Test
+    public void addAllAtPositionWhenNonEmptyNotifiesAdapterAtCorrectIndex() {
+        final Section section = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(2, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 3);
+    }
+
+    @Test
+    public void addAllAtPositionWithEmptyNestedGroupNotifiesAdapterAtZeroIndex() {
+        final Section nestedSection = new Section();
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 3);
+    }
+
+    @Test
+    public void addAllAtPositionWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final Section nestedSection = new Section(nestedItems);
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 2);
+    }
 }

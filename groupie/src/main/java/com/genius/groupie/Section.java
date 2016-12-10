@@ -58,9 +58,16 @@ public class Section extends NestedGroup {
 
     @Override
     public void addAll(int position, List<Group> groups) {
+        if (groups.isEmpty()) {
+            return;
+        }
+
         super.addAll(position, groups);
+
+        int notifyPosition = getItemCountWithoutFooter();
         this.children.addAll(position, groups);
-        notifyItemRangeInserted(getHeaderItemCount() + position, getItemCount(groups));
+        notifyItemRangeInserted(notifyPosition, getItemCount(groups));
+
         refreshEmptyState();
     }
 
