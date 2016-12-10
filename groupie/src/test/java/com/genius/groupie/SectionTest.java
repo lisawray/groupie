@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -437,7 +438,32 @@ public class SectionTest {
     }
 
     @Test
-    public void addAllAtPositionWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+    public void addAllAtPositionFrontWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final Section nestedSection = new Section(nestedItems);
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 3);
+    }
+
+    @Test
+    public void addAllAtPositionMiddleWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        final Section section = new Section(Arrays.<Group>asList(nestedSection1, nestedSection2));
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 3);
+    }
+
+    @Test
+    public void addAllAtPositionEndWithNestedGroupNotifiesAdapterAtCorrectIndex() {
         final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
         final Section nestedSection = new Section(nestedItems);
 

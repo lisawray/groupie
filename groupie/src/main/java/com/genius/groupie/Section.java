@@ -63,11 +63,10 @@ public class Section extends NestedGroup {
         }
 
         super.addAll(position, groups);
-
-        int notifyPosition = getItemCountWithoutFooter();
         this.children.addAll(position, groups);
-        notifyItemRangeInserted(notifyPosition, getItemCount(groups));
 
+        final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
+        notifyItemRangeInserted(notifyPosition, getItemCount(groups));
         refreshEmptyState();
     }
 
