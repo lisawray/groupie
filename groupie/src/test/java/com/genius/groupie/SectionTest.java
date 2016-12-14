@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -473,5 +474,23 @@ public class SectionTest {
 
         section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 2);
+    }
+
+    @Test
+    public void addItemToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section();
+        rootSection.add(nestedSection2);
+
+        reset(groupAdapter);
+        nestedSection2.add(new DummyItem());
+        verify(groupAdapter).onItemInserted(rootSection, 3);
     }
 }
