@@ -147,7 +147,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * All groups in the list must be non-null.
      * @param groups
      */
-    public void addAll(@NonNull List<Group> groups) {
+    public void addAll(@NonNull List<? extends Group> groups) {
         if (groups.contains(null)) throw new RuntimeException("List of groups can't contain null!");
         int itemCountBeforeGroup = getItemCount();
         int additionalSize = 0;
