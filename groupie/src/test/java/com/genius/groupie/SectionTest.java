@@ -491,7 +491,7 @@ public class SectionTest {
 
         reset(groupAdapter);
         nestedSection2.add(new DummyItem());
-        verify(groupAdapter).onItemInserted(rootSection, 3);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 3, 1);
     }
 
     public void addGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
