@@ -493,4 +493,40 @@ public class SectionTest {
         nestedSection2.add(new DummyItem());
         verify(groupAdapter).onItemInserted(rootSection, 3);
     }
+
+    public void addGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        reset(groupAdapter);
+        rootSection.add(nestedSection2);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 3, 2);
+    }
+
+    @Test
+    public void insertGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        final Section nestedSection3 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        reset(groupAdapter);
+        rootSection.add(1, nestedSection3);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 2, 2);
+    }
 }
