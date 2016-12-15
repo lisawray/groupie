@@ -35,8 +35,8 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         final int groupIndex = getPosition(group);
         int size = 0;
         for (int i = 0; i < groupIndex; i++) {
-            final Group group1 = getGroup(i);
-            size += group1.getItemCount();
+            final Group currentGroup = getGroup(i);
+            size += currentGroup.getItemCount();
         }
         return size;
     }
