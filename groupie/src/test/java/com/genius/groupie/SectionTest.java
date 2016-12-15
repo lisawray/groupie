@@ -494,6 +494,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(rootSection, 3, 1);
     }
 
+    @Test
     public void addGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
