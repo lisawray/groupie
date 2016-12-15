@@ -29,11 +29,11 @@ public class Section extends NestedGroup {
         this(header, new ArrayList<Group>());
     }
 
-    public Section(List<Group> children) {
+    public Section(List<? extends Group> children) {
         this(null, children);
     }
 
-    public Section(@Nullable Group header, List<Group> children) {
+    public Section(@Nullable Group header, List<? extends Group> children) {
         this.header = header;
         addAll(children);
     }
@@ -48,7 +48,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void addAll(List<Group> groups) {
+    public void addAll(List<? extends Group> groups) {
         if (groups.isEmpty()) return;
         super.addAll(groups);
         int position = getItemCountWithoutFooter();
@@ -58,7 +58,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void addAll(int position, List<Group> groups) {
+    public void addAll(int position, List<? extends Group> groups) {
         if (groups.isEmpty()) {
             return;
         }
