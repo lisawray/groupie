@@ -23,7 +23,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
-    protected final int getItemCount(List<Group> groups) {
+    protected final int getItemCount(List<? extends Group> groups) {
         int size = 0;
         for (Group group : groups) {
             size += group.getItemCount();
@@ -84,7 +84,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     }
 
     @CallSuper
-    public void addAll(List<Group> groups) {
+    public void addAll(List<? extends Group> groups) {
         for (Group group : groups) {
             group.setGroupDataObserver(this);
         }
@@ -96,7 +96,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     }
 
     @CallSuper
-    public void addAll(int position, List<Group> groups) {
+    public void addAll(int position, List<? extends Group> groups) {
         for (Group group : groups) {
             group.setGroupDataObserver(this);
         }
