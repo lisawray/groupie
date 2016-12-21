@@ -50,7 +50,9 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         }
         holder.setDragDirs(getDragDirs());
         holder.setSwipeDirs(getSwipeDirs());
-        viewHolder.itemView.setOnClickListener(isClickable() && onItemClickListener != null ? onClickListener : null);
+        if (onItemClickListener != null) {
+            viewHolder.itemView.setOnClickListener(isClickable() ? onClickListener : null);
+        }
         T binding = holder.binding;
 
         bind(binding, position, payloads);
