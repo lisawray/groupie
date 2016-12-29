@@ -90,8 +90,12 @@ public class Section extends NestedGroup {
      * @param placeholder A placeholder to be shown when there is no body content
      */
     public void setPlaceholder(@NonNull Group placeholder) {
+        //noinspection ConstantConditions
         if (placeholder == null)
             throw new NullPointerException("Placeholder can't be null.  Please use removePlaceholder() instead!");
+        if (this.placeholder != null) {
+            removePlaceholder();
+        }
         this.placeholder = placeholder;
         refreshEmptyState();
     }
