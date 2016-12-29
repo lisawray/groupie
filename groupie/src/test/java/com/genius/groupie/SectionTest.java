@@ -271,6 +271,25 @@ public class SectionTest {
     }
 
     @Test
+    public void replacingAnExistingPlaceholderNotifiesChange() {
+        Section section = new Section();
+        section.setPlaceholder(placeholder);
+        section.setGroupDataObserver(groupAdapter);
+
+        final int newPlaceholderSize = 1;
+        Group newPlaceholder = new DummyGroup() {
+            @Override
+            public int getItemCount() {
+                return newPlaceholderSize;
+            }
+        };
+        section.setPlaceholder(newPlaceholder);
+
+        verify(groupAdapter).onItemRangeRemoved(section, 0, placeholderSize);
+        verify(groupAdapter).onItemRangeInserted(section, 0, newPlaceholderSize);
+    }
+
+    @Test
     public void setHeaderAddsHeader() {
         Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
