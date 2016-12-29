@@ -42,7 +42,8 @@ public class Section extends NestedGroup {
     public void add(int position, Group group) {
         super.add(position, group);
         children.add(position, group);
-        notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
+        final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
+        notifyItemRangeInserted(notifyPosition, group.getItemCount());
         refreshEmptyState();
     }
 
@@ -58,9 +59,15 @@ public class Section extends NestedGroup {
 
     @Override
     public void addAll(int position, List<Group> groups) {
+        if (groups.isEmpty()) {
+            return;
+        }
+
         super.addAll(position, groups);
         this.children.addAll(position, groups);
-        notifyItemRangeInserted(getHeaderItemCount() + position, getItemCount(groups));
+
+        final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
+        notifyItemRangeInserted(notifyPosition, getItemCount(groups));
         refreshEmptyState();
     }
 
@@ -69,7 +76,7 @@ public class Section extends NestedGroup {
         super.add(group);
         int position = getItemCountWithoutFooter();
         children.add(group);
-        notifyItemInserted(getHeaderItemCount() + position);
+        notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
         refreshEmptyState();
     }
 

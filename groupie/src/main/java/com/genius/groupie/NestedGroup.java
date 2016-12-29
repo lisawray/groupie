@@ -31,6 +31,20 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
+    protected int getItemCountBeforeGroup(final Group group) {
+        final int groupIndex = getPosition(group);
+        return getItemCountBeforeGroup(groupIndex);
+    }
+
+    protected int getItemCountBeforeGroup(final int groupIndex) {
+        int size = 0;
+        for (int i = 0; i < groupIndex; i++) {
+            final Group currentGroup = getGroup(i);
+            size += currentGroup.getItemCount();
+        }
+        return size;
+    }
+
     public abstract Group getGroup(int position);
 
     public abstract int getGroupCount();
@@ -116,7 +130,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onChanged(Group group) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeChanged(this, getPosition(group), group.getItemCount());
+            parentDataObserver.onItemRangeChanged(this, getItemCountBeforeGroup(group), group.getItemCount());
         }
     }
 
@@ -124,7 +138,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemInserted(Group group, int position) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemInserted(this, getPosition(group) + position);
+            parentDataObserver.onItemInserted(this, getItemCountBeforeGroup(group) + position);
         }
     }
 
@@ -132,7 +146,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemChanged(Group group, int position) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, getPosition(group) + position);
+            parentDataObserver.onItemChanged(this, getItemCountBeforeGroup(group) + position);
         }
     }
 
@@ -140,7 +154,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemChanged(Group group, int position, Object payload) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, getPosition(group) + position, payload);
+            parentDataObserver.onItemChanged(this, getItemCountBeforeGroup(group) + position, payload);
         }
     }
 
@@ -148,7 +162,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemRemoved(Group group, int position) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRemoved(this, getPosition(group) + position);
+            parentDataObserver.onItemRemoved(this, getItemCountBeforeGroup(group) + position);
         }
     }
 
@@ -156,7 +170,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemRangeChanged(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeChanged(this, getPosition(group) + positionStart, itemCount);
+            parentDataObserver.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
         }
     }
 
@@ -164,7 +178,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeInserted(this, getPosition(group) + positionStart, itemCount);
+            parentDataObserver.onItemRangeInserted(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
         }
     }
 
@@ -172,7 +186,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
         if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeRemoved(this, getPosition(group) + positionStart, itemCount);
+            parentDataObserver.onItemRangeRemoved(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
         }
     }
 
@@ -180,7 +194,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemMoved(Group group, int fromPosition, int toPosition) {
         if (parentDataObserver != null) {
-            int groupPosition = getPosition(group);
+            int groupPosition = getItemCountBeforeGroup(group);
             parentDataObserver.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
         }
     }

@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -14,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -416,5 +418,135 @@ public class SectionTest {
         section.setHideWhenEmpty(true);
 
         assertNull(section.getGroup(0));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void addAllAtNonZeroPositionWhenEmptyThrowIndexOutOfBoundsException() {
+        final Section section = new Section();
+        section.setGroupDataObserver(groupAdapter);
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+    }
+
+    @Test
+    public void addAllAtPositionWhenEmptyNotifiesAdapterAtIndexZero() {
+        final Section section = new Section();
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 2);
+    }
+
+    @Test
+    public void addAllAtPositionWhenNonEmptyNotifiesAdapterAtCorrectIndex() {
+        final Section section = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(2, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 3);
+    }
+
+    @Test
+    public void addAllAtPositionWithEmptyNestedGroupNotifiesAdapterAtZeroIndex() {
+        final Section nestedSection = new Section();
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 3);
+    }
+
+    @Test
+    public void addAllAtPositionFrontWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final Section nestedSection = new Section(nestedItems);
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 0, 3);
+    }
+
+    @Test
+    public void addAllAtPositionMiddleWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        final Section section = new Section(Arrays.<Group>asList(nestedSection1, nestedSection2));
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 3);
+    }
+
+    @Test
+    public void addAllAtPositionEndWithNestedGroupNotifiesAdapterAtCorrectIndex() {
+        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final Section nestedSection = new Section(nestedItems);
+
+        final Section section = new Section();
+        section.add(nestedSection);
+        section.setGroupDataObserver(groupAdapter);
+
+        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        verify(groupAdapter).onItemRangeInserted(section, 2, 2);
+    }
+
+    @Test
+    public void addItemToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section();
+        rootSection.add(nestedSection2);
+
+        reset(groupAdapter);
+        nestedSection2.add(new DummyItem());
+        verify(groupAdapter).onItemRangeInserted(rootSection, 3, 1);
+    }
+
+    @Test
+    public void addGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        reset(groupAdapter);
+        rootSection.add(nestedSection2);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 3, 2);
+    }
+
+    @Test
+    public void insertGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        final Section nestedSection3 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+
+        reset(groupAdapter);
+        rootSection.add(1, nestedSection3);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 2, 2);
     }
 }
