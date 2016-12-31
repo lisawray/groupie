@@ -25,7 +25,7 @@ public class GroupAdapterTest {
 
     @Test(expected=RuntimeException.class)
     public void addAllItemsMustBeNonNull() {
-        List<Group> groups = new ArrayList<>();
+        List<Item> groups = new ArrayList<>();
         groups.add(null);
         groupAdapter.addAll(groups);
     }
