@@ -37,11 +37,34 @@ public class ExpandableGroupTest {
     }
 
     @Test
+    public void noChildAddNotificationWhenCollapsed() {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        expandableGroup.setGroupDataObserver(groupAdapter);
+        Section section = new Section();
+        DummyItem item = new DummyItem();
+        expandableGroup.add(section);
+        section.add(item);
+        Mockito.verify(groupAdapter, Mockito.never()).onItemRangeInserted(expandableGroup, 1, 1);
+    }
+
+    @Test
     public void addNotificationWhenExpanded() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         expandableGroup.onToggleExpanded();
         expandableGroup.setGroupDataObserver(groupAdapter);
         expandableGroup.add(new DummyItem());
+        Mockito.verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 1);
+    }
+
+    @Test
+    public void childAddNotificationWhenExpanded() {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        expandableGroup.onToggleExpanded();
+        expandableGroup.setGroupDataObserver(groupAdapter);
+        Section section = new Section();
+        DummyItem item = new DummyItem();
+        expandableGroup.add(section);
+        section.add(item);
         Mockito.verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 1);
     }
 

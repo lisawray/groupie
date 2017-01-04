@@ -64,4 +64,71 @@ public class ExpandableGroup extends NestedGroup {
             notifyItemRangeInserted(oldSize, newSize - oldSize);
         }
     }
+    
+    private boolean dispatchChildChanges(Group group) {
+        return isExpanded || group == parent;
+    }
+
+    @Override
+    public void onChanged(Group group) {
+        if (dispatchChildChanges(group)) {
+            super.onChanged(group);
+        }
+    }
+
+    @Override
+    public void onItemInserted(Group group, int position) {
+        if (dispatchChildChanges(group)) {
+            super.onItemInserted(group, position);
+        }
+    }
+
+    @Override
+    public void onItemChanged(Group group, int position) {
+        if (dispatchChildChanges(group)) {
+            super.onItemChanged(group, position);
+        }
+    }
+
+    @Override
+    public void onItemChanged(Group group, int position, Object payload) {
+        if (dispatchChildChanges(group)) {
+            super.onItemChanged(group, position, payload);
+        }
+    }
+
+    @Override
+    public void onItemRemoved(Group group, int position) {
+        if (dispatchChildChanges(group)) {
+            super.onItemRemoved(group, position);
+        }
+    }
+
+    @Override
+    public void onItemRangeChanged(Group group, int positionStart, int itemCount) {
+        if (dispatchChildChanges(group)) {
+            super.onItemRangeChanged(group, positionStart, itemCount);
+        }
+    }
+
+    @Override
+    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+        if (dispatchChildChanges(group)) {
+            super.onItemRangeInserted(group, positionStart, itemCount);
+        }
+    }
+
+    @Override
+    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+        if (dispatchChildChanges(group)) {
+            super.onItemRangeRemoved(group, positionStart, itemCount);
+        }
+    }
+
+    @Override
+    public void onItemMoved(Group group, int fromPosition, int toPosition) {
+        if (dispatchChildChanges(group)) {
+            super.onItemMoved(group, fromPosition, toPosition);
+        }
+    }
 }
