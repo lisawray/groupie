@@ -21,24 +21,29 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class SectionTest {
 
-    @Mock GroupAdapter groupAdapter;
+    @Mock
+    GroupAdapter groupAdapter;
+
     final int footerSize = 5;
     Group footer = new DummyGroup() {
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             return footerSize;
         }
     };
 
     final int headerSize = 2;
     Group header = new DummyGroup() {
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             return headerSize;
         }
     };
 
     final int placeholderSize = 3;
     Group placeholder = new DummyGroup() {
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             return placeholderSize;
         }
     };
@@ -50,7 +55,8 @@ public class SectionTest {
         }
     };
 
-    @Test public void settingFooterNotifiesFooterAdded() {
+    @Test
+    public void settingFooterNotifiesFooterAdded() {
         Section section = new Section();
         section.setHeader(header);
         section.add(new DummyItem());
@@ -60,7 +66,8 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(section, headerSize + 1, footerSize);
     }
 
-    @Test public void removingFooterNotifiesPreviousFooterRemoved() {
+    @Test
+    public void removingFooterNotifiesPreviousFooterRemoved() {
         Section section = new Section();
         section.setHeader(header);
         section.add(new DummyItem());
@@ -71,27 +78,30 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(section, headerSize + 1, footerSize);
     }
 
-    @Test(expected=NullPointerException.class)
-    public void settingNullFooterThrowsNullPointerException(){
+    @Test(expected = NullPointerException.class)
+    public void settingNullFooterThrowsNullPointerException() {
         Section section = new Section();
         section.setFooter(null);
     }
 
-    @Test public void footerCountIs0WhenThereIsNoFooter() {
+    @Test
+    public void footerCountIs0WhenThereIsNoFooter() {
         Section section = new Section();
         section.removeFooter();
 
         assertEquals(0, section.getItemCount());
     }
 
-    @Test public void footerCountIsSizeOfFooter() {
+    @Test
+    public void footerCountIsSizeOfFooter() {
         Section section = new Section();
 
         section.setFooter(footer);
         assertEquals(footerSize, section.getItemCount());
     }
 
-    @Test public void settingHeaderNotifiesHeaderAdded() {
+    @Test
+    public void settingHeaderNotifiesHeaderAdded() {
         Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
         section.setHeader(header);
@@ -99,7 +109,8 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(section, 0, headerSize);
     }
 
-    @Test public void removingHeaderNotifiesPreviousHeaderRemoved() {
+    @Test
+    public void removingHeaderNotifiesPreviousHeaderRemoved() {
         Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
         section.setHeader(header);
@@ -108,40 +119,45 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(section, 0, headerSize);
     }
 
-    @Test(expected=NullPointerException.class)
-    public void settingNullHeaderThrowsNullPointerException(){
+    @Test(expected = NullPointerException.class)
+    public void settingNullHeaderThrowsNullPointerException() {
         Section section = new Section();
         section.setFooter(null);
     }
 
-    @Test public void headerCountIs0WhenThereIsNoHeader() {
+    @Test
+    public void headerCountIs0WhenThereIsNoHeader() {
         Section section = new Section();
         section.removeHeader();
 
         assertEquals(0, section.getItemCount());
     }
 
-    @Test public void headerCountIsSizeOfHeader() {
+    @Test
+    public void headerCountIsSizeOfHeader() {
         Section section = new Section();
 
         section.setHeader(header);
         assertEquals(headerSize, section.getItemCount());
     }
 
-    @Test public void getGroup() {
+    @Test
+    public void getGroup() {
         Section section = new Section();
         Item item = new DummyItem();
         section.add(item);
         assertEquals(0, section.getPosition(item));
     }
 
-    @Test public void getPositionReturnsNegativeIfItemNotPresent() {
+    @Test
+    public void getPositionReturnsNegativeIfItemNotPresent() {
         Section section = new Section();
         Item item = new DummyItem();
         assertEquals(-1, section.getPosition(item));
     }
 
-    @Test public void constructorSetsListenerOnChildren() {
+    @Test
+    public void constructorSetsListenerOnChildren() {
         List<Group> children = new ArrayList<>();
         Item item = Mockito.mock(Item.class);
         children.add(item);
@@ -424,7 +440,7 @@ public class SectionTest {
     public void addAllAtNonZeroPositionWhenEmptyThrowIndexOutOfBoundsException() {
         final Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
-        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem()));
     }
 
     @Test
@@ -432,16 +448,16 @@ public class SectionTest {
         final Section section = new Section();
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        section.addAll(0, Arrays.asList(new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 2);
     }
 
     @Test
     public void addAllAtPositionWhenNonEmptyNotifiesAdapterAtCorrectIndex() {
-        final Section section = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section section = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(2, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        section.addAll(2, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 3);
     }
 
@@ -453,45 +469,45 @@ public class SectionTest {
         section.add(nestedSection);
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 3);
     }
 
     @Test
     public void addAllAtPositionFrontWithNestedGroupNotifiesAdapterAtCorrectIndex() {
-        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final List<DummyItem> nestedItems = Arrays.asList(new DummyItem(), new DummyItem());
         final Section nestedSection = new Section(nestedItems);
 
         final Section section = new Section();
         section.add(nestedSection);
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(0, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        section.addAll(0, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 3);
     }
 
     @Test
     public void addAllAtPositionMiddleWithNestedGroupNotifiesAdapterAtCorrectIndex() {
-        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
-        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
 
-        final Section section = new Section(Arrays.<Group>asList(nestedSection1, nestedSection2));
+        final Section section = new Section(Arrays.asList(nestedSection1, nestedSection2));
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 3);
     }
 
     @Test
     public void addAllAtPositionEndWithNestedGroupNotifiesAdapterAtCorrectIndex() {
-        final List<Group> nestedItems = Arrays.<Group>asList(new DummyItem(), new DummyItem());
+        final List<DummyItem> nestedItems = Arrays.asList(new DummyItem(), new DummyItem());
         final Section nestedSection = new Section(nestedItems);
 
         final Section section = new Section();
         section.add(nestedSection);
         section.setGroupDataObserver(groupAdapter);
 
-        section.addAll(1, Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 2);
     }
 
@@ -502,7 +518,7 @@ public class SectionTest {
         rootSection.setGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
-        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         rootSection.add(nestedSection1);
 
         final Section nestedSection2 = new Section();
@@ -520,10 +536,10 @@ public class SectionTest {
         rootSection.setGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
-        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         rootSection.add(nestedSection1);
 
-        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
 
         reset(groupAdapter);
         rootSection.add(nestedSection2);
@@ -537,13 +553,13 @@ public class SectionTest {
         rootSection.setGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
-        final Section nestedSection1 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
         rootSection.add(nestedSection1);
 
-        final Section nestedSection2 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         rootSection.add(nestedSection2);
 
-        final Section nestedSection3 = new Section(Arrays.<Group>asList(new DummyItem(), new DummyItem()));
+        final Section nestedSection3 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
 
         reset(groupAdapter);
         rootSection.add(1, nestedSection3);
