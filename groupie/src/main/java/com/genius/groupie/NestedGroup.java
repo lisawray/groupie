@@ -121,6 +121,13 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         group.setGroupDataObserver(null);
     }
 
+    @CallSuper
+    public void removeAll(List<? extends Group> groups) {
+        for (Group group : groups) {
+            group.setGroupDataObserver(null);
+        }
+    }
+
     /**
      * Every item in the group still exists but the data in each has changed (e.g. should rebind).
      *
