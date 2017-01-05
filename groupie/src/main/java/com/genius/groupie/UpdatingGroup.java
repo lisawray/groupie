@@ -41,7 +41,9 @@ public class UpdatingGroup extends NestedGroup {
 
     public void update(List<? extends Item> newItems) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(newItems));
+        super.removeAll(items);
         items.clear();
+        super.addAll(newItems);
         items.addAll(newItems);
         diffResult.dispatchUpdatesTo(listUpdateCallback);
     }

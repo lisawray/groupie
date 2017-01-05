@@ -50,4 +50,19 @@ public class UpdatingGroupTest {
         verifyNoMoreInteractions(groupAdapter);
     }
 
+    @Test
+    public void changeAnItemNotifiesChange() {
+        List<Item> children = new ArrayList<Item>();
+        Item item = new DummyItem();
+        children.add(item);
+
+        UpdatingGroup group = new UpdatingGroup();
+        group.update(children);
+        group.setGroupDataObserver(groupAdapter);
+
+        item.notifyChanged();
+
+        verify(groupAdapter).onItemChanged(group, 0);
+    }
+
 }

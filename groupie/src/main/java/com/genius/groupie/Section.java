@@ -89,6 +89,20 @@ public class Section extends NestedGroup {
         refreshEmptyState();
     }
 
+    @Override
+    public void removeAll(List<? extends Group> groups) {
+        if (groups.isEmpty()) {
+            return;
+        }
+        super.removeAll(groups);
+        for (Group group : groups) {
+            int position = getPosition(group);
+            children.remove(group);
+            notifyItemRangeRemoved(position, group.getItemCount());
+        }
+        refreshEmptyState();
+    }
+
     /**
      * Optional. Set a placeholder for when the section's body is empty.
      * <p>
