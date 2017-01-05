@@ -83,7 +83,7 @@ public class Section extends NestedGroup {
     @Override
     public void remove(Group group) {
         super.remove(group);
-        int position = getPosition(group);
+        int position = getItemCountBeforeGroup(group);
         children.remove(group);
         notifyItemRangeRemoved(position, group.getItemCount());
         refreshEmptyState();
