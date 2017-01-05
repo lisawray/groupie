@@ -547,6 +547,24 @@ public class SectionTest {
     }
 
     @Test
+    public void addGroupToNestedSectionWithHeaderNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+        rootSection.setHeader(new DummyItem());
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+
+        reset(groupAdapter);
+        rootSection.add(nestedSection2);
+        verify(groupAdapter).onItemRangeInserted(rootSection, 4, 2);
+    }
+
+    @Test
     public void insertGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
