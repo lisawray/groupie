@@ -76,7 +76,7 @@ public class Section extends NestedGroup {
         super.add(group);
         int position = getItemCountWithoutFooter();
         children.add(group);
-        notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
+        notifyItemRangeInserted(position, group.getItemCount());
         refreshEmptyState();
     }
 
