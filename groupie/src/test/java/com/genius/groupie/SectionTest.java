@@ -565,4 +565,22 @@ public class SectionTest {
         rootSection.add(1, nestedSection3);
         verify(groupAdapter).onItemRangeInserted(rootSection, 2, 2);
     }
+
+    @Test
+    public void removeGroupFromNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.setGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        reset(groupAdapter);
+        rootSection.remove(nestedSection2);
+        verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
+    }
 }
