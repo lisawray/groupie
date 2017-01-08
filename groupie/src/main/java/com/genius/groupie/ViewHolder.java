@@ -3,37 +3,38 @@ package com.genius.groupie;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHolder {
     public final T binding;
-    private final Map<String, Object> extras = new HashMap<>();
-    private int swipeDirs = 0;
-    private int dragDirs = 0;
+    private Item item;
 
     public ViewHolder(T binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
+    public void bind(Item item) {
+        this.item = item;
+    }
+
+    public void unbind() {
+        this.item = null;
+    }
+
     public Map<String, Object> getExtras() {
-        return extras;
+        return item.getExtras();
     }
 
     public int getSwipeDirs() {
-        return swipeDirs;
-    }
-
-    public void setSwipeDirs(int swipeDirs) {
-        this.swipeDirs = swipeDirs;
+        return item.getSwipeDirs();
     }
 
     public int getDragDirs() {
-        return dragDirs;
+        return item.getDragDirs();
     }
 
-    public void setDragDirs(int dragDirs) {
-        this.dragDirs = dragDirs;
+    public Item getItem() {
+        return item;
     }
 }

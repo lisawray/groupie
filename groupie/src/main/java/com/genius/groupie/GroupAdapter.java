@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * An adapter that holds a list of Groups.
  */
-public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements GroupDataObserver {
+public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements GroupDataObserver {
 
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
@@ -46,31 +46,47 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     /**
      * Optionally register an {@link OnItemClickListener} that listens to click at the root of
      * each Item where {@link Item#isClickable()} returns true
-     * @param onItemClickListener
+     * @param onItemClickListener The click listener to set
      */
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int layoutResId) {
+    @Override public ViewHolder<? extends ViewDataBinding> onCreateViewHolder(ViewGroup parent, int layoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutResId, parent, false);
         return new ViewHolder<>(binding);
     }
 
-    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(ViewHolder holder, int position) {
         // Never called (all binds go through the version with payload)
     }
 
-    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+    @Override public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
         Item contentItem = getItem(position);
         contentItem.bind(holder, position, payloads, onItemClickListener);
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        Item contentItem = holder.getItem();
+        contentItem.unbind(holder);
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(ViewHolder holder) {
+        Item contentItem = holder.getItem();
+        return contentItem.isRecyclable();
     }
 
     @Override public int getItemViewType(int position) {
         Item contentItem = getItem(position);
         if (contentItem == null) throw new RuntimeException("Invalid position " + position);
         return getItem(position).getLayout();
+    }
+
+    public Item getItem(ViewHolder holder) {
+        return holder.getItem();
     }
 
     public Item getItem(int position) {
