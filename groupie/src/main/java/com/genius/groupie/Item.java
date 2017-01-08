@@ -6,6 +6,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,6 +28,7 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
     protected GroupDataObserver parentDataObserver;
     private final long id;
     private OnItemClickListener onItemClickListener;
+    private Map<String, Object> extras = new HashMap<>();
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -160,7 +162,7 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
      * @return The map of extras
      */
     public Map<String, Object> getExtras() {
-        return null;
+        return extras;
     }
 
     /**

@@ -5,15 +5,11 @@ import android.support.annotation.ColorInt;
 import android.view.View;
 
 import com.genius.groupie.Item;
+import com.genius.groupie.example.MainActivity;
 import com.genius.groupie.example.R;
 import com.genius.groupie.example.databinding.ItemHeartCardBinding;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.genius.groupie.example.MainActivity.INSET;
-import static com.genius.groupie.example.MainActivity.INSET_TYPE_KEY;
 
 public class HeartCardItem extends Item<ItemHeartCardBinding> {
 
@@ -28,6 +24,7 @@ public class HeartCardItem extends Item<ItemHeartCardBinding> {
         super(id);
         this.colorRes = colorRes;
         this.onFavoriteListener = onFavoriteListener;
+        getExtras().put(MainActivity.INSET_TYPE_KEY, MainActivity.INSET);
     }
 
     @Override
@@ -78,12 +75,6 @@ public class HeartCardItem extends Item<ItemHeartCardBinding> {
         } else {
             bind(binding, position);
         }
-    }
-
-    @Override public Map<String, Object> getExtras() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(INSET_TYPE_KEY, INSET);
-        return map;
     }
 
     @Override
