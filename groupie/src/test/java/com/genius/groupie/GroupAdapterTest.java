@@ -1,12 +1,16 @@
 package com.genius.groupie;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupAdapterTest {
@@ -37,7 +41,16 @@ public class GroupAdapterTest {
 
     @Test(expected=RuntimeException.class)
     public void putGroupMustBeNonNull() {
-        groupAdapter.putGroup(0, null);
+        groupAdapter.add(0, null);
+    }
+
+    public void addAllWorksWithSets() {
+        Set<Item> groupSet = new HashSet<>();
+        groupSet.add(new DummyItem());
+        groupSet.add(new DummyItem());
+
+        groupAdapter.addAll(groupSet);
+        Assert.assertEquals(2, groupAdapter.getItemCount());
     }
 
 }

@@ -1,5 +1,7 @@
 package com.genius.groupie;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -8,7 +10,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -564,5 +568,16 @@ public class SectionTest {
         reset(groupAdapter);
         rootSection.add(1, nestedSection3);
         verify(groupAdapter).onItemRangeInserted(rootSection, 2, 2);
+    }
+
+    public void addAllWorksWithSets() {
+        final Section testSection = new Section();
+
+        Set<Item> itemSet = new HashSet<>();
+        itemSet.add(new DummyItem());
+        itemSet.add(new DummyItem());
+
+        testSection.addAll(itemSet);
+        Assert.assertEquals(2, testSection.getItemCount());
     }
 }

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class Section extends NestedGroup {
         this(null, children);
     }
 
-    public Section(@Nullable Group header, List<? extends Group> children) {
+    public Section(@Nullable Group header, Collection<? extends Group> children) {
         this.header = header;
         addAll(children);
     }
@@ -48,7 +49,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void addAll(List<? extends Group> groups) {
+    public void addAll(Collection<? extends Group> groups) {
         if (groups.isEmpty()) return;
         super.addAll(groups);
         int position = getItemCountWithoutFooter();
