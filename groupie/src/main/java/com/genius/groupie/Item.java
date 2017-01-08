@@ -4,7 +4,6 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,15 +26,7 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
     private static AtomicLong ID_COUNTER = new AtomicLong(0);
     protected GroupDataObserver parentDataObserver;
     private final long id;
-    private OnItemClickListener onItemClickListener;
     private Map<String, Object> extras = new HashMap<>();
-
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onItemClick(Item.this, v);
-        }
-    };
 
     public Item() {
         this(ID_COUNTER.decrementAndGet());
@@ -55,11 +46,7 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
      */
     @CallSuper
     public void bind(ViewHolder<T> holder, int position, List<Object> payloads, OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-        holder.bind(this);
-        if (onItemClickListener != null && isClickable()) {
-            holder.itemView.setOnClickListener(onClickListener);
-        }
+        holder.bind(this, onItemClickListener);
         T binding = holder.binding;
 
         bind(binding, position, payloads);
@@ -73,9 +60,6 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
      */
     @CallSuper
     public void unbind(ViewHolder<T> holder) {
-        if (onItemClickListener != null && isClickable()) {
-            holder.itemView.setOnClickListener(null);
-        }
         holder.unbind();
     }
 
