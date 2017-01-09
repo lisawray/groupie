@@ -2,6 +2,7 @@ package com.genius.groupie;
 
 import android.support.annotation.CallSuper;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
-    protected final int getItemCount(List<? extends Group> groups) {
+    protected final int getItemCount(Collection<? extends Group> groups) {
         int size = 0;
         for (Group group : groups) {
             size += group.getItemCount();
@@ -98,7 +99,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     }
 
     @CallSuper
-    public void addAll(List<? extends Group> groups) {
+    public void addAll(Collection<? extends Group> groups) {
         for (Group group : groups) {
             group.setGroupDataObserver(this);
         }
