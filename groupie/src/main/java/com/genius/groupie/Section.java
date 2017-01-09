@@ -77,14 +77,14 @@ public class Section extends NestedGroup {
         super.add(group);
         int position = getItemCountWithoutFooter();
         children.add(group);
-        notifyItemRangeInserted(getHeaderItemCount() + position, group.getItemCount());
+        notifyItemRangeInserted(position, group.getItemCount());
         refreshEmptyState();
     }
 
     @Override
     public void remove(Group group) {
         super.remove(group);
-        int position = getPosition(group);
+        int position = getItemCountBeforeGroup(group);
         children.remove(group);
         notifyItemRangeRemoved(position, group.getItemCount());
         refreshEmptyState();
