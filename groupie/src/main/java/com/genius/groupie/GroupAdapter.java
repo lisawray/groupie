@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -163,7 +164,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
      * All groups in the list must be non-null.
      * @param groups
      */
-    public void addAll(@NonNull List<? extends Group> groups) {
+    public void addAll(@NonNull Collection<? extends Group> groups) {
         if (groups.contains(null)) throw new RuntimeException("List of groups can't contain null!");
         int itemCountBeforeGroup = getItemCount();
         int additionalSize = 0;
@@ -184,7 +185,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
         notifyItemRangeRemoved(position, count);
     }
 
-    public void putGroup(@NonNull int index, Group group) {
+    public void add(@NonNull int index, Group group) {
         if (group == null) throw new RuntimeException("Group cannot be null");
         group.setGroupDataObserver(this);
         groups.add(index, group);
