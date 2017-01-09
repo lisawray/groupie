@@ -5,9 +5,6 @@ import android.support.annotation.ColorInt;
 import com.genius.groupie.Item;
 import com.genius.groupie.example.databinding.ItemCardBinding;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.genius.groupie.example.MainActivity.INSET;
 import static com.genius.groupie.example.MainActivity.INSET_TYPE_KEY;
 
@@ -23,6 +20,7 @@ public class CardItem extends Item<ItemCardBinding> {
     public CardItem(@ColorInt int colorRes, CharSequence text) {
         this.colorRes = colorRes;
         this.text = text;
+        getExtras().put(INSET_TYPE_KEY, INSET);
     }
 
     @Override public int getLayout() {
@@ -36,12 +34,6 @@ public class CardItem extends Item<ItemCardBinding> {
 
     public void setText(CharSequence text) {
         this.text = text;
-    }
-
-    @Override public Map<String, Object> getExtras() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(INSET_TYPE_KEY, INSET);
-        return map;
     }
 
     public CharSequence getText() {
