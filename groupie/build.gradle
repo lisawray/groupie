@@ -12,7 +12,7 @@ buildscript {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
 }
@@ -45,7 +45,7 @@ publish {
     userOrg = 'genius'
     groupId = 'com.genius'
     artifactId = 'groupie'
-    publishVersion = '0.7.0'
+    publishVersion = '0.8.0'
     desc = 'Library for groups and multiple view types in a RecyclerView'
     website = 'https://github.com/genius/groupie'
 }
