@@ -18,7 +18,7 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
         public void onClick(View v) {
             // Discard click if the viewholder has been removed, but was still in the process of
             // animating its removal while clicked (unlikely, but technically possible)
-            if (getAdapterPosition() != NO_POSITION) {
+            if (onItemClickListener != null && getAdapterPosition() != NO_POSITION) {
                 onItemClickListener.onItemClick(getItem(), v);
             }
         }
@@ -40,6 +40,7 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
         // listener or even agree on whether they are clickable.
         if (onItemClickListener != null && item.isClickable()) {
             binding.getRoot().setOnClickListener(onClickListener);
+            this.onItemClickListener = onItemClickListener;
         }
     }
 
