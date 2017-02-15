@@ -180,9 +180,10 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
         if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
         int count = groups.get(position).getItemCount();
+        int itemCountBeforeGroup = getItemCountBeforeGroup(position);
         group.setGroupDataObserver(null);
         groups.remove(position);
-        notifyItemRangeRemoved(position, count);
+        notifyItemRangeRemoved(itemCountBeforeGroup, count);
     }
 
     public void add(@NonNull int index, Group group) {
