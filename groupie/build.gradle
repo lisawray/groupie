@@ -42,10 +42,10 @@ dependencies {
 }
 
 publish {
-    userOrg = 'genius'
-    groupId = 'com.genius'
+    userOrg = 'lisawray'
+    groupId = 'com.xwray'
     artifactId = 'groupie'
-    publishVersion = '0.8.0'
+    publishVersion = '1.0.0'
     desc = 'Library for groups and multiple view types in a RecyclerView'
-    website = 'https://github.com/genius/groupie'
+    website = 'https://github.com/lisawray/groupie'
 }
