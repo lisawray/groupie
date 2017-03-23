@@ -8,22 +8,8 @@ Groupie lets you treat your content as logical groups and handles change notific
 
 # Try it out:
 
-We've moved!  Groupie will be available on jcenter as soon as it is accepted (probably within 24 hours).
-
-In the interim, please use 
 ```gradle
-repositories {
-    maven {
-        url  "http://dl.bintray.com/lisawray/maven"
-    }
-}
-
 compile 'com.xwray:groupie:1.0.0'
-```
-
-Previous versions of groupie were distributed under a different package name.  The last working build was:
-```gradle
-compile 'com.genius:groupie:0.7.0'
 ```
 
 Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app module's build.gradle.
@@ -164,6 +150,13 @@ Contributions you say?  Yes please!
 - Screenshots are also a huge help if the problem is visual.
 ### Send a pull request!
 - If you're fixing a bug, bonus points for adding a failing test, but anything is welcome!
+
+# Notes
+
+Pre-release versions of groupie had a different package name.  The last working build was:
+```gradle
+compile 'com.genius:groupie:0.7.0'
+```
 
 
 If you try it out, I'd love to know what you think. Please hit up Lisa at [first][last]@gmail.com or on Twitter at [@lisawrayz](https://twitter.com/lisawrayz).
