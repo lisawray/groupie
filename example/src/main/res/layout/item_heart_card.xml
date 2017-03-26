@@ -22,7 +22,7 @@
             android:textColor="@color/background"
             tools:text="This is text here" />
 
-        <com.genius.groupie.example.widget.CheckableImageView
+        <com.xwray.groupie.example.widget.CheckableImageView
             android:id="@+id/favorite"
             android:background="@drawable/ripple_circular"
             android:padding="@dimen/padding_small"
