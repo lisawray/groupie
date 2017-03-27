@@ -253,11 +253,11 @@ public class Section extends NestedGroup {
         return -1;
     }
 
-    private boolean isHeaderShown() {
+    public boolean isHeaderShown() {
         return getHeaderCount() > 0;
     }
 
-    private boolean isFooterShown() {
+    public boolean isFooterShown() {
         return getFooterCount() > 0;
     }
 
