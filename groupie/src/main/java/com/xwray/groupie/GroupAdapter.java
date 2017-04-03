@@ -2,6 +2,7 @@ package com.xwray.groupie;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     private int spanCount = 1;
-    
+
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
         @Override public int getSpanSize(int position) {
             try {
@@ -80,9 +81,11 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
         return contentItem.isRecyclable();
     }
 
-    @Override public int getItemViewType(int position) {
+  @LayoutRes @Override public int getItemViewType(int position) {
         Item contentItem = getItem(position);
-        if (contentItem == null) throw new RuntimeException("Invalid position " + position);
+        if (contentItem == null) {
+            return 0;
+        }
         return getItem(position).getLayout();
     }
 
