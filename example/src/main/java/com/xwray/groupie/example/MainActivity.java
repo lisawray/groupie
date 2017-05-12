@@ -14,11 +14,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.xwray.groupie.example.R;
 import com.xwray.groupie.ExpandableGroup;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
+import com.xwray.groupie.OnItemLongClickListener;
 import com.xwray.groupie.Section;
 import com.xwray.groupie.TouchCallback;
 import com.xwray.groupie.UpdatingGroup;
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         groupAdapter = new GroupAdapter();
         groupAdapter.setOnItemClickListener(onItemClickListener);
+        groupAdapter.setOnItemLongClickListener(onItemLongClickListener);
         groupAdapter.setSpanCount(12);
         populateAdapter();
         layoutManager = new GridLayoutManager(this, groupAdapter.getSpanCount());
@@ -232,6 +233,20 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, cardItem.getText(), Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+    };
+
+    private OnItemLongClickListener onItemLongClickListener = new OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(Item item, View view) {
+            if (item instanceof CardItem) {
+                CardItem cardItem = (CardItem) item;
+                if (!TextUtils.isEmpty(cardItem.getText())) {
+                    Toast.makeText(MainActivity.this, "Long clicked: " + cardItem.getText(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            }
+            return false;
         }
     };
 

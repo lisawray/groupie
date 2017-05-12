@@ -12,6 +12,7 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
     public final T binding;
     private Item item;
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -24,15 +25,27 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
         }
     };
 
+    private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            // Discard long click if the viewholder has been removed, but was still in the process of
+            // animating its removal while clicked (unlikely, but technically possible)
+            if (onItemLongClickListener != null && getAdapterPosition() != NO_POSITION) {
+                return onItemLongClickListener.onItemLongClick(getItem(), v);
+            }
+            return false;
+        }
+    };
+
     public ViewHolder(T binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
-    public void bind(Item item, OnItemClickListener onItemClickListener) {
+    public void bind(Item item, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
         this.item = item;
 
-        // Only set the top-level click listener if a) the adapter has one, and b) the item has
+        // Only set the top-level click listeners if a) the adapter has one, and b) the item has
         // click enabled.  This ensures we don't interfere with user-set click listeners.
 
         // It would be nice to keep our listener always attached and set it only once on creating
@@ -41,6 +54,11 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
         if (onItemClickListener != null && item.isClickable()) {
             binding.getRoot().setOnClickListener(onClickListener);
             this.onItemClickListener = onItemClickListener;
+        }
+
+        if (onItemLongClickListener != null && item.isClickable()) {
+            binding.getRoot().setOnLongClickListener(onLongClickListener);
+            this.onItemLongClickListener = onItemLongClickListener;
         }
     }
 
