@@ -46,7 +46,21 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
      */
     @CallSuper
     public void bind(ViewHolder<T> holder, int position, List<Object> payloads, OnItemClickListener onItemClickListener) {
-        holder.bind(this, onItemClickListener);
+        bind(holder, position, payloads, onItemClickListener, null);
+    }
+
+    /**
+     * Perform any actions required to set up the view for display.
+     *
+     * @param holder              The viewholder to bind
+     * @param position            The adapter position
+     * @param payloads            Any payloads (this list may be empty)
+     * @param onItemClickListener An optional adapter-level click listener
+     * @param onItemLongClickListener An optional adapter-level long click listener
+     */
+    @CallSuper
+    public void bind(ViewHolder<T> holder, int position, List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+        holder.bind(this, onItemClickListener, onItemLongClickListener);
         T binding = holder.binding;
 
         bind(binding, position, payloads);
@@ -124,6 +138,10 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
     }
 
     public boolean isClickable() {
+        return true;
+    }
+
+    public boolean isLongClickable() {
         return true;
     }
 

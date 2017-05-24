@@ -19,6 +19,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
 
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private int spanCount = 1;
     
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
@@ -53,6 +54,15 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
         this.onItemClickListener = onItemClickListener;
     }
 
+    /**
+     * Optionally register an {@link OnItemLongClickListener} that listens to long click at the root of
+     * each Item where {@link Item#isLongClickable()} returns true
+     * @param onItemLongClickListener The long click listener to set
+     */
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
+    }
+
     @Override public ViewHolder<? extends ViewDataBinding> onCreateViewHolder(ViewGroup parent, int layoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutResId, parent, false);
@@ -65,7 +75,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
 
     @Override public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
         Item contentItem = getItem(position);
-        contentItem.bind(holder, position, payloads, onItemClickListener);
+        contentItem.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener);
     }
 
     @Override
