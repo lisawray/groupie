@@ -141,6 +141,10 @@ public abstract class Item<T extends ViewDataBinding> implements Group, SpanSize
         return true;
     }
 
+    public boolean isLongClickable() {
+        return true;
+    }
+
     public void notifyChanged() {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, 0);

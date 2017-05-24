@@ -56,7 +56,7 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
 
     /**
      * Optionally register an {@link OnItemLongClickListener} that listens to long click at the root of
-     * each Item where {@link Item#isClickable()} returns true
+     * each Item where {@link Item#isLongClickable()} returns true
      * @param onItemLongClickListener The long click listener to set
      */
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
