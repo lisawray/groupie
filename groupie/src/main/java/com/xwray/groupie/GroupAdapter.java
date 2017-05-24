@@ -189,11 +189,10 @@ public class GroupAdapter extends RecyclerView.Adapter<ViewHolder> implements Gr
     public void remove(@NonNull Group group) {
         if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
-        int count = groups.get(position).getItemCount();
         int itemCountBeforeGroup = getItemCountBeforeGroup(position);
         group.setGroupDataObserver(null);
         groups.remove(position);
-        notifyItemRangeRemoved(itemCountBeforeGroup, count);
+        notifyItemRangeRemoved(itemCountBeforeGroup, group.getItemCount());
     }
 
     public void add(@NonNull int index, Group group) {
