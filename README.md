@@ -9,7 +9,7 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-compile 'com.xwray:groupie:1.0.0'
+compile 'com.xwray:groupie:1.1.0'
 ```
 
 Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app module's build.gradle.
