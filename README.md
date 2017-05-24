@@ -1,18 +1,15 @@
 # groupie
 
-Groupie helps you display and manage complex RecyclerView layouts.  It lets you treat your content as logical groups and handles change notifications for you -- think sections with headers and footers, expandable groups, blocks of vertical columns, and much more.  It makes it easy to handle asynchronous content updates and insertions and user-driven content changes.  At the item level, it abstracts the boilerplate of item view types, item layouts, viewholders, and span sizes.  
+Groupie is a simple, flexible library for complex RecyclerView layouts.  
 
-Groupie was developed as an internal library at Genius because none of the existing solutions for multiple view types or groups were simple or flexible enough for us.  We decided to make it public to encourage discussion about managing and developing complex, rich user interfaces with RecyclerView. 
+Groupie lets you treat your content as logical groups and handles change notifications for you -- think sections with headers and footers, expandable groups, blocks of vertical columns, and much more.  It makes it easy to handle asynchronous content updates and insertions and user-driven content changes.  At the item level, it abstracts the boilerplate of item view types, item layouts, viewholders, and span sizes.  
  
-
 <img src="http://i.imgur.com/eftOE0v.gif" width="300px"/>
 
 # Try it out:
 
-Groupie is available on jcenter:
-
 ```gradle
-compile 'com.genius:groupie:0.8.0'
+compile 'com.xwray:groupie:1.1.0'
 ```
 
 Groupie uses Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders.  To enable code generation, add to your app module's build.gradle.
@@ -57,7 +54,7 @@ Modifying the contents of a Group automatically notifies its parent.  When notif
 section.removeHeader(); // results in a remove event for 1 item in the adapter, at position 2
 ```
     
-We've provided a few simple implementations of Groups within the library:
+There are a few simple implementations of Groups within the library:
 - `Section`, a list of body content with an optional header group and footer group.  
 - `ExpandableGroup`, a single parent group with a list of body content that can be toggled hidden or shown.
 - `UpdatingGroup`, a list of items which can diff its previous and new contents and animate moves, updates and other changes 
@@ -79,9 +76,9 @@ public class UpdatingSection extends Section {
 }
 ```
     
-At Genius, we found that our groups were rarely exactly the same.  Groups are designed so that making new ones and defining their behavior is easy.  We think you should make many small, simple, custom groups as the need strikes you.
+Life is messy, so groups are designed so that making new ones and defining their behavior is easy. You should make many small, simple, custom groups as the need strikes you.
 
-You can implement the Group interface directly if you want.  However, we've provided NestedGroup as a base implementation, and in most cases, we strongly recommend extending it.  NestedGroup provides support for arbitrary nesting of groups, registering/unregistering listeners, and fine-grained change notifications to support animations and updating the adapter.
+You can implement the `Group` interface directly if you want.  However, in most cases, you should extend the base implementation, `NestedGroup`.  NestedGroup provides support for arbitrary nesting of groups, registering/unregistering listeners, and fine-grained change notifications to support animations and updating the adapter.
     
 ## Items
 
@@ -140,12 +137,26 @@ Because of data binding, there's no need to write a view holder.  Just wrap your
 </layout>
 ```
 
-We like to add a `<data>` section to directly bind a model or ViewModel, but you don't have to.  The generated view bindings alone are a huge time saver.  
+You can add a `<data>` section to directly bind a model or ViewModel, but you don't have to.  The generated view bindings alone are a huge time saver.  
 
 Items can also declare their own column span and whether they are draggable or swipeable.  
 
-# Limitations
-- groupie requires you to use data binding (for now)
-- groupie is in beta and its API may still change.
 
-If you try it out, we'd love to know what you think! Please hit up Lisa at lisa@genius.com.
+# Contributing
+Contributions you say?  Yes please!
+
+### Bug report? 
+- If at all possible, please attach a *minimal* sample project or code which reproduces the bug. 
+- Screenshots are also a huge help if the problem is visual.
+### Send a pull request!
+- If you're fixing a bug, bonus points for adding a failing test, but anything is welcome!
+
+# Notes
+
+Pre-release versions of groupie had a different package name.  The last working build was:
+```gradle
+compile 'com.genius:groupie:0.7.0'
+```
+
+
+If you try it out, I'd love to know what you think. Please hit up Lisa at [first][last]@gmail.com or on Twitter at [@lisawrayz](https://twitter.com/lisawrayz).

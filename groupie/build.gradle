@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath 'com.novoda:bintray-release:0.4.0'
     }
 }
 
@@ -17,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "0.1"
+        versionCode 20
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -36,16 +36,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 publish {
-    userOrg = 'genius'
-    groupId = 'com.genius'
+    userOrg = 'lisawray'
+    groupId = 'com.xwray'
     artifactId = 'groupie'
-    publishVersion = '0.8.0'
+    publishVersion = '1.1.0'
     desc = 'Library for groups and multiple view types in a RecyclerView'
-    website = 'https://github.com/genius/groupie'
+    website = 'https://github.com/lisawray/groupie'
 }
