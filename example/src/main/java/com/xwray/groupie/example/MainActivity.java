@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INSET = "inset";
 
     private ActivityMainBinding binding;
-    private GroupAdapter groupAdapter;
+    private StickyGroupAdapter groupAdapter;
     private GridLayoutManager layoutManager;
     private Prefs prefs;
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         rainbow200 = getResources().getIntArray(R.array.rainbow_200);
         rainbow500 = getResources().getIntArray(R.array.rainbow_500);
 
-        groupAdapter = new GroupAdapter();
+        groupAdapter = new StickyGroupAdapter(R.layout.item_header, R.layout.item_expandable_header);
         groupAdapter.setOnItemClickListener(onItemClickListener);
         groupAdapter.setOnItemLongClickListener(onItemLongClickListener);
         groupAdapter.setSpanCount(12);
