@@ -38,7 +38,11 @@ public class ViewHolder<T extends ViewDataBinding> extends RecyclerView.ViewHold
     };
 
     public ViewHolder(T binding) {
-        super(binding.getRoot());
+        this(binding.getRoot(), binding);
+    }
+
+    protected ViewHolder(View view, T binding) {
+        super(view);
         this.binding = binding;
     }
 
