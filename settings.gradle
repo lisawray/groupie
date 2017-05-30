@@ -1,1 +1,1 @@
-include ':example', ':groupie'
+include ':example', ':groupie', ':groupie-core', ':groupie-vanilla'

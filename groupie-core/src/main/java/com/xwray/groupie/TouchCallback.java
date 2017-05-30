@@ -10,10 +10,10 @@ public abstract class TouchCallback extends ItemTouchHelper.SimpleCallback {
     }
 
     @Override public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        return ((ViewHolder) viewHolder).getSwipeDirs();
+        return ((BaseViewHolder) viewHolder).getSwipeDirs();
     }
 
     @Override public int getDragDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        return ((ViewHolder) viewHolder).getDragDirs();
+        return ((BaseViewHolder) viewHolder).getDragDirs();
     }
 }

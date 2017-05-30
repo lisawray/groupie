@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A base implementation of the Group interface, which supports nesting of Groups to arbitrary depth.
+ * A base implementation of the BaseGroup interface, which supports nesting of Groups to arbitrary depth.
  * You can make a NestedGroup which contains only Items, one which contains Groups, or a mixture.
  * <p>
  * It provides support for notifying the adapter about changes which happen in its child groups.
@@ -50,7 +50,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     public abstract int getGroupCount();
 
-    public Item getItem(int position) {
+    public BaseItem getItem(int position) {
         int previousPosition = 0;
 
         for (int i = 0; i < getGroupCount(); i++) {
@@ -71,7 +71,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      * @param item
      * @return
      */
-    public final int getPosition(Item item) {
+    public final int getPosition(BaseItem item) {
         int previousPosition = 0;
 
         for (int i = 0; i < getGroupCount(); i++) {

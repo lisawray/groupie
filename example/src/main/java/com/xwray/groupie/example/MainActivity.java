@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         columnSection.add(columnGroup);
         groupAdapter.add(columnSection);
 
-        // Group showing even spacing with multiple columns
+        // BaseGroup showing even spacing with multiple columns
         Section multipleColumnsSection = new Section(new HeaderItem(R.string.multiple_columns));
         for (int i = 0; i < 12; i++) {
             multipleColumnsSection.add(new SmallCardItem(rainbow200[5]));

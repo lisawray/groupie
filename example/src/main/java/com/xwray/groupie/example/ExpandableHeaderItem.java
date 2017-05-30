@@ -4,7 +4,6 @@ import android.graphics.drawable.Animatable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
-import com.xwray.groupie.example.R;
 import com.xwray.groupie.ExpandableGroup;
 import com.xwray.groupie.ExpandableItem;
 import com.xwray.groupie.example.databinding.ItemHeaderBinding;

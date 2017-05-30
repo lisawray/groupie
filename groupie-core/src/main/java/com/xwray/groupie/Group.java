@@ -3,18 +3,18 @@ package com.xwray.groupie;
 /**
  * A group of items, to be used in an adapter.
  */
-public interface Group {
+public interface Group<T extends BaseItem> {
 
     int getItemCount();
 
-    Item getItem(int position);
+    T getItem(int position);
 
     /**
      * Gets the position of a
      * @param item
      * @return
      */
-    int getPosition(Item item);
+    int getPosition(T item);
 
     void setGroupDataObserver(GroupDataObserver groupDataObserver);
 

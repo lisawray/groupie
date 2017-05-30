@@ -29,7 +29,7 @@ public class GroupAdapterTest {
 
     @Test(expected=RuntimeException.class)
     public void addAllItemsMustBeNonNull() {
-        List<Item> groups = new ArrayList<>();
+        List<Group<Item>> groups = new ArrayList<>();
         groups.add(null);
         groupAdapter.addAll(groups);
     }
@@ -45,7 +45,7 @@ public class GroupAdapterTest {
     }
 
     public void addAllWorksWithSets() {
-        Set<Item> groupSet = new HashSet<>();
+        Set<Group<Item>> groupSet = new HashSet<>();
         groupSet.add(new DummyItem());
         groupSet.add(new DummyItem());
 
