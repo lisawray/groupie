@@ -22,6 +22,7 @@ import com.xwray.groupie.OnItemLongClickListener;
 import com.xwray.groupie.Section;
 import com.xwray.groupie.TouchCallback;
 import com.xwray.groupie.UpdatingGroup;
+import com.xwray.groupie.example.core.InfiniteScrollListener;
 import com.xwray.groupie.example.core.Prefs;
 import com.xwray.groupie.example.core.SettingsActivity;
 import com.xwray.groupie.example.databinding.ActivityMainBinding;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private GroupAdapter groupAdapter;
     private GridLayoutManager layoutManager;
-    private com.xwray.groupie.example.core.Prefs prefs;
+    private Prefs prefs;
 
     private int gray;
     private int betweenPadding;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new InsetItemDecoration(gray, betweenPadding));
         recyclerView.addItemDecoration(new DebugItemDecoration(this));
         recyclerView.setAdapter(groupAdapter);
-        recyclerView.addOnScrollListener(new com.xwray.groupie.example.core.InfiniteScrollListener(layoutManager) {
+        recyclerView.addOnScrollListener(new InfiniteScrollListener(layoutManager) {
             @Override public void onLoadMore(int currentPage) {
                 int color = rainbow200[currentPage % rainbow200.length];
                 for (int i = 0; i < 5; i++) {

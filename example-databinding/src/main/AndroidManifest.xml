@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.xwray.groupie.example"
+<manifest package="com.xwray.groupie.example_databinding"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".core.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme">
         </activity>

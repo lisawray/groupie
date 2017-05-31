@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 
-import com.xwray.groupie.example.R;
 import com.xwray.groupie.example.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -14,7 +13,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivitySettingsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
-        final Prefs prefs = Prefs.get(this);
+        final com.xwray.groupie.example.core.Prefs prefs = com.xwray.groupie.example.core.Prefs.get(this);
 
         binding.showBounds.theSwitch.setChecked(prefs.getShowBounds());
         binding.showOffsets.theSwitch.setChecked(prefs.getShowOffsets());

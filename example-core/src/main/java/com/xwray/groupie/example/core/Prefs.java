@@ -1,4 +1,4 @@
-package com.xwray.groupie.example;
+package com.xwray.groupie.example.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ public class Prefs {
     private static final String KEY_BOUNDS = "KEY_BOUNDS";
     private static final String KEY_OFFSETS = "KEY_OFFSETS";
 
-    private static volatile com.xwray.groupie.example.core.Prefs singleton;
+    private static volatile Prefs singleton;
     private final SharedPreferences prefs;
 
     private boolean showColor;
@@ -24,10 +24,10 @@ public class Prefs {
         showOffsets = prefs.getBoolean(KEY_OFFSETS, false);
     }
 
-    public static com.xwray.groupie.example.core.Prefs get(Context context) {
+    public static Prefs get(Context context) {
         if (singleton == null) {
-            synchronized (com.xwray.groupie.example.core.Prefs.class) {
-                singleton = new com.xwray.groupie.example.core.Prefs(context);
+            synchronized (Prefs.class) {
+                singleton = new Prefs(context);
             }
         }
         return singleton;
