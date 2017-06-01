@@ -5,10 +5,10 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.xwray.groupie.Item;
-import com.xwray.groupie.example.databinding.ItemHeaderBinding;
 import com.xwray.groupie.example.R;
+import com.xwray.groupie.example.viewholder.HeaderViewHolder;
 
-public class HeaderItem extends Item<ItemHeaderBinding> {
+public class HeaderItem extends Item<HeaderViewHolder> {
 
     @StringRes private int titleStringResId;
     @StringRes private int subtitleResId;
@@ -34,17 +34,23 @@ public class HeaderItem extends Item<ItemHeaderBinding> {
         return R.layout.item_header;
     }
 
-    @Override public void bind(ItemHeaderBinding viewBinding, int position) {
-        viewBinding.title.setText(titleStringResId);
+    @Override
+    public HeaderViewHolder createViewHolder(View itemView) {
+        return new HeaderViewHolder(itemView);
+    }
+
+    @Override
+    public void bind(HeaderViewHolder viewHolder, int position) {
+        viewHolder.title.setText(titleStringResId);
         if (subtitleResId > 0) {
-            viewBinding.subtitle.setText(subtitleResId);
+            viewHolder.subtitle.setText(subtitleResId);
         }
-        viewBinding.subtitle.setVisibility(subtitleResId > 0 ? View.VISIBLE : View.GONE);
+        viewHolder.subtitle.setVisibility(subtitleResId > 0 ? View.VISIBLE : View.GONE);
 
         if (iconResId > 0) {
-            viewBinding.icon.setImageResource(iconResId);
-            viewBinding.icon.setOnClickListener(onIconClickListener);
+            viewHolder.icon.setImageResource(iconResId);
+            viewHolder.icon.setOnClickListener(onIconClickListener);
         }
-        viewBinding.icon.setVisibility(iconResId > 0 ? View.VISIBLE : View.GONE);
+        viewHolder.icon.setVisibility(iconResId > 0 ? View.VISIBLE : View.GONE);
     }
 }

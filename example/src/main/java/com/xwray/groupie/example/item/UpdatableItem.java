@@ -1,4 +1,4 @@
-package com.xwray.groupie.example.databinding.item;
+package com.xwray.groupie.example.item;
 
 import android.support.annotation.ColorRes;
 

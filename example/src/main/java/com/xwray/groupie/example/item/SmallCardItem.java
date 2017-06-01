@@ -1,8 +1,8 @@
-package com.xwray.groupie.example.databinding.item;
+package com.xwray.groupie.example.item;
 
 import android.support.annotation.ColorInt;
 
-public class SmallCardItem extends com.xwray.groupie.example.item.CardItem {
+public class SmallCardItem extends CardItem {
 
     public SmallCardItem(@ColorInt int colorRes) {
         super(colorRes);

@@ -18,7 +18,7 @@ import java.util.List;
  * If you want to use Groups, because Item extends BaseGroup, you can mix and match adding Items and
  * other Groups directly to the adapter.
  */
-public abstract class Item extends BaseItem<ViewHolder> {
+public abstract class Item<VH extends ViewHolder> extends BaseItem<VH> {
 
     public Item() {
         super();
@@ -28,7 +28,7 @@ public abstract class Item extends BaseItem<ViewHolder> {
         super(id);
     }
 
-    public abstract ViewHolder createViewHolder(View itemView);
+    public abstract VH createViewHolder(View itemView);
 
     /**
      * Perform any actions required to set up the view for display.
@@ -41,13 +41,13 @@ public abstract class Item extends BaseItem<ViewHolder> {
      */
     @CallSuper
     @Override
-    public void bind(ViewHolder holder, int position, List<Object> payloads, BaseOnItemClickListener onItemClickListener, BaseOnItemLongClickListener onItemLongClickListener) {
+    public void bind(VH holder, int position, List<Object> payloads, BaseOnItemClickListener onItemClickListener, BaseOnItemLongClickListener onItemLongClickListener) {
         super.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener);
         holder.bind(this, onItemClickListener, onItemLongClickListener);
         bind(holder, position, payloads);
     }
 
-    public abstract void bind(ViewHolder viewHolder, int position);
+    public abstract void bind(VH viewHolder, int position);
 
     /**
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
@@ -57,7 +57,7 @@ public abstract class Item extends BaseItem<ViewHolder> {
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
-    public void bind(ViewHolder holder, int position, List<Object> payloads) {
+    public void bind(VH holder, int position, List<Object> payloads) {
         bind(holder, position);
     }
 

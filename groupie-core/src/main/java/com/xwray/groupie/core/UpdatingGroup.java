@@ -1,10 +1,7 @@
-package com.xwray.groupie.databinding;
+package com.xwray.groupie.core;
 
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
-
-import com.xwray.groupie.core.Group;
-import com.xwray.groupie.core.NestedGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +37,9 @@ public class UpdatingGroup extends NestedGroup {
         }
     };
 
-    private List<Item> items = new ArrayList<>();
+    private List<BaseItem> items = new ArrayList<>();
 
-    public void update(List<? extends Item> newItems) {
+    public void update(List<? extends BaseItem> newItems) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(newItems));
         super.removeAll(items);
         items.clear();
@@ -60,7 +57,7 @@ public class UpdatingGroup extends NestedGroup {
     }
 
     @Override public int getPosition(Group group) {
-        if (group instanceof Item) {
+        if (group instanceof BaseItem) {
             return items.indexOf(group);
         } else {
             return -1;
@@ -69,9 +66,9 @@ public class UpdatingGroup extends NestedGroup {
 
     private class UpdatingCallback extends DiffUtil.Callback {
 
-        private List<? extends Item> newList;
+        private List<? extends BaseItem> newList;
 
-        UpdatingCallback(List<? extends Item> newList) {
+        UpdatingCallback(List<? extends BaseItem> newList) {
             this.newList = newList;
         }
 
@@ -84,8 +81,8 @@ public class UpdatingGroup extends NestedGroup {
         }
 
         @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = items.get(oldItemPosition);
-            Item newItem = newList.get(newItemPosition);
+            BaseItem oldItem = items.get(oldItemPosition);
+            BaseItem newItem = newList.get(newItemPosition);
             if (oldItem.getLayout() != newItem.getLayout()) {
                 return false;
             }
@@ -93,8 +90,8 @@ public class UpdatingGroup extends NestedGroup {
         }
 
         @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = items.get(oldItemPosition);
-            Item newItem = newList.get(newItemPosition);
+            BaseItem oldItem = items.get(oldItemPosition);
+            BaseItem newItem = newList.get(newItemPosition);
             return oldItem.equals(newItem);
         }
     }

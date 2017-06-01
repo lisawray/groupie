@@ -1,9 +1,7 @@
 package com.xwray.groupie;
 
-import android.databinding.ViewDataBinding;
+import android.view.View;
 
-import com.xwray.groupie.databinding.GroupAdapter;
-import com.xwray.groupie.databinding.Item;
 import com.xwray.groupie.core.UpdatingGroup;
 
 import org.junit.Test;
@@ -25,7 +23,6 @@ public class UpdatingGroupTest {
 
     class AlwaysUpdatingItem extends Item {
         @Override public int getLayout() { return 0; }
-        @Override public void bind(ViewDataBinding viewBinding, int position) {}
 
         public AlwaysUpdatingItem(int id) {
             super(id);
@@ -34,6 +31,16 @@ public class UpdatingGroupTest {
         @Override
         public boolean equals(Object obj) {
             return false;
+        }
+
+        @Override
+        public ViewHolder createViewHolder(View itemView) {
+            return null;
+        }
+
+        @Override
+        public void bind(ViewHolder viewHolder, int position) {
+
         }
     }
 

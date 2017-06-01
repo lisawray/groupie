@@ -21,7 +21,7 @@ import com.xwray.groupie.databinding.GroupAdapter;
 import com.xwray.groupie.databinding.Item;
 import com.xwray.groupie.databinding.OnItemClickListener;
 import com.xwray.groupie.databinding.OnItemLongClickListener;
-import com.xwray.groupie.databinding.UpdatingGroup;
+import com.xwray.groupie.core.UpdatingGroup;
 import com.xwray.groupie.example.core.InfiniteScrollListener;
 import com.xwray.groupie.example.core.Prefs;
 import com.xwray.groupie.example.core.SettingsActivity;

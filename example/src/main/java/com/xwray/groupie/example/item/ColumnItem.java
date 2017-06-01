@@ -2,6 +2,8 @@ package com.xwray.groupie.example.item;
 
 import android.support.annotation.ColorInt;
 
+import com.xwray.groupie.example.MainActivity;
+
 public class ColumnItem extends CardItem {
 
     public ColumnItem(@ColorInt int colorRes, int index) {

@@ -90,4 +90,8 @@ public class BaseViewHolder<T extends BaseItem> extends RecyclerView.ViewHolder 
     public T getItem() {
         return item;
     }
+
+    public View getRoot() {
+        return rootView;
+    }
 }
