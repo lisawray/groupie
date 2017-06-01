@@ -3,6 +3,10 @@ package com.xwray.groupie;
 import android.support.annotation.CallSuper;
 import android.view.View;
 
+import com.xwray.groupie.core.BaseItem;
+import com.xwray.groupie.core.BaseOnItemClickListener;
+import com.xwray.groupie.core.BaseOnItemLongClickListener;
+
 import java.util.List;
 
 /**

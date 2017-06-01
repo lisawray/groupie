@@ -1,5 +1,10 @@
 package com.xwray.groupie;
 
+import com.xwray.groupie.core.Group;
+import com.xwray.groupie.core.Section;
+import com.xwray.groupie.databinding.GroupAdapter;
+import com.xwray.groupie.databinding.Item;
+
 import junit.framework.Assert;
 
 import org.junit.Test;

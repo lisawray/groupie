@@ -1,8 +1,8 @@
 package com.xwray.groupie.example;
 
-import com.xwray.groupie.Group;
+import com.xwray.groupie.core.Group;
 import com.xwray.groupie.Item;
-import com.xwray.groupie.GroupDataObserver;
+import com.xwray.groupie.core.GroupDataObserver;
 
 import java.util.ArrayList;
 import java.util.List;

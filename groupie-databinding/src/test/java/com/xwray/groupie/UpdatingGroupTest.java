@@ -2,6 +2,10 @@ package com.xwray.groupie;
 
 import android.databinding.ViewDataBinding;
 
+import com.xwray.groupie.databinding.GroupAdapter;
+import com.xwray.groupie.databinding.Item;
+import com.xwray.groupie.databinding.UpdatingGroup;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

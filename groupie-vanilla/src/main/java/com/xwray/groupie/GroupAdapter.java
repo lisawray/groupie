@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xwray.groupie.core.BaseGroupAdapter;
+
 /**
  * An adapter that holds a list of Groups.
  */

@@ -9,7 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.xwray.groupie.BaseViewHolder;
+import com.xwray.groupie.core.BaseViewHolder;
 
 /**
  * An ItemDecoration which applies an even visual padding on the left and right edges of a grid and

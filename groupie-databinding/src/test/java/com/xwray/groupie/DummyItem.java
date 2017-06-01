@@ -2,7 +2,7 @@ package com.xwray.groupie;
 
 import android.databinding.ViewDataBinding;
 
-import com.xwray.groupie.Item;
+import com.xwray.groupie.databinding.Item;
 
 class DummyItem extends Item {
 

@@ -1,4 +1,4 @@
-<manifest package="com.xwray.groupie_databinding"
+<manifest package="com.xwray.groupie.databinding"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>

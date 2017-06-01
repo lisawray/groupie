@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "com.xwray.groupie.example"
+        applicationId "com.xwray.groupie.example.databinding"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1

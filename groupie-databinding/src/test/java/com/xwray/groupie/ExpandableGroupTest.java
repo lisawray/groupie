@@ -1,5 +1,11 @@
 package com.xwray.groupie;
 
+import com.xwray.groupie.core.ExpandableGroup;
+import com.xwray.groupie.core.ExpandableItem;
+import com.xwray.groupie.core.Section;
+import com.xwray.groupie.databinding.GroupAdapter;
+import com.xwray.groupie.databinding.Item;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

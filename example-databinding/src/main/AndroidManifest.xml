@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.xwray.groupie.example_databinding"
+<manifest package="com.xwray.groupie.example.databinding"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
