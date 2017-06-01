@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A base implementation of the BaseGroup interface, which supports nesting of Groups to arbitrary depth.
+ * A base implementation of the Group interface, which supports nesting of Groups to arbitrary depth.
  * You can make a NestedGroup which contains only Items, one which contains Groups, or a mixture.
  * <p>
  * It provides support for notifying the adapter about changes which happen in its child groups.

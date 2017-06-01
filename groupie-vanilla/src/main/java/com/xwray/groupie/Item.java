@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * The base unit of content for a GroupAdapter.
  * <p>
- * Because an Item is a BaseGroup of size one, you don't need to use Groups directly if you don't want;
+ * Because an Item is a Group of size one, you don't need to use Groups directly if you don't want;
  * simply mix and match Items and add directly to the adapter.
  * <p>
- * If you want to use Groups, because Item extends BaseGroup, you can mix and match adding Items and
+ * If you want to use Groups, because Item extends Group, you can mix and match adding Items and
  * other Groups directly to the adapter.
  */
 public abstract class Item<VH extends ViewHolder> extends BaseItem<VH> {

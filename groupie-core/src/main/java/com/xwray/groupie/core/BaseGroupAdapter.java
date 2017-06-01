@@ -155,7 +155,7 @@ public abstract class BaseGroupAdapter<I extends BaseItem, VH extends BaseViewHo
     }
 
     public void add(@NonNull Group<I> group) {
-        if (group == null) throw new RuntimeException("BaseGroup cannot be null");
+        if (group == null) throw new RuntimeException("Group cannot be null");
         int itemCountBeforeGroup = getItemCount();
         group.setGroupDataObserver(this);
         groups.add(group);
@@ -180,7 +180,7 @@ public abstract class BaseGroupAdapter<I extends BaseItem, VH extends BaseViewHo
     }
 
     public void remove(@NonNull Group<I> group) {
-        if (group == null) throw new RuntimeException("BaseGroup cannot be null");
+        if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
         int itemCountBeforeGroup = getItemCountBeforeGroup(position);
         group.setGroupDataObserver(null);
@@ -189,7 +189,7 @@ public abstract class BaseGroupAdapter<I extends BaseItem, VH extends BaseViewHo
     }
 
     public void add(@NonNull int index, Group<I> group) {
-        if (group == null) throw new RuntimeException("BaseGroup cannot be null");
+        if (group == null) throw new RuntimeException("Group cannot be null");
         group.setGroupDataObserver(this);
         groups.add(index, group);
         int itemCountBeforeGroup = getItemCountBeforeGroup(index);

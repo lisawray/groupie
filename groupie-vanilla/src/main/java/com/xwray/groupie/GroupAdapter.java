@@ -34,8 +34,8 @@ public class GroupAdapter extends BaseGroupAdapter<Item, ViewHolder> {
      * Find the model that has the given view type so we can create a viewholder for that model.
      *
      * To make this efficient, we rely on the RecyclerView implementation detail that {@link
-     * BaseGroupAdapter#getItemViewType(int)} is called immediately before {@link
-     * BaseGroupAdapter#onCreateViewHolder(android.view.ViewGroup, int)}. We cache the last model
+     * GroupAdapter#getItemViewType(int)} is called immediately before {@link
+     * GroupAdapter#onCreateViewHolder(android.view.ViewGroup, int)}. We cache the last model
      * that had its view type looked up, and unless that implementation changes we expect to have a
      * very fast lookup for the correct model.
      * <p>
