@@ -3,7 +3,7 @@ machine:
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 dependencies:
   pre:
-    - echo y | android update sdk --no-ui --all --filter android-`grep -oP '(?<=compileSdkVersion )[0-9].*[0-9]' groupie/build.gradle`,extra-android-m2repository,build-tools-`grep -oP "(?<=buildToolsVersion .)[0-9].*[0-9]" groupie/build.gradle`
+    - echo y | android update sdk --no-ui --all --filter android-25,extra-android-m2repository,build-tools-25.0.2
 test:
   post:
     - cp -r groupie/build/test-results/* $CIRCLE_TEST_REPORTS
