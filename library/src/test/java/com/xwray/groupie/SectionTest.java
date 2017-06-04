@@ -1,8 +1,5 @@
 package com.xwray.groupie;
 
-import com.xwray.groupie.core.Group;
-import com.xwray.groupie.core.Section;
-
 import junit.framework.Assert;
 
 import org.junit.Test;

@@ -2,8 +2,6 @@ package com.xwray.groupie;
 
 import android.view.View;
 
-import com.xwray.groupie.core.UpdatingGroup;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

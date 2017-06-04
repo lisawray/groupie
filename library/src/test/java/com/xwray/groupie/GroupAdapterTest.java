@@ -1,7 +1,5 @@
 package com.xwray.groupie;
 
-import com.xwray.groupie.core.Group;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -24,30 +22,30 @@ public class GroupAdapterTest {
         groupAdapter = new GroupAdapter();
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void addItemMustBeNonNull() {
         groupAdapter.add(null);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void addAllItemsMustBeNonNull() {
-        List<Group<Item>> groups = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
         groups.add(null);
         groupAdapter.addAll(groups);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void removeGroupMustBeNonNull() {
         groupAdapter.remove(null);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void putGroupMustBeNonNull() {
         groupAdapter.add(0, null);
     }
 
     public void addAllWorksWithSets() {
-        Set<Group<Item>> groupSet = new HashSet<>();
+        Set<Group> groupSet = new HashSet<>();
         groupSet.add(new DummyItem());
         groupSet.add(new DummyItem());
 

@@ -1,9 +1,6 @@
 package com.xwray.groupie;
 
-import com.xwray.groupie.core.Group;
-import com.xwray.groupie.core.GroupDataObserver;
-
-public abstract class DummyGroup implements Group<Item> {
+public abstract class DummyGroup implements Group {
 
     @Override
     public Item getItem(int position) {
