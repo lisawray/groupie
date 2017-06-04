@@ -6,6 +6,6 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter android-25,extra-android-m2repository,build-tools-25.0.2
 test:
   post:
-    - cp -r groupie/build/test-results/* $CIRCLE_TEST_REPORTS
+    - cp -r library/build/test-results/* $CIRCLE_TEST_REPORTS
 
 
