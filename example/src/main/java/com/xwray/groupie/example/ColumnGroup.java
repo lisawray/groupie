@@ -1,8 +1,8 @@
 package com.xwray.groupie.example;
 
-import com.xwray.groupie.core.Group;
+import com.xwray.groupie.Group;
+import com.xwray.groupie.GroupDataObserver;
 import com.xwray.groupie.Item;
-import com.xwray.groupie.core.GroupDataObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * A simple, non-editable, non-nested group of Items which displays a list as vertical columns.
  */
-public class ColumnGroup implements Group<Item> {
+public class ColumnGroup implements Group {
 
     private List<Item> items = new ArrayList<>();
 

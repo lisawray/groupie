@@ -4,8 +4,8 @@ import android.graphics.drawable.Animatable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
-import com.xwray.groupie.core.ExpandableGroup;
-import com.xwray.groupie.core.ExpandableItem;
+import com.xwray.groupie.ExpandableGroup;
+import com.xwray.groupie.ExpandableItem;
 import com.xwray.groupie.example.databinding.databinding.ItemHeaderBinding;
 import com.xwray.groupie.example.databinding.item.HeaderItem;
 

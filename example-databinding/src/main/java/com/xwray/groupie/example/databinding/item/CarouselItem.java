@@ -3,14 +3,14 @@ package com.xwray.groupie.example.databinding.item;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.xwray.groupie.databinding.Item;
+import com.xwray.groupie.databinding.BindableItem;
 import com.xwray.groupie.example.databinding.R;
 import com.xwray.groupie.example.databinding.databinding.ItemCarouselBinding;
 
 /**
  * A horizontally scrolling RecyclerView, for use in a vertically scrolling RecyclerView.
  */
-public class CarouselItem extends Item<ItemCarouselBinding> {
+public class CarouselItem extends BindableItem<ItemCarouselBinding> {
 
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;

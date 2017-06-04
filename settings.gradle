@@ -1,1 +1,1 @@
-include ':example-databinding', ':groupie-databinding', ':groupie-core', ':groupie-vanilla', ':example', ':example-core'
+include ':example-databinding', ':library-databinding', ':library', ':example', ':example-shared'

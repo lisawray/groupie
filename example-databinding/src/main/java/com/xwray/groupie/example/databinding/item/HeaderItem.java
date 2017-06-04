@@ -4,11 +4,11 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.view.View;
 
-import com.xwray.groupie.databinding.Item;
+import com.xwray.groupie.databinding.BindableItem;
 import com.xwray.groupie.example.databinding.R;
 import com.xwray.groupie.example.databinding.databinding.ItemHeaderBinding;
 
-public class HeaderItem extends Item<ItemHeaderBinding> {
+public class HeaderItem extends BindableItem<ItemHeaderBinding> {
 
     @StringRes private int titleStringResId;
     @StringRes private int subtitleResId;

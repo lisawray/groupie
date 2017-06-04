@@ -1,8 +1,9 @@
 package com.xwray.groupie.example.databinding;
 
-import com.xwray.groupie.core.Group;
-import com.xwray.groupie.databinding.Item;
-import com.xwray.groupie.core.GroupDataObserver;
+import com.xwray.groupie.Group;
+import com.xwray.groupie.GroupDataObserver;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.databinding.BindableItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.List;
 /**
  * A simple, non-editable, non-nested group of Items which displays a list as vertical columns.
  */
-public class ColumnGroup implements Group<Item> {
+public class ColumnGroup implements Group {
 
-    private List<Item> items = new ArrayList<>();
+    private List<BindableItem> items = new ArrayList<>();
 
-    public ColumnGroup(List<? extends Item> items) {
+    public ColumnGroup(List<? extends BindableItem> items) {
         for (int i = 0; i < items.size(); i++) {
             // Rearrange items so that the adapter appears to arrange them in vertical columns
             int index;
@@ -26,7 +27,7 @@ public class ColumnGroup implements Group<Item> {
                 // meaning the second column's indices will all be increased by 1
                 if (items.size() % 2 == 1) index++;
             }
-            Item trackItem = items.get(index);
+            BindableItem trackItem = items.get(index);
             this.items.add(trackItem);
         }
     }
@@ -35,7 +36,7 @@ public class ColumnGroup implements Group<Item> {
         // no real need to do anything here
     }
 
-    public Item getItem(int position) {
+    public BindableItem getItem(int position) {
         return items.get(position);
     }
 

@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile project(":example-core")
-    compile project(":groupie-vanilla")
+    compile project(':example-shared')
+    compile project(':library')
 }

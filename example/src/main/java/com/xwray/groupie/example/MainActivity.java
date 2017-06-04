@@ -14,14 +14,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.xwray.groupie.ExpandableGroup;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.OnItemLongClickListener;
-import com.xwray.groupie.core.ExpandableGroup;
-import com.xwray.groupie.core.Section;
-import com.xwray.groupie.core.TouchCallback;
-import com.xwray.groupie.core.UpdatingGroup;
+import com.xwray.groupie.Section;
+import com.xwray.groupie.TouchCallback;
+import com.xwray.groupie.UpdatingGroup;
 import com.xwray.groupie.example.core.Prefs;
 import com.xwray.groupie.example.core.SettingsActivity;
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration;
