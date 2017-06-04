@@ -2,9 +2,9 @@ package com.xwray.groupie.example;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,12 +22,11 @@ import com.xwray.groupie.OnItemLongClickListener;
 import com.xwray.groupie.Section;
 import com.xwray.groupie.TouchCallback;
 import com.xwray.groupie.UpdatingGroup;
-import com.xwray.groupie.example.databinding.ActivityMainBinding;
-import com.xwray.groupie.example.decoration.CarouselItemDecoration;
-import com.xwray.groupie.example.decoration.DebugItemDecoration;
-import com.xwray.groupie.example.decoration.HeaderItemDecoration;
-import com.xwray.groupie.example.decoration.InsetItemDecoration;
-import com.xwray.groupie.example.decoration.SwipeTouchCallback;
+import com.xwray.groupie.example.core.Prefs;
+import com.xwray.groupie.example.core.SettingsActivity;
+import com.xwray.groupie.example.core.decoration.CarouselItemDecoration;
+import com.xwray.groupie.example.core.decoration.DebugItemDecoration;
+import com.xwray.groupie.example.core.decoration.SwipeTouchCallback;
 import com.xwray.groupie.example.item.CardItem;
 import com.xwray.groupie.example.item.CarouselCardItem;
 import com.xwray.groupie.example.item.CarouselItem;
@@ -49,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String FULL_BLEED = "full_bleed";
     public static final String INSET = "inset";
 
-    private ActivityMainBinding binding;
     private GroupAdapter groupAdapter;
     private GridLayoutManager layoutManager;
-    private Prefs prefs;
+    private com.xwray.groupie.example.core.Prefs prefs;
 
     private int gray;
     private int betweenPadding;
@@ -69,11 +67,18 @@ public class MainActivity extends AppCompatActivity {
     // Hold a reference to the updating group, so we can, well, update it
     private UpdatingGroup updatingGroup;
 
+    private RecyclerView recyclerView;
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         prefs = Prefs.get(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
 
         gray = ContextCompat.getColor(this, R.color.background);
         betweenPadding = getResources().getDimensionPixelSize(R.dimen.padding_small);
@@ -88,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new GridLayoutManager(this, groupAdapter.getSpanCount());
         layoutManager.setSpanSizeLookup(groupAdapter.getSpanSizeLookup());
 
-        final RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new HeaderItemDecoration(gray, betweenPadding));
         recyclerView.addItemDecoration(new InsetItemDecoration(gray, betweenPadding));
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
@@ -131,9 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 updatingGroup.update(shuffled);
 
                 // You can also do this by forcing a change with payload
-                binding.recyclerView.post(new Runnable() {
+                recyclerView.post(new Runnable() {
                     @Override public void run() {
-                        binding.recyclerView.invalidateItemDecorations();
+                        recyclerView.invalidateItemDecorations();
                     }
                 });
             }

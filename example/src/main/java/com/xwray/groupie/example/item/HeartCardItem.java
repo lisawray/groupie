@@ -6,12 +6,12 @@ import android.view.View;
 
 import com.xwray.groupie.Item;
 import com.xwray.groupie.example.MainActivity;
-import com.xwray.groupie.example.databinding.ItemHeartCardBinding;
 import com.xwray.groupie.example.R;
+import com.xwray.groupie.example.viewholder.HeartCardViewHolder;
 
 import java.util.List;
 
-public class HeartCardItem extends Item<ItemHeartCardBinding> {
+public class HeartCardItem extends Item<HeartCardViewHolder> {
 
     public static final String FAVORITE = "FAVORITE";
 
@@ -32,35 +32,19 @@ public class HeartCardItem extends Item<ItemHeartCardBinding> {
         return R.layout.item_heart_card;
     }
 
-    @Override
-    public void bind(final ItemHeartCardBinding binding, int position) {
-        //binding.getRoot().setBackgroundColor(colorRes);
-        bindHeart(binding);
-        binding.text.setText(String.valueOf(getId() + 1));
 
-        binding.favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inProgress = true;
-                animateProgress(binding);
-
-                onFavoriteListener.onFavorite(HeartCardItem.this, !checked);
-            }
-        });
-    }
-
-    private void bindHeart(ItemHeartCardBinding binding) {
+    private void bindHeart(HeartCardViewHolder holder) {
         if (inProgress) {
-            animateProgress(binding);
+            animateProgress(holder);
         } else {
-            binding.favorite.setImageResource(R.drawable.favorite_state_list);
+            holder.favorite.setImageResource(R.drawable.favorite_state_list);
         }
-        binding.favorite.setChecked(checked);
+        holder.favorite.setChecked(checked);
     }
 
-    private void animateProgress(ItemHeartCardBinding binding) {
-        binding.favorite.setImageResource(R.drawable.avd_favorite_progress);
-        ((Animatable) binding.favorite.getDrawable()).start();
+    private void animateProgress(HeartCardViewHolder holder) {
+        holder.favorite.setImageResource(R.drawable.avd_favorite_progress);
+        ((Animatable) holder.favorite.getDrawable()).start();
     }
 
     public void setFavorite(boolean favorite) {
@@ -69,17 +53,39 @@ public class HeartCardItem extends Item<ItemHeartCardBinding> {
     }
 
     @Override
-    public void bind(ItemHeartCardBinding binding, int position, List<Object> payloads) {
-        if (payloads.contains(FAVORITE)) {
-            bindHeart(binding);
-        } else {
-            bind(binding, position);
-        }
+    public boolean isClickable() {
+        return false;
     }
 
     @Override
-    public boolean isClickable() {
-        return false;
+    public HeartCardViewHolder createViewHolder(View itemView) {
+        return new HeartCardViewHolder(itemView);
+    }
+
+    @Override
+    public void bind(final HeartCardViewHolder holder, int position) {
+        //holder.getRoot().setBackgroundColor(colorRes);
+        bindHeart(holder);
+        holder.text.setText(String.valueOf(getId() + 1));
+
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inProgress = true;
+                animateProgress(holder);
+
+                onFavoriteListener.onFavorite(HeartCardItem.this, !checked);
+            }
+        });
+    }
+
+    @Override
+    public void bind(HeartCardViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.contains(FAVORITE)) {
+            bindHeart(holder);
+        } else {
+            bind(holder, position);
+        }
     }
 
     public interface OnFavoriteListener {

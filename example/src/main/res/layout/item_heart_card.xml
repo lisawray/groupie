@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:background="@color/white"
+    android:elevation="2dp"
+    android:paddingStart="@dimen/padding_standard">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeightLarge"
-        android:background="@color/white"
-        android:elevation="2dp"
-        android:paddingStart="@dimen/padding_standard">
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_toStartOf="@+id/favorite"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/background"
+        tools:text="This is text here" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/favorite"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/background"
-            tools:text="This is text here" />
+    <com.xwray.groupie.example.core.widget.CheckableImageView
+        android:id="@+id/favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/padding_small"
+        android:background="@drawable/ripple_circular"
+        android:padding="@dimen/padding_small"
+        app:srcCompat="@drawable/favorite_state_list" />
 
-        <com.xwray.groupie.example.widget.CheckableImageView
-            android:id="@+id/favorite"
-            android:background="@drawable/ripple_circular"
-            android:padding="@dimen/padding_small"
-            android:layout_marginEnd="@dimen/padding_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/favorite_state_list" />
-
-    </RelativeLayout>
-</layout>
+</RelativeLayout>

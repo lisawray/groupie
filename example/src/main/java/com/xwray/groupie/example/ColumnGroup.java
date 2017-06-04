@@ -39,6 +39,7 @@ public class ColumnGroup implements Group {
         return items.get(position);
     }
 
+    @Override
     public int getPosition(Item item) {
         return items.indexOf(item);
     }
