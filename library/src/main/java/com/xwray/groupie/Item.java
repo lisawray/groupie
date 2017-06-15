@@ -25,7 +25,9 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
         this.id = id;
     }
 
-    public abstract VH createViewHolder(View itemView);
+    public VH createViewHolder(View itemView) {
+        return (VH) new ViewHolder(itemView);
+    }
 
     /**
      * Perform any actions required to set up the view for display.

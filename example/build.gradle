@@ -1,4 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+buildscript {
+    ext.kotlin_version = '1.1.1'
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+    }
+}
 
 android {
     compileSdkVersion 25
@@ -25,4 +38,9 @@ android {
 dependencies {
     compile project(':example-shared')
     compile project(':library')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+}
+repositories {
+    mavenCentral()
 }
