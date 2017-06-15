@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.xwray.groupie.ExpandableGroup;
+import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
@@ -31,7 +32,6 @@ import com.xwray.groupie.example.core.decoration.SwipeTouchCallback;
 import com.xwray.groupie.example.databinding.databinding.ActivityMainBinding;
 import com.xwray.groupie.example.databinding.item.CardItem;
 import com.xwray.groupie.example.databinding.item.CarouselCardItem;
-import com.xwray.groupie.example.databinding.item.CarouselItem;
 import com.xwray.groupie.example.databinding.item.ColumnItem;
 import com.xwray.groupie.example.databinding.item.FullBleedCardItem;
 import com.xwray.groupie.example.databinding.item.HeaderItem;
@@ -184,8 +184,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Horizontal carousel
         Section carouselSection = new Section(new HeaderItem(R.string.carousel, R.string.carousel_subtitle));
-        CarouselItem carouselItem = makeCarouselItem();
-        carouselSection.add(carouselItem);
+        carouselSection.setHideWhenEmpty(true);
+        Group carousel = makeCarouselGroup();
+        carouselSection.add(carousel);
         groupAdapter.add(carouselSection);
 
         // Update with payload
@@ -214,15 +215,13 @@ public class MainActivity extends AppCompatActivity {
         return new ColumnGroup(columnItems);
     }
 
-    private CarouselItem makeCarouselItem() {
+    private Group makeCarouselGroup() {
         CarouselItemDecoration carouselDecoration = new CarouselItemDecoration(gray, betweenPadding);
         GroupAdapter carouselAdapter = new GroupAdapter();
-        for (int i = 0; i < 30; i++) {
-            carouselAdapter.add(new CarouselCardItem(rainbow200[7]));
+        for (int i = 0; i < 10; i++) {
+            carouselAdapter.add(new CarouselCardItem(rainbow200[i]));
         }
-        CarouselItem carouselItem = new CarouselItem(carouselDecoration);
-        carouselItem.setAdapter(carouselAdapter);
-        return carouselItem;
+        return new CarouselGroup(carouselDecoration, carouselAdapter);
     }
 
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
