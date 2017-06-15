@@ -10,12 +10,13 @@ Groupie lets you treat your content as logical groups and handles change notific
 
 Groupie plays best with Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
-You can also use Groupie with Java and your existing ViewHolders; we just can't generate new ones for you. 
+You can also use Groupie with Java and your existing ViewHolders. 
+
 ```gradle
 compile 'com.xwray:groupie:2.0.0-alpha2'
 ```
 
-Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html). [Setup](#data-binding). Groupie provides a generic ViewHolder wrapping the generated ViewDataBinding. 
+Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
 compile 'com.xwray:groupie-databinding:2.0.0-alpha2' 
@@ -25,7 +26,7 @@ The last stable release ONLY supported data binding.  It was:
 compile 'com.xwray:groupie:1.1.1'
 ```
 
-Which one to choose?  It's up to you and what your project already uses. You can even use Kotlin and data binding together.<sup>[*]</sup> Or all your existing hand-written Java ViewHolders, and one new Kotlin item to try it out. Go crazy!  
+Which one to choose?  It's up to you and what your project already uses. You can even use Kotlin and data binding together.[<sup>*</sup>](#kotlin-and-data-binding) Or all your existing hand-written Java ViewHolders, and one new Kotlin item to try it out. Go crazy!  
     
 ## Get started
 
