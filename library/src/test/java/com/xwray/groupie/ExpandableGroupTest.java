@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -17,7 +19,7 @@ public class ExpandableGroupTest {
 
     class DummyExpandableItem extends DummyItem implements ExpandableItem {
 
-        @Override public void setExpandableGroup(ExpandableGroup onToggleListener) {
+        @Override public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
 
         }
     }
@@ -32,7 +34,7 @@ public class ExpandableGroupTest {
     @Test
     public void noAddNotificationWhenCollapsed() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.add(new DummyItem());
         Mockito.verify(groupAdapter, Mockito.never()).onItemRangeInserted(expandableGroup, 1, 1);
     }
@@ -40,7 +42,7 @@ public class ExpandableGroupTest {
     @Test
     public void noChildAddNotificationWhenCollapsed() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         Section section = new Section();
         DummyItem item = new DummyItem();
         expandableGroup.add(section);
@@ -52,7 +54,7 @@ public class ExpandableGroupTest {
     public void addNotificationWhenExpanded() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         expandableGroup.onToggleExpanded();
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.add(new DummyItem());
         Mockito.verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 1);
     }
@@ -61,7 +63,7 @@ public class ExpandableGroupTest {
     public void childAddNotificationWhenExpanded() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         expandableGroup.onToggleExpanded();
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         Section section = new Section();
         DummyItem item = new DummyItem();
         expandableGroup.add(section);
@@ -117,7 +119,7 @@ public class ExpandableGroupTest {
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
         Mockito.verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 6);
@@ -135,7 +137,7 @@ public class ExpandableGroupTest {
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.onToggleExpanded();
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
         Mockito.verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, 6);
@@ -152,7 +154,7 @@ public class ExpandableGroupTest {
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
-        expandableGroup.setGroupDataObserver(groupAdapter);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
         assertEquals(3, expandableGroup.getGroupCount());

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
@@ -64,7 +63,7 @@ public class SectionTest {
         Section section = new Section();
         section.setHeader(header);
         section.add(new DummyItem());
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setFooter(footer);
 
         verify(groupAdapter).onItemRangeInserted(section, headerSize + 1, footerSize);
@@ -76,7 +75,7 @@ public class SectionTest {
         section.setHeader(header);
         section.add(new DummyItem());
         section.setFooter(footer);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.removeFooter();
 
         verify(groupAdapter).onItemRangeRemoved(section, headerSize + 1, footerSize);
@@ -107,7 +106,7 @@ public class SectionTest {
     @Test
     public void settingHeaderNotifiesHeaderAdded() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHeader(header);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, headerSize);
@@ -116,7 +115,7 @@ public class SectionTest {
     @Test
     public void removingHeaderNotifiesPreviousHeaderRemoved() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHeader(header);
         section.removeHeader();
 
@@ -167,7 +166,7 @@ public class SectionTest {
         children.add(item);
         Section section = new Section(null, children);
 
-        verify(item).setGroupDataObserver(section);
+        verify(item).registerGroupDataObserver(section);
     }
 
     @Test
@@ -175,7 +174,7 @@ public class SectionTest {
         Section section = new Section();
         section.setHeader(header);
         section.setFooter(footer);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setPlaceholder(placeholder);
 
         verify(groupAdapter).onItemRangeInserted(section, headerSize, placeholderSize);
@@ -197,7 +196,7 @@ public class SectionTest {
         section.setHeader(header);
         section.setFooter(footer);
         section.add(new DummyItem());
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setPlaceholder(placeholder);
 
         verify(groupAdapter, never()).onItemRangeInserted(any(Section.class), anyInt(), anyInt());
@@ -227,7 +226,7 @@ public class SectionTest {
     @Test
     public void addEmptyBodyContentDoesNotRemovePlaceholder() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setPlaceholder(placeholder);
         section.add(emptyGroup);
 
@@ -237,7 +236,7 @@ public class SectionTest {
     @Test
     public void addBodyContentRemovesPlaceholder() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setPlaceholder(placeholder);
         section.add(new DummyItem());
 
@@ -250,7 +249,7 @@ public class SectionTest {
         section.setPlaceholder(placeholder);
         Item item = new DummyItem();
         section.add(item);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.remove(item);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, placeholderSize);
@@ -264,7 +263,7 @@ public class SectionTest {
         Item childItem = new DummyItem();
         childGroup.add(childItem);
         section.add(childGroup);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         childGroup.remove(childItem);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, placeholderSize);
@@ -276,7 +275,7 @@ public class SectionTest {
         section.setHeader(header);
         section.setFooter(footer);
         section.setPlaceholder(placeholder);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.removePlaceholder();
 
         verify(groupAdapter).onItemRangeRemoved(section, headerSize, placeholderSize);
@@ -286,7 +285,7 @@ public class SectionTest {
     public void setHideWhenEmptyRemovesAnExistingPlaceholder() {
         Section section = new Section();
         section.setPlaceholder(placeholder);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHideWhenEmpty(true);
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, placeholderSize);
@@ -296,7 +295,7 @@ public class SectionTest {
     public void replacingAnExistingPlaceholderNotifiesChange() {
         Section section = new Section();
         section.setPlaceholder(placeholder);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         final int newPlaceholderSize = 1;
         Group newPlaceholder = new DummyGroup() {
@@ -314,7 +313,7 @@ public class SectionTest {
     @Test
     public void setHeaderAddsHeader() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHeader(header);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, headerSize);
@@ -324,7 +323,7 @@ public class SectionTest {
     public void removeHeaderRemovesHeader() {
         Section section = new Section();
         section.setHeader(header);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.removeHeader();
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, headerSize);
@@ -333,7 +332,7 @@ public class SectionTest {
     @Test
     public void setFooterAddsFooter() {
         Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setFooter(footer);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, footerSize);
@@ -343,7 +342,7 @@ public class SectionTest {
     public void removeFooterRemovesFooter() {
         Section section = new Section();
         section.setFooter(footer);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.removeFooter();
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, footerSize);
@@ -354,7 +353,7 @@ public class SectionTest {
         Section section = new Section();
         section.setHeader(header);
         section.setFooter(footer);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHideWhenEmpty(true);
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, headerSize + footerSize);
@@ -366,7 +365,7 @@ public class SectionTest {
         section.setHeader(header);
         section.setFooter(footer);
         section.setPlaceholder(placeholder);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHideWhenEmpty(true);
 
         verify(groupAdapter).onItemRangeRemoved(section, 0, headerSize + footerSize + placeholderSize);
@@ -378,7 +377,7 @@ public class SectionTest {
         section.setHeader(header);
         section.setFooter(footer);
         section.setHideWhenEmpty(true);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.setHideWhenEmpty(false);
 
         verify(groupAdapter).onItemRangeInserted(section, 0, headerSize);
@@ -429,28 +428,27 @@ public class SectionTest {
         assertEquals(0, section.getGroupCount());
     }
 
-    @Test
-    public void whenSectionIsEmptyAndSetHideWhenEmptyGetGroupReturnsNull() {
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void whenSectionIsEmptyAndSetHideWhenEmptyGetGroupThrowsException() {
         Section section = new Section();
         section.setHeader(header);
         section.setPlaceholder(placeholder);
         section.setFooter(footer);
         section.setHideWhenEmpty(true);
-
-        assertNull(section.getGroup(0));
+        section.getGroup(0);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void addAllAtNonZeroPositionWhenEmptyThrowIndexOutOfBoundsException() {
         final Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
         section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem()));
     }
 
     @Test
     public void addAllAtPositionWhenEmptyNotifiesAdapterAtIndexZero() {
         final Section section = new Section();
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(0, Arrays.asList(new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 2);
@@ -459,7 +457,7 @@ public class SectionTest {
     @Test
     public void addAllAtPositionWhenNonEmptyNotifiesAdapterAtCorrectIndex() {
         final Section section = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(2, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 3);
@@ -471,7 +469,7 @@ public class SectionTest {
 
         final Section section = new Section();
         section.add(nestedSection);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 3);
@@ -484,7 +482,7 @@ public class SectionTest {
 
         final Section section = new Section();
         section.add(nestedSection);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(0, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 0, 3);
@@ -496,7 +494,7 @@ public class SectionTest {
         final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
 
         final Section section = new Section(Arrays.asList(nestedSection1, nestedSection2));
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 3);
@@ -509,7 +507,7 @@ public class SectionTest {
 
         final Section section = new Section();
         section.add(nestedSection);
-        section.setGroupDataObserver(groupAdapter);
+        section.registerGroupDataObserver(groupAdapter);
 
         section.addAll(1, Arrays.asList(new DummyItem(), new DummyItem()));
         verify(groupAdapter).onItemRangeInserted(section, 2, 2);
@@ -519,7 +517,7 @@ public class SectionTest {
     public void addItemToNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
-        rootSection.setGroupDataObserver(groupAdapter);
+        rootSection.registerGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
         final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
@@ -537,7 +535,7 @@ public class SectionTest {
     public void addGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
-        rootSection.setGroupDataObserver(groupAdapter);
+        rootSection.registerGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
         final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
@@ -555,7 +553,7 @@ public class SectionTest {
         final Section rootSection = new Section();
         rootSection.setHeader(new DummyItem());
 
-        rootSection.setGroupDataObserver(groupAdapter);
+        rootSection.registerGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
         final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
@@ -572,7 +570,7 @@ public class SectionTest {
     public void insertGroupToNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
-        rootSection.setGroupDataObserver(groupAdapter);
+        rootSection.registerGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
         final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
@@ -603,7 +601,7 @@ public class SectionTest {
     public void removeGroupFromNestedSectionNotifiesAtCorrectIndex() throws Exception {
         final Section rootSection = new Section();
 
-        rootSection.setGroupDataObserver(groupAdapter);
+        rootSection.registerGroupDataObserver(groupAdapter);
         groupAdapter.add(rootSection);
 
         final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));

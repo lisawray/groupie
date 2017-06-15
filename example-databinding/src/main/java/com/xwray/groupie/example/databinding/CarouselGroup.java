@@ -1,5 +1,6 @@
 package com.xwray.groupie.example.databinding;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import com.xwray.groupie.Group;
@@ -51,6 +52,7 @@ public class CarouselGroup implements Group {
         return isEmpty ? 0 : 1;
     }
 
+    @NonNull
     @Override
     public Item getItem(int position) {
         if (position == 0 && !isEmpty) return carouselItem;
@@ -58,12 +60,17 @@ public class CarouselGroup implements Group {
     }
 
     @Override
-    public int getPosition(Item item) {
+    public int getPosition(@NonNull Item item) {
         return item == carouselItem && !isEmpty ? 0 : -1;
     }
 
     @Override
-    public void setGroupDataObserver(GroupDataObserver groupDataObserver) {
+    public void registerGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
         this.groupDataObserver = groupDataObserver;
+    }
+
+    @Override
+    public void unregisterGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
+        this.groupDataObserver = null;
     }
 }

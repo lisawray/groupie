@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A group which has a list of contents and an optional header and footer.
@@ -13,34 +12,40 @@ import java.util.List;
 public class Section extends NestedGroup {
     @Nullable
     private Group header;
+
     @Nullable
     private Group footer;
+
     @Nullable
     private Group placeholder;
+
     private final ArrayList<Group> children = new ArrayList<>();
+
     private boolean hideWhenEmpty = false;
+
     private boolean isHeaderAndFooterVisible = true;
+
     private boolean isPlaceholderVisible = false;
 
     public Section() {
         this(null, new ArrayList<Group>());
     }
 
-    public Section(Group header) {
+    public Section(@Nullable Group header) {
         this(header, new ArrayList<Group>());
     }
 
-    public Section(List<? extends Group> children) {
+    public Section(@NonNull Collection<? extends Group> children) {
         this(null, children);
     }
 
-    public Section(@Nullable Group header, Collection<? extends Group> children) {
+    public Section(@Nullable Group header, @NonNull Collection<? extends Group> children) {
         this.header = header;
         addAll(children);
     }
 
     @Override
-    public void add(int position, Group group) {
+    public void add(int position, @NonNull Group group) {
         super.add(position, group);
         children.add(position, group);
         final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
@@ -49,7 +54,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void addAll(Collection<? extends Group> groups) {
+    public void addAll(@NonNull Collection<? extends Group> groups) {
         if (groups.isEmpty()) return;
         super.addAll(groups);
         int position = getItemCountWithoutFooter();
@@ -59,7 +64,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void addAll(int position, List<? extends Group> groups) {
+    public void addAll(int position, @NonNull Collection<? extends Group> groups) {
         if (groups.isEmpty()) {
             return;
         }
@@ -73,7 +78,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void add(Group group) {
+    public void add(@NonNull Group group) {
         super.add(group);
         int position = getItemCountWithoutFooter();
         children.add(group);
@@ -82,7 +87,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void remove(Group group) {
+    public void remove(@NonNull Group group) {
         super.remove(group);
         int position = getItemCountBeforeGroup(group);
         children.remove(group);
@@ -91,7 +96,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void removeAll(List<? extends Group> groups) {
+    public void removeAll(@NonNull Collection<? extends Group> groups) {
         if (groups.isEmpty()) {
             return;
         }
@@ -207,6 +212,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
+    @NonNull
     public Group getGroup(int position) {
         if (isHeaderShown() && position == 0) return header;
         position -= getHeaderCount();
@@ -216,7 +222,8 @@ public class Section extends NestedGroup {
             if (isFooterShown()) {
                 return footer;
             } else {
-                return null;
+                throw new IndexOutOfBoundsException("Wanted group at position " + position +
+                        " but there are only " + getGroupCount() + " groups");
             }
         } else {
             return children.get(position);
@@ -229,7 +236,7 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public int getPosition(Group group) {
+    public int getPosition(@NonNull Group group) {
         int count = 0;
         if (isHeaderShown()) {
             if (group == header) return count;
@@ -321,25 +328,25 @@ public class Section extends NestedGroup {
     }
 
     @Override
-    public void onItemInserted(Group group, int position) {
+    public void onItemInserted(@NonNull Group group, int position) {
         super.onItemInserted(group, position);
         refreshEmptyState();
     }
 
     @Override
-    public void onItemRemoved(Group group, int position) {
+    public void onItemRemoved(@NonNull Group group, int position) {
         super.onItemRemoved(group, position);
         refreshEmptyState();
     }
 
     @Override
-    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+    public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
         super.onItemRangeInserted(group, positionStart, itemCount);
         refreshEmptyState();
     }
 
     @Override
-    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+    public void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount) {
         super.onItemRangeRemoved(group, positionStart, itemCount);
         refreshEmptyState();
     }

@@ -1,6 +1,7 @@
 package com.xwray.groupie.example.databinding.item;
 
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
 import com.xwray.groupie.databinding.BindableItem;
 import com.xwray.groupie.example.databinding.R;
@@ -21,7 +22,7 @@ public class CarouselCardItem extends BindableItem<ItemSquareCardBinding> {
         return R.layout.item_square_card;
     }
 
-    @Override public void bind(ItemSquareCardBinding viewBinding, int position) {
+    @Override public void bind(@NonNull ItemSquareCardBinding viewBinding, int position) {
         viewBinding.getRoot().setBackgroundColor(colorRes);
     }
 }

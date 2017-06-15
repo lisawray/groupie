@@ -2,6 +2,8 @@ package com.xwray.groupie;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -25,7 +27,8 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
         this.id = id;
     }
 
-    public VH createViewHolder(View itemView) {
+    @NonNull
+    public VH createViewHolder(@NonNull View itemView) {
         return (VH) new ViewHolder(itemView);
     }
 
@@ -39,12 +42,14 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * @param onItemLongClickListener An optional adapter-level long click listener
      */
     @CallSuper
-    public void bind(VH holder, int position, List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+    public void bind(@NonNull VH holder, int position, @NonNull List<Object> payloads,
+                     @Nullable OnItemClickListener onItemClickListener,
+                     @Nullable OnItemLongClickListener onItemLongClickListener) {
         holder.bind(this, onItemClickListener, onItemLongClickListener);
         bind(holder, position, payloads);
     }
 
-    public abstract void bind(VH viewHolder, int position);
+    public abstract void bind(@NonNull VH viewHolder, int position);
 
     /**
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
@@ -54,7 +59,7 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
-    public void bind(VH holder, int position, List<Object> payloads) {
+    public void bind(@NonNull VH holder, int position, @NonNull List<Object> payloads) {
         bind(holder, position);
     }
 
@@ -64,7 +69,7 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * @param holder The ViewHolder being recycled
      */
     @CallSuper
-    public void unbind(VH holder) {
+    public void unbind(@NonNull VH holder) {
         holder.unbind();
     }
 
@@ -92,9 +97,8 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
         return 0;
     }
 
-    public abstract
     @LayoutRes
-    int getLayout();
+    public abstract int getLayout();
 
     @Override
     public int getItemCount() {
@@ -102,17 +106,28 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
     }
 
     @Override
+    @NonNull
     public Item getItem(int position) {
-        return this;
+        if (position == 0) {
+            return this;
+        } else {
+            throw new IndexOutOfBoundsException("Wanted item at position " + position + " but" +
+                    " an Item is a Group of size 1");
+        }
     }
 
     @Override
-    public void setGroupDataObserver(GroupDataObserver groupDataObserver) {
+    public void registerGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
         this.parentDataObserver = groupDataObserver;
     }
 
     @Override
-    public int getPosition(Item item) {
+    public void unregisterGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
+        parentDataObserver = null;
+    }
+
+    @Override
+    public int getPosition(@NonNull Item item) {
         return this == item ? 0 : -1;
     }
 
@@ -130,7 +145,7 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
         }
     }
 
-    public void notifyChanged(Object payload) {
+    public void notifyChanged(@Nullable Object payload) {
         if (parentDataObserver != null) {
             parentDataObserver.onItemChanged(this, 0, payload);
         }

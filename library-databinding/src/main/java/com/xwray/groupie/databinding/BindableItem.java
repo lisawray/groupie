@@ -3,6 +3,7 @@ package com.xwray.groupie.databinding;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.xwray.groupie.Item;
@@ -32,8 +33,9 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
         super(id);
     }
 
+    @NonNull
     @Override
-    public ViewHolder<T> createViewHolder(View itemView) {
+    public ViewHolder<T> createViewHolder(@NonNull View itemView) {
         T viewDataBinding = DataBindingUtil.bind(itemView);
         return new ViewHolder<>(viewDataBinding);
     }
@@ -49,18 +51,18 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
      */
     @CallSuper
     @Override
-    public void bind(ViewHolder<T> holder, int position, List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+    public void bind(@NonNull ViewHolder<T> holder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
         super.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener);
         holder.binding.executePendingBindings();
     }
 
     @Override
-    public void bind(ViewHolder<T> viewHolder, int position) {
+    public void bind(@NonNull ViewHolder<T> viewHolder, int position) {
         throw new RuntimeException("Doesn't get called");
     }
 
     @Override
-    public void bind(ViewHolder<T> holder, int position, List<Object> payloads) {
+    public void bind(@NonNull ViewHolder<T> holder, int position, @NonNull List<Object> payloads) {
         bind(holder.binding, position, payloads);
     }
 
@@ -70,7 +72,7 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
      * @param viewBinding The ViewDataBinding to bind
      * @param position The adapter position
      */
-    public abstract void bind(T viewBinding, int position);
+    public abstract void bind(@NonNull T viewBinding, int position);
 
     /**
      * Perform any actions required to set up the view for display.
@@ -82,8 +84,7 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
-    public void bind(T viewBinding, int position, List<Object> payloads) {
+    public void bind(@NonNull T viewBinding, int position, List<Object> payloads) {
         bind(viewBinding, position);
     }
-
 }

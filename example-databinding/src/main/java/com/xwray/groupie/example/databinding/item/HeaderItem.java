@@ -1,6 +1,7 @@
 package com.xwray.groupie.example.databinding.item;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -34,7 +35,7 @@ public class HeaderItem extends BindableItem<ItemHeaderBinding> {
         return R.layout.item_header;
     }
 
-    @Override public void bind(ItemHeaderBinding viewBinding, int position) {
+    @Override public void bind(@NonNull ItemHeaderBinding viewBinding, int position) {
         viewBinding.title.setText(titleStringResId);
         if (subtitleResId > 0) {
             viewBinding.subtitle.setText(subtitleResId);

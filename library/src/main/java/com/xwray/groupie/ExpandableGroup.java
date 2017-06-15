@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class ExpandableGroup extends NestedGroup {
         ((ExpandableItem) expandableItem).setExpandableGroup(this);
     }
 
-    @Override public void add(Group group) {
+    @Override public void add(@NonNull Group group) {
         super.add(group);
         if (isExpanded) {
             int itemCount = getItemCount();
@@ -34,6 +36,7 @@ public class ExpandableGroup extends NestedGroup {
         return isExpanded;
     }
 
+    @NonNull
     public Group getGroup(int position) {
         if (position == 0) {
             return parent;
@@ -42,7 +45,7 @@ public class ExpandableGroup extends NestedGroup {
         }
     }
 
-    @Override public int getPosition(Group group) {
+    @Override public int getPosition(@NonNull Group group) {
         if (group == parent) {
             return 0;
         } else {
@@ -70,63 +73,63 @@ public class ExpandableGroup extends NestedGroup {
     }
 
     @Override
-    public void onChanged(Group group) {
+    public void onChanged(@NonNull Group group) {
         if (dispatchChildChanges(group)) {
             super.onChanged(group);
         }
     }
 
     @Override
-    public void onItemInserted(Group group, int position) {
+    public void onItemInserted(@NonNull Group group, int position) {
         if (dispatchChildChanges(group)) {
             super.onItemInserted(group, position);
         }
     }
 
     @Override
-    public void onItemChanged(Group group, int position) {
+    public void onItemChanged(@NonNull Group group, int position) {
         if (dispatchChildChanges(group)) {
             super.onItemChanged(group, position);
         }
     }
 
     @Override
-    public void onItemChanged(Group group, int position, Object payload) {
+    public void onItemChanged(@NonNull Group group, int position, Object payload) {
         if (dispatchChildChanges(group)) {
             super.onItemChanged(group, position, payload);
         }
     }
 
     @Override
-    public void onItemRemoved(Group group, int position) {
+    public void onItemRemoved(@NonNull Group group, int position) {
         if (dispatchChildChanges(group)) {
             super.onItemRemoved(group, position);
         }
     }
 
     @Override
-    public void onItemRangeChanged(Group group, int positionStart, int itemCount) {
+    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount) {
         if (dispatchChildChanges(group)) {
             super.onItemRangeChanged(group, positionStart, itemCount);
         }
     }
 
     @Override
-    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+    public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
         if (dispatchChildChanges(group)) {
             super.onItemRangeInserted(group, positionStart, itemCount);
         }
     }
 
     @Override
-    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+    public void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount) {
         if (dispatchChildChanges(group)) {
             super.onItemRangeRemoved(group, positionStart, itemCount);
         }
     }
 
     @Override
-    public void onItemMoved(Group group, int fromPosition, int toPosition) {
+    public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
         if (dispatchChildChanges(group)) {
             super.onItemMoved(group, fromPosition, toPosition);
         }

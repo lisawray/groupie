@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+
 /**
  * The "collapsed"/header item of an expanded group.  Some part (or all) of it is a "toggle" to
  * expand the group.
@@ -15,5 +17,5 @@ package com.xwray.groupie;
  *
  */
 public interface ExpandableItem {
-    void setExpandableGroup(ExpandableGroup onToggleListener);
+    void setExpandableGroup(@NonNull ExpandableGroup onToggleListener);
 }
