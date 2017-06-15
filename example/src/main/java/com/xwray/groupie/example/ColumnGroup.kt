@@ -29,8 +29,12 @@ class ColumnGroup(items: List<Item<*>>) : Group {
         }
     }
 
-    override fun setGroupDataObserver(groupDataObserver: GroupDataObserver) {
-        // no real need to do anything here
+    override fun registerGroupDataObserver(groupDataObserver: GroupDataObserver) {
+        // no need to do anything here
+    }
+
+    override fun unregisterGroupDataObserver(groupDataObserver: GroupDataObserver) {
+        // no need to do anything here
     }
 
     override fun getItem(position: Int): Item<*> {

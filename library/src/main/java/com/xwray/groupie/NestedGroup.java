@@ -1,7 +1,10 @@
 package com.xwray.groupie;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
  */
 public abstract class NestedGroup implements Group, GroupDataObserver {
 
-    private GroupDataObserver parentDataObserver;
+    private final GroupDataObservable observable = new GroupDataObservable();
 
     public int getItemCount() {
         int size = 0;
@@ -24,7 +27,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
-    protected final int getItemCount(Collection<? extends Group> groups) {
+    protected final int getItemCount(@NonNull Collection<? extends Group> groups) {
         int size = 0;
         for (Group group : groups) {
             size += group.getItemCount();
@@ -32,7 +35,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
-    protected int getItemCountBeforeGroup(final Group group) {
+    protected int getItemCountBeforeGroup(@NonNull final Group group) {
         final int groupIndex = getPosition(group);
         return getItemCountBeforeGroup(groupIndex);
     }
@@ -46,10 +49,12 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return size;
     }
 
+    @NonNull
     public abstract Group getGroup(int position);
 
     public abstract int getGroupCount();
 
+    @NonNull
     public Item getItem(int position) {
         int previousPosition = 0;
 
@@ -62,7 +67,8 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
             previousPosition += size;
         }
 
-        return null;
+        throw new IndexOutOfBoundsException("Wanted item at " + position + " but there are only "
+                + getItemCount() + " items");
     }
 
     /**
@@ -71,7 +77,7 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      * @param item
      * @return
      */
-    public final int getPosition(Item item) {
+    public final int getPosition(@NonNull Item item) {
         int previousPosition = 0;
 
         for (int i = 0; i < getGroupCount(); i++) {
@@ -86,46 +92,51 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         return -1;
     }
 
-    public abstract int getPosition(Group group);
+    public abstract int getPosition(@NonNull Group group);
 
     @Override
-    public final void setGroupDataObserver(GroupDataObserver groupDataObserver) {
-        this.parentDataObserver = groupDataObserver;
+    public final void registerGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
+        observable.registerObserver(groupDataObserver);
+    }
+
+    @Override
+    public void unregisterGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
+        observable.unregisterObserver(groupDataObserver);
     }
 
     @CallSuper
-    public void add(Group group) {
-        group.setGroupDataObserver(this);
+    public void add(@NonNull Group group) {
+        group.registerGroupDataObserver(this);
     }
 
     @CallSuper
-    public void addAll(Collection<? extends Group> groups) {
+    public void addAll(@NonNull Collection<? extends Group> groups) {
         for (Group group : groups) {
-            group.setGroupDataObserver(this);
+            group.registerGroupDataObserver(this);
         }
     }
 
     @CallSuper
-    public void add(int position, Group group) {
-        group.setGroupDataObserver(this);
+    public void add(int position, @NonNull Group group) {
+        group.registerGroupDataObserver(this);
     }
 
     @CallSuper
-    public void addAll(int position, List<? extends Group> groups) {
+    public void addAll(int position, @NonNull Collection<? extends Group> groups) {
         for (Group group : groups) {
-            group.setGroupDataObserver(this);
+            group.registerGroupDataObserver(this);
         }
     }
 
     @CallSuper
-    public void remove(Group group) {
-        group.setGroupDataObserver(null);
+    public void remove(@NonNull Group group) {
+        group.unregisterGroupDataObserver(this);
     }
 
     @CallSuper
-    public void removeAll(List<? extends Group> groups) {
+    public void removeAll(@NonNull Collection<? extends Group> groups) {
         for (Group group : groups) {
-            group.setGroupDataObserver(null);
+            group.unregisterGroupDataObserver(this);
         }
     }
 
@@ -136,75 +147,60 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      */
     @CallSuper
     @Override
-    public void onChanged(Group group) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeChanged(this, getItemCountBeforeGroup(group), group.getItemCount());
-        }
+    public void onChanged(@NonNull Group group) {
+        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group), group.getItemCount());
     }
 
     @CallSuper
     @Override
-    public void onItemInserted(Group group, int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemInserted(this, getItemCountBeforeGroup(group) + position);
-        }
+    public void onItemInserted(@NonNull Group group, int position) {
+        observable.onItemInserted(this, getItemCountBeforeGroup(group) + position);
+
     }
 
     @CallSuper
     @Override
-    public void onItemChanged(Group group, int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, getItemCountBeforeGroup(group) + position);
-        }
+    public void onItemChanged(@NonNull Group group, int position) {
+        observable.onItemChanged(this, getItemCountBeforeGroup(group) + position);
+
     }
 
     @CallSuper
     @Override
-    public void onItemChanged(Group group, int position, Object payload) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, getItemCountBeforeGroup(group) + position, payload);
-        }
+    public void onItemChanged(@NonNull Group group, int position, Object payload) {
+        observable.onItemChanged(this, getItemCountBeforeGroup(group) + position, payload);
+
     }
 
     @CallSuper
     @Override
-    public void onItemRemoved(Group group, int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRemoved(this, getItemCountBeforeGroup(group) + position);
-        }
+    public void onItemRemoved(@NonNull Group group, int position) {
+        observable.onItemRemoved(this, getItemCountBeforeGroup(group) + position);
     }
 
     @CallSuper
     @Override
-    public void onItemRangeChanged(Group group, int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
-        }
+    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount) {
+        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
     }
 
     @CallSuper
     @Override
-    public void onItemRangeInserted(Group group, int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeInserted(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
-        }
+    public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
+        observable.onItemRangeInserted(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
     }
 
     @CallSuper
     @Override
-    public void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeRemoved(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
-        }
+    public void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount) {
+        observable.onItemRangeRemoved(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
     }
 
     @CallSuper
     @Override
-    public void onItemMoved(Group group, int fromPosition, int toPosition) {
-        if (parentDataObserver != null) {
-            int groupPosition = getItemCountBeforeGroup(group);
-            parentDataObserver.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
-        }
+    public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
+        int groupPosition = getItemCountBeforeGroup(group);
+        observable.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
     }
 
 
@@ -216,64 +212,124 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
      */
     @CallSuper
     public void notifyItemRangeInserted(int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeInserted(this, positionStart, itemCount);
-        }
+        observable.onItemRangeInserted(this, positionStart, itemCount);
     }
 
     @CallSuper
     public void notifyItemRangeRemoved(int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeRemoved(this, positionStart, itemCount);
-        }
+        observable.onItemRangeRemoved(this, positionStart, itemCount);
     }
 
     @CallSuper
     public void notifyItemMoved(int fromPosition, int toPosition) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemMoved(this, fromPosition, toPosition);
-        }
+        observable.onItemMoved(this, fromPosition, toPosition);
     }
 
     @CallSuper
     public void notifyChanged() {
-        if (parentDataObserver != null) {
-            parentDataObserver.onChanged(this);
-        }
+        observable.onChanged(this);
     }
 
     @CallSuper
     public void notifyItemInserted(int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemInserted(this, position);
-        }
+        observable.onItemInserted(this, position);
     }
 
     @CallSuper
     public void notifyItemChanged(int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, position);
-        }
+        observable.onItemChanged(this, position);
     }
 
     @CallSuper
-    public void notifyItemChanged(int position, Object payload) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemChanged(this, position, payload);
-        }
+    public void notifyItemChanged(int position, @Nullable Object payload) {
+        observable.onItemChanged(this, position, payload);
     }
 
     @CallSuper
     public void notifyItemRemoved(int position) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRemoved(this, position);
-        }
+        observable.onItemRemoved(this, position);
     }
 
     @CallSuper
     public void notifyItemRangeChanged(int positionStart, int itemCount) {
-        if (parentDataObserver != null) {
-            parentDataObserver.onItemRangeChanged(this, positionStart, itemCount);
+        observable.onItemRangeChanged(this, positionStart, itemCount);
+    }
+
+    /**
+     * Iterate in reverse order in case any observer decides to remove themself from the list
+     * in their callback
+     */
+    private static class GroupDataObservable {
+        final List<GroupDataObserver> observers = new ArrayList<>();
+
+        void onItemRangeChanged(Group group, int positionStart, int itemCount) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemRangeChanged(group, positionStart, itemCount);
+            }
+        }
+
+        void onItemInserted(Group group, int position) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemInserted(group, position);
+            }
+        }
+
+        void onItemChanged(Group group, int position) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemChanged(group, position);
+            }
+        }
+
+        void onItemChanged(Group group, int position, Object payload) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemChanged(group, position, payload);
+            }
+        }
+
+        void onItemRemoved(Group group, int position) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemRemoved(group, position);
+            }
+        }
+
+        void onItemRangeInserted(Group group, int positionStart, int itemCount) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemRangeInserted(group, positionStart, itemCount);
+            }
+        }
+
+        void onItemRangeRemoved(Group group, int positionStart, int itemCount) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemRangeRemoved(group, positionStart, itemCount);
+            }
+        }
+
+        void onItemMoved(Group group, int fromPosition, int toPosition) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemMoved(group, fromPosition, toPosition);
+            }
+        }
+
+        void onChanged(Group group) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onChanged(group);
+            }
+        }
+
+        void registerObserver(GroupDataObserver observer) {
+            synchronized(observers) {
+                if (observers.contains(observer)) {
+                    throw new IllegalStateException("Observer " + observer + " is already registered.");
+                }
+                observers.add(observer);
+            }
+        }
+
+        void unregisterObserver(GroupDataObserver observer) {
+            synchronized(observers) {
+                int index = observers.indexOf(observer);
+                observers.remove(index);
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+
 /**
  * A group of items, to be used in an adapter.
  */
@@ -7,15 +9,17 @@ public interface Group {
 
     int getItemCount();
 
-    Item getItem(int position);
+    @NonNull Item getItem(int position);
 
     /**
      * Gets the position of a
      * @param item
      * @return
      */
-    int getPosition(Item item);
+    int getPosition(@NonNull Item item);
 
-    void setGroupDataObserver(GroupDataObserver groupDataObserver);
+    void registerGroupDataObserver(@NonNull GroupDataObserver groupDataObserver);
+
+    void unregisterGroupDataObserver(@NonNull GroupDataObserver groupDataObserver);
 
 }

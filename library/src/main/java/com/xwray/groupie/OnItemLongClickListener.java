@@ -1,9 +1,10 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 public interface OnItemLongClickListener {
 
-    boolean onItemLongClick(Item item, View view);
+    boolean onItemLongClick(@NonNull Item item, @NonNull View view);
 
 }

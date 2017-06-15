@@ -1,6 +1,7 @@
 package com.xwray.groupie.example.databinding;
 
 import android.graphics.drawable.Animatable;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -17,7 +18,7 @@ public class ExpandableHeaderItem extends HeaderItem implements ExpandableItem {
         super(titleStringResId, subtitleResId);
     }
 
-    @Override public void bind(final ItemHeaderBinding viewBinding, int position) {
+    @Override public void bind(@NonNull final ItemHeaderBinding viewBinding, int position) {
         super.bind(viewBinding, position);
 
         // Initial icon state -- not animated.
@@ -38,7 +39,7 @@ public class ExpandableHeaderItem extends HeaderItem implements ExpandableItem {
         drawable.start();
     }
 
-    @Override public void setExpandableGroup(ExpandableGroup onToggleListener) {
+    @Override public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
         this.expandableGroup = onToggleListener;
     }
 }

@@ -1,5 +1,6 @@
 package com.xwray.groupie.example.databinding.item;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,7 +28,7 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
     }
 
     @Override
-    public ViewHolder<ItemCarouselBinding> createViewHolder(View itemView) {
+    public ViewHolder<ItemCarouselBinding> createViewHolder(@NonNull View itemView) {
         ViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
         RecyclerView recyclerView = viewHolder.binding.recyclerView;
         recyclerView.addItemDecoration(carouselDecoration);
@@ -35,7 +36,7 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
         return viewHolder;
     }
 
-    @Override public void bind(ItemCarouselBinding viewBinding, int position) {
+    @Override public void bind(@NonNull ItemCarouselBinding viewBinding, int position) {
         viewBinding.recyclerView.setAdapter(adapter);
     }
 

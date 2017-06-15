@@ -1,5 +1,7 @@
 package com.xwray.groupie.example.databinding;
 
+import android.support.annotation.NonNull;
+
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupDataObserver;
 import com.xwray.groupie.Item;
@@ -32,16 +34,24 @@ public class ColumnGroup implements Group {
         }
     }
 
-    public void setGroupDataObserver(GroupDataObserver groupDataObserver) {
+    @Override
+    public void registerGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
         // no real need to do anything here
     }
 
+    @Override
+    public void unregisterGroupDataObserver(@NonNull GroupDataObserver groupDataObserver) {
+        // no real need to do anything here
+    }
+
+    @NonNull
+    @Override
     public BindableItem getItem(int position) {
         return items.get(position);
     }
 
     @Override
-    public int getPosition(Item item) {
+    public int getPosition(@NonNull Item item) {
         return items.indexOf(item);
     }
 

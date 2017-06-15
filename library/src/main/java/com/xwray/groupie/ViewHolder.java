@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -9,11 +11,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     private Item item;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
-    private View rootView;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             // Discard click if the viewholder has been removed, but was still in the process of
             // animating its removal while clicked (unlikely, but technically possible)
             if (onItemClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
@@ -24,7 +25,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
-        public boolean onLongClick(View v) {
+        public boolean onLongClick(@NonNull View v) {
             // Discard long click if the viewholder has been removed, but was still in the process of
             // animating its removal while long clicked (unlikely, but technically possible)
             if (onItemLongClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
@@ -34,12 +35,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         }
     };
 
-    public ViewHolder(View rootView) {
+    public ViewHolder(@NonNull View rootView) {
         super(rootView);
-        this.rootView = rootView;
     }
 
-    public void bind(Item item, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+    public void bind(@NonNull Item item, @Nullable OnItemClickListener onItemClickListener, @Nullable OnItemLongClickListener onItemLongClickListener) {
         this.item = item;
 
         // Only set the top-level click listeners if a) they exist, and b) the item has
@@ -49,12 +49,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         // the viewholder, but different items of the same layout type may not have the same click
         // listeners or even agree on whether they are clickable.
         if (onItemClickListener != null && item.isClickable()) {
-            rootView.setOnClickListener(onClickListener);
+            itemView.setOnClickListener(onClickListener);
             this.onItemClickListener = onItemClickListener;
         }
 
         if (onItemLongClickListener != null && item.isLongClickable()) {
-            rootView.setOnLongClickListener(onLongClickListener);
+            itemView.setOnLongClickListener(onLongClickListener);
             this.onItemLongClickListener = onItemLongClickListener;
         }
     }
@@ -65,17 +65,17 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         // This avoids undoing any click listeners the user may set which might be persistent for
         // the life of the viewholder. (It's up to the user to make sure that's correct behavior.)
         if (onItemClickListener != null && item.isClickable()) {
-            rootView.setOnClickListener(null);
+            itemView.setOnClickListener(null);
         }
         if (onItemLongClickListener != null && item.isLongClickable()) {
-            rootView.setOnLongClickListener(null);
+            itemView.setOnLongClickListener(null);
         }
         this.item = null;
         this.onItemClickListener = null;
         this.onItemLongClickListener = null;
     }
 
-    public Map<String, Object> getExtras() {
+    public @NonNull Map<String, Object> getExtras() {
         return item.getExtras();
     }
 
@@ -92,6 +92,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     public View getRoot() {
-        return rootView;
+        return itemView;
     }
 }

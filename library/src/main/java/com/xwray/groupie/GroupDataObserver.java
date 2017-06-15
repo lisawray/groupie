@@ -1,21 +1,23 @@
 package com.xwray.groupie;
 
+import android.support.annotation.NonNull;
+
 public interface GroupDataObserver {
-    void onChanged(Group group);
+    void onChanged(@NonNull Group group);
 
-    void onItemInserted(Group group, int position);
+    void onItemInserted(@NonNull Group group, int position);
 
-    void onItemChanged(Group group, int position);
+    void onItemChanged(@NonNull Group group, int position);
 
-    void onItemChanged(Group group, int position, Object payload);
+    void onItemChanged(@NonNull Group group, int position, Object payload);
 
-    void onItemRemoved(Group group, int position);
+    void onItemRemoved(@NonNull Group group, int position);
 
-    void onItemRangeChanged(Group group, int positionStart, int itemCount);
+    void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount);
 
-    void onItemRangeInserted(Group group, int positionStart, int itemCount);
+    void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount);
 
-    void onItemRangeRemoved(Group group, int positionStart, int itemCount);
+    void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount);
 
-    void onItemMoved(Group group, int fromPosition, int toPosition);
+    void onItemMoved(@NonNull Group group, int fromPosition, int toPosition);
 }

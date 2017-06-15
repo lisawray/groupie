@@ -31,7 +31,7 @@ public class ItemTest {
     @Test
     public void notifyChangeNotifiesParentObserver() {
         Item item = new DummyItem();
-        item.setGroupDataObserver(groupAdapter);
+        item.registerGroupDataObserver(groupAdapter);
         item.notifyChanged();
 
         verify(groupAdapter).onItemChanged(item, 0);

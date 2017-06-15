@@ -49,7 +49,7 @@ public class UpdatingGroupTest {
         children.add(new AlwaysUpdatingItem(2));
 
         UpdatingGroup group = new UpdatingGroup();
-        group.setGroupDataObserver(groupAdapter);
+        group.registerGroupDataObserver(groupAdapter);
 
         group.update(children);
         verify(groupAdapter).onItemRangeInserted(group, 0, 2);
@@ -68,7 +68,7 @@ public class UpdatingGroupTest {
 
         UpdatingGroup group = new UpdatingGroup();
         group.update(children);
-        group.setGroupDataObserver(groupAdapter);
+        group.registerGroupDataObserver(groupAdapter);
 
         item.notifyChanged();
 

@@ -2,6 +2,7 @@ package com.xwray.groupie.example.databinding.item;
 
 import android.graphics.drawable.Animatable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.xwray.groupie.databinding.BindableItem;
@@ -33,7 +34,7 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
     }
 
     @Override
-    public void bind(final ItemHeartCardBinding binding, int position) {
+    public void bind(@NonNull final ItemHeartCardBinding binding, int position) {
         //binding.getRoot().setBackgroundColor(colorRes);
         bindHeart(binding);
         binding.text.setText(String.valueOf(getId() + 1));
@@ -69,7 +70,7 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
     }
 
     @Override
-    public void bind(ItemHeartCardBinding binding, int position, List<Object> payloads) {
+    public void bind(@NonNull ItemHeartCardBinding binding, int position, List<Object> payloads) {
         if (payloads.contains(FAVORITE)) {
             bindHeart(binding);
         } else {
