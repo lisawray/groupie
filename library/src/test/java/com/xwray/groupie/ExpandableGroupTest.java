@@ -13,6 +13,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpandableGroupTest {
@@ -32,6 +33,12 @@ public class ExpandableGroupTest {
     public void collapsedByDefault() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         assertFalse(expandableGroup.isExpanded());
+    }
+
+    @Test
+    public void expandedByDefault() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
+        assertTrue(expandableGroup.isExpanded());
     }
 
     @Test

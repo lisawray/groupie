@@ -22,6 +22,12 @@ public class ExpandableGroup extends NestedGroup {
         ((ExpandableItem) expandableItem).setExpandableGroup(this);
     }
 
+    public ExpandableGroup(Group expandableItem, boolean isExpanded) {
+        this.parent = expandableItem;
+        ((ExpandableItem) expandableItem).setExpandableGroup(this);
+        this.isExpanded = isExpanded;
+    }
+
     @Override public void add(@NonNull Group group) {
         super.add(group);
         if (isExpanded) {
