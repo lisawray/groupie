@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 
@@ -158,5 +161,20 @@ public class ExpandableGroupTest {
         expandableGroup.onToggleExpanded();
 
         assertEquals(3, expandableGroup.getGroupCount());
+    }
+
+    @Test
+    public void testExpandedGroupCountForAddAll() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.onToggleExpanded();
+
+        assertEquals(6, expandableGroup.getGroupCount());
     }
 }

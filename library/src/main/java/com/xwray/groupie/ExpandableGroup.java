@@ -3,6 +3,7 @@ package com.xwray.groupie;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,6 +30,34 @@ public class ExpandableGroup extends NestedGroup {
             notifyItemRangeInserted(itemCount, group.getItemCount());
         } else {
             children.add(group);
+        }
+    }
+
+    @Override
+    public void addAll(@NonNull Collection<? extends Group> groups) {
+        if (groups.isEmpty()) return;
+        super.addAll(groups);
+        if (isExpanded) {
+            int itemCount = getItemCount();
+            this.children.addAll(groups);
+            notifyItemRangeInserted(itemCount, getItemCount(groups));
+        } else {
+            this.children.addAll(groups);
+        }
+    }
+
+    @Override
+    public void addAll(int position, @NonNull Collection<? extends Group> groups) {
+        if (groups.isEmpty()) {
+            return;
+        }
+        super.addAll(position, groups);
+        if (isExpanded) {
+            int itemCount = getItemCount();
+            this.children.addAll(position, groups);
+            notifyItemRangeInserted(itemCount, getItemCount(groups));
+        } else {
+            this.children.addAll(position, groups);
         }
     }
 
