@@ -98,9 +98,7 @@ import kotlinx.android.synthetic.main.song.view.*
 
 class SongItem constructor(private val song: Song) : Item<ViewHolder>() {
 
-    override fun getLayout(): Int {
-        return R.layout.song
-    }
+    override fun getLayout() = R.layout.song
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.title.text = song.title
