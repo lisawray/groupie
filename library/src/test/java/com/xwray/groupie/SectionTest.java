@@ -4,12 +4,14 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +19,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -613,5 +616,48 @@ public class SectionTest {
         reset(groupAdapter);
         rootSection.remove(nestedSection2);
         verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
+    }
+
+    @Test
+    public void removeAllGroupFromNestedSectionNotifiesAtCorrectIndex() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.registerGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        reset(groupAdapter);
+        rootSection.removeAll(Collections.singletonList(nestedSection2));
+        verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
+    }
+
+    @Test
+    public void removeAllUnorderedGroupsFromNestedSectionNotifiesAtCorrectIndexes() throws Exception {
+        final Section rootSection = new Section();
+
+        rootSection.registerGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Collections.singletonList(new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        final Section nestedSection3 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection3);
+
+        reset(groupAdapter);
+        rootSection.removeAll(Arrays.asList(nestedSection2, nestedSection3, nestedSection1));
+
+        final InOrder adapterCalls = inOrder(groupAdapter, groupAdapter, groupAdapter);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 1);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 0, 3);
     }
 }
