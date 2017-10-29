@@ -204,15 +204,15 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     public void remove(@NonNull Group group) {
         if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
-        int itemCountBeforeGroup = getItemCountBeforeGroup(position);
-        group.registerGroupDataObserver(null);
-        groups.remove(position);
-        notifyItemRangeRemoved(itemCountBeforeGroup, group.getItemCount());
+        remove(position, group);
     }
     
-    public void removeAt(int index) {
+    public void removeGroup(int index) {
         Group group = getGroup(index);
-        int position = groups.indexOf(group);
+        remove(index, group);
+    }
+
+    private void remove(int position, @NonNull Group group) {
         int itemCountBeforeGroup = getItemCountBeforeGroup(position);
         group.registerGroupDataObserver(null);
         groups.remove(position);
