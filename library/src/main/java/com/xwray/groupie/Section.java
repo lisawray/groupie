@@ -100,9 +100,10 @@ public class Section extends NestedGroup {
         if (groups.isEmpty()) {
             return;
         }
+
         super.removeAll(groups);
         for (Group group : groups) {
-            int position = getPosition(group);
+            int position = getItemCountBeforeGroup(group);
             children.remove(group);
             notifyItemRangeRemoved(position, group.getItemCount());
         }
