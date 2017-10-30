@@ -2,13 +2,8 @@ package com.xwray.groupie.example.item
 
 import android.support.annotation.ColorInt
 
-open class SmallCardItem : CardItem {
+open class SmallCardItem(@ColorInt private val colorRes: Int, text: CharSequence? = "") : CardItem(colorRes, text) {
 
-    constructor(@ColorInt colorRes: Int) : super(colorRes) {}
+    override fun getSpanSize(spanCount: Int, position: Int) = spanCount / 3
 
-    constructor(@ColorInt colorRes: Int, text: CharSequence) : super(colorRes, text) {}
-
-    override fun getSpanSize(spanCount: Int, position: Int): Int {
-        return spanCount / 3
-    }
 }
