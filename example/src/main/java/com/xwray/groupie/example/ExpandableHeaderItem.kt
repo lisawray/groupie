@@ -3,12 +3,11 @@ package com.xwray.groupie.example
 import android.graphics.drawable.Animatable
 import android.support.annotation.StringRes
 import android.view.View
-
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
-import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.example.item.HeaderItem
-import kotlinx.android.synthetic.main.item_header.view.*
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.item_header.*
 
 class ExpandableHeaderItem(@StringRes titleStringResId: Int, @StringRes subtitleResId: Int) : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
 
@@ -18,7 +17,7 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int, @StringRes subtitle
         super.bind(viewHolder, position)
 
         // Initial icon state -- not animated.
-        viewHolder.itemView.icon.apply {
+        viewHolder.icon.apply {
             visibility = View.VISIBLE
             setImageResource(if (expandableGroup.isExpanded) R.drawable.collapse else R.drawable.expand)
             setOnClickListener {
@@ -29,7 +28,7 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int, @StringRes subtitle
     }
 
     private fun bindIcon(viewHolder: ViewHolder) {
-        viewHolder.itemView.icon.apply {
+        viewHolder.icon.apply {
             visibility = View.VISIBLE
             setImageResource(if (expandableGroup.isExpanded) R.drawable.collapse_animated else R.drawable.expand_animated)
             (drawable as Animatable).start()

@@ -3,23 +3,23 @@ package com.xwray.groupie.example.item
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.example.R
-import kotlinx.android.synthetic.main.item_carousel.view.*
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.item_carousel.*
 
 /**
  * A horizontally scrolling RecyclerView, for use in a vertically scrolling RecyclerView.
  */
 class CarouselItem(private val carouselDecoration: RecyclerView.ItemDecoration,
-                   private val carouselAdapter: GroupAdapter<ViewHolder>) : Item<ViewHolder>() {
+                   private val carouselAdapter: GroupAdapter<com.xwray.groupie.ViewHolder>) : Item() {
 
     override fun getLayout(): Int {
         return R.layout.item_carousel
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.recycler_view.apply {
+        viewHolder.recycler_view.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carouselAdapter
 

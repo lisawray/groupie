@@ -1,14 +1,14 @@
 package com.xwray.groupie.example.item
 
 import android.support.annotation.ColorInt
-import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.example.INSET
 import com.xwray.groupie.example.INSET_TYPE_KEY
 import com.xwray.groupie.example.R
-import kotlinx.android.synthetic.main.item_card.view.*
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.item_card.*
 
-open class CardItem @JvmOverloads constructor(@param:ColorInt private val colorRes: Int, var text: CharSequence? = "") : Item<ViewHolder>() {
+open class CardItem @JvmOverloads constructor(@param:ColorInt private val colorRes: Int, var text: CharSequence? = "") : Item() {
 
     init {
         extras.put(INSET_TYPE_KEY, INSET)
@@ -20,6 +20,6 @@ open class CardItem @JvmOverloads constructor(@param:ColorInt private val colorR
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewBinding.getRoot().setBackgroundColor(colorRes);
-        viewHolder.itemView.text.text = text
+        viewHolder.text.text = text
     }
 }
