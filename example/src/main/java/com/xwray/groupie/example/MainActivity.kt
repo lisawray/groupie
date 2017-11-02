@@ -30,19 +30,26 @@ class MainActivity : AppCompatActivity() {
 
     private val groupAdapter = GroupAdapter<ViewHolder>() //TODO get rid of this parameter
     private lateinit var groupLayoutManager: GridLayoutManager
-    private lateinit var prefs: Prefs
+    private val prefs: Prefs by lazy { Prefs.get(this) }
+    private val handler = Handler()
 
-    private var gray: Int = 0
-    private var betweenPadding: Int = 0
-    private lateinit var rainbow200: IntArray
-    private lateinit var rainbow500: IntArray
+    private val gray: Int by lazy { ContextCompat.getColor(this, R.color.background) }
+    private val betweenPadding: Int by lazy { resources.getDimensionPixelSize(R.dimen.padding_small) }
+    private val rainbow200: IntArray by lazy { resources.getIntArray(R.array.rainbow_200) }
+    private val rainbow500: IntArray by lazy { resources.getIntArray(R.array.rainbow_500) }
 
     private val infiniteLoadingSection = Section(HeaderItem(R.string.infinite_loading))
-    private var swipeSection = Section(HeaderItem(R.string.swipe_to_delete))
+    private val swipeSection = Section(HeaderItem(R.string.swipe_to_delete))
 
     // Normally there's no need to hold onto a reference to this list, but for demonstration
     // purposes, we'll shuffle this list and post an update periodically
-    private lateinit var updatableItems: ArrayList<UpdatableItem>
+    private val updatableItems: ArrayList<UpdatableItem> by lazy {
+        ArrayList<UpdatableItem>().apply {
+            for (i in 1..12) {
+                add(UpdatableItem(rainbow200[i], i))
+            }
+        }
+    }
 
     // Hold a reference to the updating group, so we can, well, update it
     private var updatingGroup = UpdatingGroup()
@@ -50,12 +57,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        prefs = Prefs.get(this)
-
-        gray = ContextCompat.getColor(this, R.color.background)
-        betweenPadding = resources.getDimensionPixelSize(R.dimen.padding_small)
-        rainbow200 = resources.getIntArray(R.array.rainbow_200)
-        rainbow500 = resources.getIntArray(R.array.rainbow_500)
 
         groupAdapter.apply {
             setOnItemClickListener(onItemClickListener)
@@ -95,54 +96,47 @@ class MainActivity : AppCompatActivity() {
     private fun populateAdapter() {
 
         // Full bleed item
-        val fullBleedItemSection = Section(HeaderItem(R.string.full_bleed_item))
-        fullBleedItemSection.add(FullBleedCardItem(R.color.purple_200))
-        groupAdapter.add(fullBleedItemSection)
+        Section(HeaderItem(R.string.full_bleed_item)).apply {
+            add(FullBleedCardItem(R.color.purple_200))
+            groupAdapter.add(this)
+        }
 
         // Update in place group
-        val updatingSection = Section()
-        val onShuffleClicked = View.OnClickListener {
-            val shuffled = ArrayList(updatableItems)
-            Collections.shuffle(shuffled)
-            updatingGroup.update(shuffled)
+        Section().apply {
+            val updatingHeader = HeaderItem(
+                    R.string.updating_group,
+                    R.string.updating_group_subtitle,
+                    R.drawable.shuffle,
+                    onShuffleClicked)
+            setHeader(updatingHeader)
 
-            // You can also do this by forcing a change with payload
-            recycler_view.post { recycler_view.invalidateItemDecorations() }
+            updatingGroup.update(updatableItems)
+            add(updatingGroup)
+            groupAdapter.add(this)
         }
-        val updatingHeader = HeaderItem(
-                R.string.updating_group,
-                R.string.updating_group_subtitle,
-                R.drawable.shuffle,
-                onShuffleClicked)
-        updatingSection.setHeader(updatingHeader)
-        updatableItems = ArrayList<UpdatableItem>()
-        for (i in 1..12) {
-            updatableItems.add(UpdatableItem(rainbow200[i], i))
-        }
-        updatingGroup.update(updatableItems)
-        updatingSection.add(updatingGroup)
-        groupAdapter.add(updatingSection)
 
         // Expandable group
         val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
-        val expandableGroup = ExpandableGroup(expandableHeaderItem)
-        for (i in 0..1) {
-            expandableGroup.add(CardItem(rainbow200[1]))
+        ExpandableGroup(expandableHeaderItem).apply {
+            for (i in 0..1) {
+                add(CardItem(rainbow200[1]))
+            }
+            groupAdapter.add(this)
         }
-        groupAdapter.add(expandableGroup)
 
         // Columns
-        val columnSection = Section(HeaderItem(R.string.vertical_columns))
-        val columnGroup = makeColumnGroup()
-        columnSection.add(columnGroup)
-        groupAdapter.add(columnSection)
+        Section(HeaderItem(R.string.vertical_columns)).apply {
+            add(makeColumnGroup())
+            groupAdapter.add(this)
+        }
 
         // Group showing even spacing with multiple columns
-        val multipleColumnsSection = Section(HeaderItem(R.string.multiple_columns))
-        for (i in 0..11) {
-            multipleColumnsSection.add(SmallCardItem(rainbow200[5]))
+        Section(HeaderItem(R.string.multiple_columns)).apply {
+            for (i in 0..11) {
+                add(SmallCardItem(rainbow200[5]))
+            }
+            groupAdapter.add(this)
         }
-        groupAdapter.add(multipleColumnsSection)
 
         // Swipe to delete (with add button in header)
         for (i in 0..2) {
@@ -151,24 +145,25 @@ class MainActivity : AppCompatActivity() {
         groupAdapter.add(swipeSection)
 
         // Horizontal carousel
-        val carouselSection = Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle))
-        val carouselItem = makeCarouselItem()
-        carouselSection.add(carouselItem)
-        groupAdapter.add(carouselSection)
+        Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
+            add(makeCarouselItem())
+            groupAdapter.add(this)
+        }
 
         // Update with payload
-        val updateWithPayloadSection = Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle))
-        rainbow500.indices.forEach { i ->
-            updateWithPayloadSection.add(HeartCardItem(rainbow200[i], i.toLong(), { item, favorite ->
-                // Pretend to make a network request
-                handler.postDelayed({
-                    // Network request was successful!
-                    item.setFavorite(favorite)
-                    item.notifyChanged(FAVORITE)
-                }, 1000)
-            }))
+        Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
+            rainbow500.indices.forEach { i ->
+                add(HeartCardItem(rainbow200[i], i.toLong(), { item, favorite ->
+                    // Pretend to make a network request
+                    handler.postDelayed({
+                        // Network request was successful!
+                        item.setFavorite(favorite)
+                        item.notifyChanged(FAVORITE)
+                    }, 1000)
+                }))
+            }
+            groupAdapter.add(this)
         }
-        groupAdapter.add(updateWithPayloadSection)
 
         // Infinite loading section
         groupAdapter.add(infiniteLoadingSection)
@@ -196,23 +191,28 @@ class MainActivity : AppCompatActivity() {
         return CarouselItem(carouselDecoration, carouselAdapter)
     }
 
-    private val onItemClickListener = OnItemClickListener { item, view ->
-        if (item is CardItem) {
-            val cardItem = item
-            if (!TextUtils.isEmpty(cardItem.text)) {
-                Toast.makeText(this@MainActivity, cardItem.text, Toast.LENGTH_SHORT).show()
-            }
+    private val onItemClickListener = OnItemClickListener { item, _ ->
+        if (item is CardItem && !TextUtils.isEmpty(item.text)) {
+            Toast.makeText(this@MainActivity, item.text, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private val onItemLongClickListener = OnItemLongClickListener { item, view ->
-        if (item is CardItem) {
-            if (!item.text.isNullOrBlank()) {
-                Toast.makeText(this@MainActivity, "Long clicked: " + item.text!!, Toast.LENGTH_SHORT).show()
-                return@OnItemLongClickListener true
-            }
+    private val onItemLongClickListener = OnItemLongClickListener { item, _ ->
+        if (item is CardItem && !item.text.isNullOrBlank()) {
+            Toast.makeText(this@MainActivity, "Long clicked: " + item.text, Toast.LENGTH_SHORT).show()
+            return@OnItemLongClickListener true
         }
         false
+    }
+
+    private val onShuffleClicked = View.OnClickListener {
+        with(ArrayList(updatableItems)) {
+            Collections.shuffle(this)
+            updatingGroup.update(this)
+        }
+
+        // You can also do this by forcing a change with payload
+        recycler_view.post { recycler_view.invalidateItemDecorations() }
     }
 
     override fun onDestroy() {
@@ -220,24 +220,25 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private val touchCallback = object : SwipeTouchCallback(gray) {
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return false
-        }
+    private val touchCallback: SwipeTouchCallback by lazy {
+        object : SwipeTouchCallback(gray) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                                target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val item = groupAdapter.getItem(viewHolder.adapterPosition)
-            // Change notification to the adapter happens automatically when the section is
-            // changed.
-            swipeSection.remove(item)
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = groupAdapter.getItem(viewHolder.adapterPosition)
+                // Change notification to the adapter happens automatically when the section is
+                // changed.
+                swipeSection.remove(item)
+            }
         }
     }
 
-    private val onSharedPrefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, s ->
+    private val onSharedPrefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
         // This is pretty evil, try not to do this
         groupAdapter.notifyDataSetChanged()
     }
-
-    private val handler = Handler()
 
 }

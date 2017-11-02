@@ -10,7 +10,6 @@ class ColumnItem(@ColorInt colorRes: Int, index: Int) : CardItem(colorRes, index
         extras.put(INSET_TYPE_KEY, INSET)
     }
 
-    override fun getSpanSize(spanCount: Int, position: Int): Int {
-        return spanCount / 2
-    }
+    override fun getSpanSize(spanCount: Int, position: Int) = spanCount / 2
+
 }

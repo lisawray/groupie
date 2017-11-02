@@ -8,10 +8,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_header.*
 
-open class HeaderItem @JvmOverloads constructor(
-        @param:StringRes private val titleStringResId: Int,
-        @param:StringRes private val subtitleResId: Int = 0,
-        @param:DrawableRes private val iconResId: Int = 0,
+open class HeaderItem(
+        @StringRes private val titleStringResId: Int,
+        @StringRes private val subtitleResId: Int? = null,
+        @DrawableRes private val iconResId: Int? = null,
         private val onIconClickListener: View.OnClickListener? = null) : Item() {
 
     override fun getLayout(): Int {
@@ -22,16 +22,18 @@ open class HeaderItem @JvmOverloads constructor(
         viewHolder.title.setText(titleStringResId)
 
         viewHolder.subtitle.apply {
-            visibility = if (subtitleResId > 0) View.VISIBLE else View.GONE
-            if (subtitleResId > 0) {
-                setText(subtitleResId)
+            visibility = View.GONE
+            subtitleResId?.let {
+                visibility = View.VISIBLE
+                setText(it)
             }
         }
 
         viewHolder.icon.apply {
-            visibility = if (iconResId > 0) View.VISIBLE else View.GONE
-            if (iconResId > 0) {
-                setImageResource(iconResId)
+            visibility = View.GONE
+            iconResId?.let {
+                visibility = View.VISIBLE
+                setImageResource(it)
                 setOnClickListener(onIconClickListener)
             }
         }

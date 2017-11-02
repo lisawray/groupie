@@ -9,7 +9,9 @@ import com.xwray.groupie.example.item.HeaderItem
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_header.*
 
-class ExpandableHeaderItem(@StringRes titleStringResId: Int, @StringRes subtitleResId: Int) : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
+class ExpandableHeaderItem(@StringRes titleStringResId: Int,
+                           @StringRes subtitleResId: Int)
+    : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
 
     private lateinit var expandableGroup: ExpandableGroup
 
