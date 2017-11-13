@@ -23,6 +23,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SectionTest {
@@ -659,5 +660,82 @@ public class SectionTest {
         adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 1);
         adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 3, 2);
         adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 0, 3);
+    }
+
+    @Test
+    public void updateGroupChangesRange() {
+        List<Item> children = new ArrayList<Item>();
+        children.add(new AlwaysUpdatingItem(1));
+        children.add(new AlwaysUpdatingItem(2));
+
+        Section group = new Section();
+        group.registerGroupDataObserver(groupAdapter);
+
+        group.update(children);
+        verify(groupAdapter).onItemRangeInserted(group, 0, 2);
+        verifyNoMoreInteractions(groupAdapter);
+
+        group.update(children);
+        verify(groupAdapter).onItemRangeChanged(group, 0, 2);
+        verifyNoMoreInteractions(groupAdapter);
+    }
+
+    @Test
+    public void notifyChangeInAnItemCausesParentToNotifyChange() {
+        List<Item> children = new ArrayList<Item>();
+        Item item = new DummyItem();
+        children.add(item);
+
+        Section group = new Section();
+        group.update(children);
+        group.registerGroupDataObserver(groupAdapter);
+
+        item.notifyChanged();
+
+        verify(groupAdapter).onItemChanged(group, 0);
+    }
+
+    @Test
+    public void updateWithTheSameItemAndSameContentsDoesNotNotifyChange() {
+        List<Item> children = new ArrayList<Item>();
+        Item item = new ContentUpdatingItem(1, "contents");
+        children.add(item);
+
+        Section group = new Section();
+        group.update(children);
+        group.registerGroupDataObserver(groupAdapter);
+
+        group.update(children);
+
+        verifyNoMoreInteractions(groupAdapter);
+    }
+
+    @Test
+    public void updateWithTheSameItemButDifferentContentsNotifiesChange() {
+        Item oldItem = new ContentUpdatingItem(1, "contents");
+
+        Section group = new Section();
+        group.update(Collections.singletonList(oldItem));
+        group.registerGroupDataObserver(groupAdapter);
+
+        Item newItem = new ContentUpdatingItem(1, "new contents");
+        group.update(Collections.singletonList(newItem));
+
+        verify(groupAdapter).onItemRangeChanged(group, 0, 1);
+    }
+
+    @Test
+    public void updateWithADifferentItemNotifiesRemoveAndAdd() {
+        Item oldItem = new ContentUpdatingItem(1, "contents");
+
+        Section group = new Section();
+        group.update(Collections.singletonList(oldItem));
+        group.registerGroupDataObserver(groupAdapter);
+
+        Item newItem = new ContentUpdatingItem(2, "contents");
+        group.update(Collections.singletonList(newItem));
+
+        verify(groupAdapter).onItemRangeRemoved(group, 0, 1);
+        verify(groupAdapter).onItemRangeInserted(group, 0, 1);
     }
 }

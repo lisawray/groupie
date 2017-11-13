@@ -1,7 +1,5 @@
 package com.xwray.groupie;
 
-import android.view.View;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,29 +16,6 @@ public class UpdatingGroupTest {
 
     @Mock
     GroupAdapter groupAdapter;
-
-    class AlwaysUpdatingItem extends Item {
-        @Override public int getLayout() { return 0; }
-
-        public AlwaysUpdatingItem(int id) {
-            super(id);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return false;
-        }
-
-        @Override
-        public ViewHolder createViewHolder(View itemView) {
-            return null;
-        }
-
-        @Override
-        public void bind(ViewHolder viewHolder, int position) {
-
-        }
-    }
 
     @Test
     public void updateGroupChangesRange() {

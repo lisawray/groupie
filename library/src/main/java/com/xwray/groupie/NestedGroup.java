@@ -155,21 +155,18 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @Override
     public void onItemInserted(@NonNull Group group, int position) {
         observable.onItemInserted(this, getItemCountBeforeGroup(group) + position);
-
     }
 
     @CallSuper
     @Override
     public void onItemChanged(@NonNull Group group, int position) {
         observable.onItemChanged(this, getItemCountBeforeGroup(group) + position);
-
     }
 
     @CallSuper
     @Override
     public void onItemChanged(@NonNull Group group, int position, Object payload) {
         observable.onItemChanged(this, getItemCountBeforeGroup(group) + position, payload);
-
     }
 
     @CallSuper

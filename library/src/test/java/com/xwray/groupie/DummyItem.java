@@ -4,6 +4,14 @@ import android.view.View;
 
 class DummyItem extends Item {
 
+    public DummyItem() {
+        super();
+    }
+
+    protected DummyItem(long id) {
+        super(id);
+    }
+
     @Override public int getLayout() {
         return 0;
     }

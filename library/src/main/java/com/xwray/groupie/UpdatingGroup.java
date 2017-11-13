@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Deprecated.  Please use Section.update() instead.
+ *
  * A group which accepts a list of items and diffs them against its previous contents,
  * generating the correct remove, add, move and change notifications to its parent observer,
  * to create an animated item-level update.
@@ -18,6 +20,7 @@ import java.util.List;
  * If you don't customize getId() or equals(), the default implementations will return false,
  * meaning your Group will consider every update a complete change of everything.
  */
+@Deprecated
 public class UpdatingGroup extends NestedGroup {
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {

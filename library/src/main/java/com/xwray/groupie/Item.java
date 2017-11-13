@@ -166,12 +166,24 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * likely to conflict with your model IDs.)
      * <p>
      * You may prefer to override it with the ID of a model object, for example the primary key of
-     * an object from a database that it represents.  It is used to tell if items of the same view type
-     * are "the same as" each other in comparison using DiffUtil.
+     * an object from a database that it represents.
      *
      * @return A unique id
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * Whether two item objects represent the same underlying data when compared using DiffUtil,
+     * even if there has been a change in that data.
+     * <p>
+     * The default implementation compares both view type and id.
+     */
+    public boolean isSameAs(Item other) {
+        if (getLayout() != other.getLayout()) {
+            return false;
+        }
+        return getId() == other.getId();
     }
 }
