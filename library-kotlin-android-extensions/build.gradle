@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    provided 'com.xwray:groupie:2.0.0-alpha2'
+    compileOnly 'com.xwray:groupie:2.0.0-alpha2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
@@ -53,11 +53,15 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
 publish {
     userOrg = 'lisawray'
     groupId = 'com.xwray'
     artifactId = 'groupie-kotlin-android-extensions'
-    publishVersion = '2.0.0-alpha2'
+    publishVersion = '2.0.0-beta1'
     desc = 'Library for groups and multiple view types in a RecyclerView'
     website = 'https://github.com/lisawray/groupie'
 }
