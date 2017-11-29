@@ -20,8 +20,8 @@ public class SettingsActivity extends AppCompatActivity {
         TextView showBoundsText = (TextView) showBoundsContainer.findViewById(R.id.text);
 
         ViewGroup showOffsetsContainer = (ViewGroup) findViewById(R.id.show_offsets);
-        SwitchCompat showOffsetsSwitch =  (SwitchCompat) showBoundsContainer.findViewById(R.id.the_switch);
-        TextView showOffsetsText = (TextView) showBoundsContainer.findViewById(R.id.text);
+        SwitchCompat showOffsetsSwitch =  (SwitchCompat) showOffsetsContainer.findViewById(R.id.the_switch);
+        TextView showOffsetsText = (TextView) showOffsetsContainer.findViewById(R.id.text);
 
         showBoundsText.setText(R.string.show_bounds);
         showOffsetsText.setText(R.string.show_offsets);
