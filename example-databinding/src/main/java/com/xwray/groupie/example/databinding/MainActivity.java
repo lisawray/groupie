@@ -22,7 +22,6 @@ import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.OnItemLongClickListener;
 import com.xwray.groupie.Section;
 import com.xwray.groupie.TouchCallback;
-import com.xwray.groupie.UpdatingGroup;
 import com.xwray.groupie.example.core.InfiniteScrollListener;
 import com.xwray.groupie.example.core.Prefs;
 import com.xwray.groupie.example.core.SettingsActivity;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<UpdatableItem> updatableItems;
 
     // Hold a reference to the updating group, so we can, well, update it
-    private UpdatingGroup updatingGroup;
+    private Section updatingGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.shuffle,
                 onShuffleClicked);
         updatingSection.setHeader(updatingHeader);
-        updatingGroup = new UpdatingGroup();
+        updatingGroup = new Section();
         updatableItems = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             updatableItems.add(new UpdatableItem(rainbow200[i], i));

@@ -2,6 +2,8 @@ package com.xwray.groupie;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.util.ListUpdateCallback;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,6 +111,78 @@ public class Section extends NestedGroup {
         }
         refreshEmptyState();
     }
+
+    /**
+     * Replace all existing body content and dispatch fine-grained change notifications to the
+     * parent using DiffUtil.
+     * <p>
+     * Item comparisons are made using:
+     * - Item.isSameAs(Item otherItem) (are items the same?)
+     * - Item.equals() (are contents the same?)
+     * <p>
+     * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
+     * meaning your Group will consider every update a complete change of everything.
+     *
+     * @param groups The new content of the section
+     */
+    public void update(@NonNull final Collection<? extends Group> groups) {
+        // Dummy section to give us access to the flattened list of items in the new groups.
+        final Section section = new Section(groups);
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return getItemCount();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return section.getItemCount();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(oldItemPosition);
+                Item newItem = section.getItem(newItemPosition);
+                return newItem.isSameAs(oldItem);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(oldItemPosition);
+                Item newItem = section.getItem(newItemPosition);
+                return newItem.equals(oldItem);
+            }
+        });
+
+        super.removeAll(groups);
+        children.clear();
+        children.addAll(groups);
+        super.addAll(groups);
+        diffResult.dispatchUpdatesTo(listUpdateCallback);
+    }
+
+    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
+        @Override
+        public void onInserted(int position, int count) {
+            notifyItemRangeInserted(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            notifyItemRangeRemoved(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            notifyItemMoved(fromPosition, toPosition);
+        }
+
+        @Override
+        public void onChanged(int position, int count, Object payload) {
+            notifyItemRangeChanged(position, count);
+        }
+    };
 
     /**
      * Optional. Set a placeholder for when the section's body is empty.

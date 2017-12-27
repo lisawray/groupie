@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Hold a reference to the updating group, so we can, well, update it
-    private var updatingGroup = UpdatingGroup()
+    private var updatingGroup = Section()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
