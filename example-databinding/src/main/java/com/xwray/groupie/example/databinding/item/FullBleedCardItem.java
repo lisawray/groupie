@@ -8,6 +8,6 @@ public class FullBleedCardItem extends CardItem {
 
     public FullBleedCardItem(@ColorRes int colorRes) {
         super(colorRes);
-        getExtras().put(MainActivity.INSET_TYPE_KEY, MainActivity.INSET);
+        getExtras().remove(MainActivity.INSET_TYPE_KEY);
     }
 }
