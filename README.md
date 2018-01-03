@@ -87,7 +87,7 @@ class SongItem constructor(private val song: Song) : Item<ViewHolder>() {
     }
 }
 ```
-If you're converting existing ViewHolders, you can leave them as they are by making an `Item<MyViewHolder>`. 
+If you're converting existing ViewHolders, you can leave them as they are by making an `Item<MyViewHolder>` where `MyViewHolder` extends Groupie's `ViewHolder`. 
 
 ### Item with data binding:
 
@@ -117,7 +117,7 @@ If you're converting existing ViewHolders, you can reference any named views (e.
     }
 ```
 
-You can also mix and match `BindableItem` and other `Items` in the adapter, so you can leave legacy viewholders as they are by making an `Item<MyExistingViewHolder>`.
+You can also mix and match `BindableItem` and other `Items` in the adapter, so you can leave legacy viewholders as they are by making an `Item<MyExistingViewHolder>`.  Just switch `MyExistingViewHolder` to extend Groupie's `ViewHolder` rather than `RecyclerView.ViewHolder`.
 
 ### Note: 
 
