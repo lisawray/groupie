@@ -56,13 +56,12 @@ section.removeHeader(); // results in a remove event for 1 item in the adapter, 
 ```
     
 There are a few simple implementations of Groups within the library:
-- `Section`, a list of body content with an optional header group and footer group.  It supports diffing 
+- `Section`, a list of body content with an optional header group and footer group.  It supports diffing and animating moves, updates and other changes
 - `ExpandableGroup`, a single parent group with a list of body content that can be toggled hidden or shown.
-- `UpdatingGroup`, a list of items which can diff its previous and new contents and animate moves, updates and other changes 
     
-Groups are flexible and composable.  They can be combined and nested to arbitrary depth.  
+Groupie tries not to assume what features your groups require.  Instead, groups are flexible and composable.  They can be combined and nested to arbitrary depth.  
     
-Life is messy, so groups are designed so that making new ones and defining their behavior is easy. You should make many small, simple, custom groups as the need strikes you.
+Life (and mobile design) is complicated, so groups are designed so that making new ones and defining their behavior is easy. You should make many small, simple, custom groups as the need strikes you.
 
 You can implement the `Group` interface directly if you want.  However, in most cases, you should extend `Section` or the base implementation, `NestedGroup`.  Section supports common RV paradigms like diffing, headers, footers, and placeholders.  NestedGroup provides support for arbitrary nesting of groups, registering/unregistering listeners, and fine-grained change notifications to support animations and updating the adapter.
     
@@ -220,13 +219,6 @@ Contributions you say?  Yes please!
 - Screenshots are also a huge help if the problem is visual.
 ### Send a pull request!
 - If you're fixing a bug, please add a failing test or code that can reproduce the issue.
-
-# Notes
-
-Pre-release versions of groupie had a different package name.  The last working build was:
-```gradle
-compile 'com.genius:groupie:0.7.0'
-```
 
 
 If you try it out, I'd love to know what you think. Please hit up Lisa at [first][last]@gmail.com or on Twitter at [@lisawrayz](https://twitter.com/lisawrayz).
