@@ -219,7 +219,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         notifyItemRangeRemoved(itemCountBeforeGroup, group.getItemCount());
     }
 
-    public void add(@NonNull int index, Group group) {
+    public void add(int index, @NonNull Group group) {
         if (group == null) throw new RuntimeException("Group cannot be null");
         group.registerGroupDataObserver(this);
         groups.add(index, group);
