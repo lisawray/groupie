@@ -74,9 +74,11 @@ Groupie abstracts away the complexity of multiple item view types.  Each Item de
 The `Item` class gives you simple callbacks to bind your model object to the generated fields.  Because of Kotlin Android extensions, there's no need to write a view holder.
 
 ```kotlin
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.song.*
 
-class SongItem constructor(private val song: Song) : Item<ViewHolder>() {
+class SongItem constructor(private val song: Song) : Item() {
 
     override fun getLayout() = R.layout.song
 
@@ -86,7 +88,7 @@ class SongItem constructor(private val song: Song) : Item<ViewHolder>() {
     }
 }
 ```
-If you're converting existing ViewHolders, you can leave them as they are by making an `Item<MyViewHolder>` where `MyViewHolder` extends Groupie's `ViewHolder`. 
+If you're converting existing ViewHolders, you can leave them as they are by making an `Item<MyViewHolder>` where `MyViewHolder` extends Groupie's `ViewHolder` (and change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.ViewHolder`). 
 
 ### Item with data binding:
 
@@ -150,8 +152,9 @@ androidExtensions {
 }
 
 dependencies {
-    compile 'com.xwray:groupie:2.0.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.xwray:groupie:2.0.0'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.0'
 }
 ```
 
