@@ -169,7 +169,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
     public void clear() {
         for (Group group : groups) {
-            group.registerGroupDataObserver(null);
+            group.unregisterGroupDataObserver(this);
         }
         groups.clear();
         notifyDataSetChanged();
@@ -214,12 +214,12 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
     private void remove(int position, @NonNull Group group) {
         int itemCountBeforeGroup = getItemCountBeforeGroup(position);
-        group.registerGroupDataObserver(null);
+        group.unregisterGroupDataObserver(this);
         groups.remove(position);
         notifyItemRangeRemoved(itemCountBeforeGroup, group.getItemCount());
     }
 
-    public void add(@NonNull int index, Group group) {
+    public void add(int index, @NonNull Group group) {
         if (group == null) throw new RuntimeException("Group cannot be null");
         group.registerGroupDataObserver(this);
         groups.add(index, group);
