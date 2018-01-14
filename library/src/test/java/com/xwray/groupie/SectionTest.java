@@ -738,4 +738,21 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(group, 0, 1);
         verify(groupAdapter).onItemRangeInserted(group, 0, 1);
     }
+
+    @Test
+    public void updateWithANestedGroupsNotifiesRemoveAndAdd() {
+        Item oldItem = new ContentUpdatingItem(1, "contents");
+
+        Section group = new Section();
+        group.update(Collections.singletonList(oldItem));
+        group.registerGroupDataObserver(groupAdapter);
+
+        Item newItem = new ContentUpdatingItem(2, "new contents");
+        Section newGroup = new Section();
+        newGroup.add(newItem);
+        group.update(Collections.singletonList(newGroup));
+
+        verify(groupAdapter).onItemRangeRemoved(group, 0, 1);
+        verify(groupAdapter).onItemRangeInserted(group, 0, 1);
+    }
 }
