@@ -155,7 +155,7 @@ public class Section extends NestedGroup {
             }
         });
 
-        super.removeAll(groups);
+        super.removeAll(children);
         children.clear();
         children.addAll(groups);
         super.addAll(groups);
