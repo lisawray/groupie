@@ -129,10 +129,11 @@ public class Section extends NestedGroup {
         // Dummy section to give us access to the flattened list of items in the new groups.
         final Section section = new Section(groups);
 
+        final int headerCount = getHeaderCount();
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
-                return getItemCount();
+                return getBodyItemCount();
             }
 
             @Override
@@ -142,14 +143,14 @@ public class Section extends NestedGroup {
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
+                Item oldItem = getItem(headerCount + oldItemPosition);
                 Item newItem = section.getItem(newItemPosition);
                 return newItem.isSameAs(oldItem);
             }
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
+                Item oldItem = getItem(headerCount + oldItemPosition);
                 Item newItem = section.getItem(newItemPosition);
                 return newItem.equals(oldItem);
             }
@@ -159,30 +160,31 @@ public class Section extends NestedGroup {
         children.clear();
         children.addAll(groups);
         super.addAll(groups);
-        diffResult.dispatchUpdatesTo(listUpdateCallback);
+
+        ListUpdateCallback callback = new ListUpdateCallback() {
+            @Override
+            public void onInserted(int position, int count) {
+                notifyItemRangeInserted(headerCount + position, count);
+            }
+
+            @Override
+            public void onRemoved(int position, int count) {
+                notifyItemRangeRemoved(headerCount + position, count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                notifyItemMoved(headerCount + fromPosition, headerCount + toPosition);
+            }
+
+            @Override
+            public void onChanged(int position, int count, Object payload) {
+                notifyItemRangeChanged(headerCount + position, count);
+            }
+        };
+
+        diffResult.dispatchUpdatesTo(callback);
     }
-
-    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
-        @Override
-        public void onInserted(int position, int count) {
-            notifyItemRangeInserted(position, count);
-        }
-
-        @Override
-        public void onRemoved(int position, int count) {
-            notifyItemRangeRemoved(position, count);
-        }
-
-        @Override
-        public void onMoved(int fromPosition, int toPosition) {
-            notifyItemMoved(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onChanged(int position, int count, Object payload) {
-            notifyItemRangeChanged(position, count);
-        }
-    };
 
     /**
      * Optional. Set a placeholder for when the section's body is empty.
