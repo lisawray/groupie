@@ -5,7 +5,7 @@ buildscript {
     ext.targetSdkVersion = 27
     ext.compileSdkVersion = 27
     ext.buildToolsVersion = '27.0.3'
-    ext.minSdkVersion = 17
+    ext.minSdkVersion = 14
     ext.novodaBintrayVersion = '0.8.0'
     ext.supportLibVersion = '27.0.2'
 
