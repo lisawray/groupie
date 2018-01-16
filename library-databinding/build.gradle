@@ -38,14 +38,14 @@ dependencies {
     provided('com.android.databinding:baseLibrary:2.3.3') {
         transitive = false
     }
-    compileOnly('com.xwray:groupie:2.0.0')
+    compileOnly('com.xwray:groupie:2.0.2')
 }
 
 publish {
     userOrg = 'lisawray'
     groupId = 'com.xwray'
     artifactId = 'groupie-databinding'
-    publishVersion = '2.0.0'
+    publishVersion = '2.0.2'
     desc = 'Library for groups and multiple view types in a RecyclerView'
     website = 'https://github.com/lisawray/groupie'
 }
