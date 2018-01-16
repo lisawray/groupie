@@ -669,14 +669,15 @@ public class SectionTest {
         children.add(new AlwaysUpdatingItem(2));
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.registerGroupDataObserver(groupAdapter);
 
         group.update(children);
-        verify(groupAdapter).onItemRangeInserted(group, 0, 2);
+        verify(groupAdapter).onItemRangeInserted(group, 1, 2);
         verifyNoMoreInteractions(groupAdapter);
 
         group.update(children);
-        verify(groupAdapter).onItemRangeChanged(group, 0, 2);
+        verify(groupAdapter).onItemRangeChanged(group, 1, 2);
         verifyNoMoreInteractions(groupAdapter);
     }
 
@@ -687,12 +688,13 @@ public class SectionTest {
         children.add(item);
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.update(children);
         group.registerGroupDataObserver(groupAdapter);
 
         item.notifyChanged();
 
-        verify(groupAdapter).onItemChanged(group, 0);
+        verify(groupAdapter).onItemChanged(group, 1);
     }
 
     @Test
@@ -702,6 +704,7 @@ public class SectionTest {
         children.add(item);
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.update(children);
         group.registerGroupDataObserver(groupAdapter);
 
@@ -715,13 +718,14 @@ public class SectionTest {
         Item oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
         Item newItem = new ContentUpdatingItem(1, "new contents");
         group.update(Collections.singletonList(newItem));
 
-        verify(groupAdapter).onItemRangeChanged(group, 0, 1);
+        verify(groupAdapter).onItemRangeChanged(group, 1, 1);
     }
 
     @Test
@@ -729,14 +733,15 @@ public class SectionTest {
         Item oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
         Item newItem = new ContentUpdatingItem(2, "contents");
         group.update(Collections.singletonList(newItem));
 
-        verify(groupAdapter).onItemRangeRemoved(group, 0, 1);
-        verify(groupAdapter).onItemRangeInserted(group, 0, 1);
+        verify(groupAdapter).onItemRangeRemoved(group, 1, 1);
+        verify(groupAdapter).onItemRangeInserted(group, 1, 1);
     }
 
     @Test
@@ -744,6 +749,7 @@ public class SectionTest {
         Item oldItem = new ContentUpdatingItem(1, "contents");
 
         Section group = new Section();
+        group.setHeader(new DummyItem());
         group.update(Collections.singletonList(oldItem));
         group.registerGroupDataObserver(groupAdapter);
 
@@ -752,7 +758,7 @@ public class SectionTest {
         newGroup.add(newItem);
         group.update(Collections.singletonList(newGroup));
 
-        verify(groupAdapter).onItemRangeRemoved(group, 0, 1);
-        verify(groupAdapter).onItemRangeInserted(group, 0, 1);
+        verify(groupAdapter).onItemRangeRemoved(group, 1, 1);
+        verify(groupAdapter).onItemRangeInserted(group, 1, 1);
     }
 }
