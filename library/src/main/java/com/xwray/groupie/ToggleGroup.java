@@ -65,6 +65,18 @@ public class ToggleGroup extends NestedGroup {
     }
 
     @Override
+    public void remove(@NonNull final Group group) {
+        super.remove(group);
+        children.remove(group);
+    }
+
+    @Override
+    public void removeAll(@NonNull final Collection<? extends Group> groups) {
+        super.removeAll(groups);
+        children.removeAll(groups);
+    }
+
+    @Override
     @Nullable
     public Group getGroup(final int position) {
         if (position != 0) {
