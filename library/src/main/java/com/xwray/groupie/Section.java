@@ -133,9 +133,7 @@ public class Section extends NestedGroup {
         final int oldBodyItemCount = getItemCount(children);
         final int newBodyItemCount = section.getItemCount();
 
-        final DiffUtil.DiffResult diffResult;
-        if (oldBodyItemCount > 0 && newBodyItemCount > 0) {
-            diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
                     return oldBodyItemCount;
@@ -160,22 +158,14 @@ public class Section extends NestedGroup {
                     return newItem.equals(oldItem);
                 }
             });
-        } else {
-            diffResult = null;
-        }
 
         super.removeAll(children);
         children.clear();
         children.addAll(groups);
         super.addAll(groups);
-
-        if (diffResult != null) {
-            diffResult.dispatchUpdatesTo(listUpdateCallback);
-        } else if (newBodyItemCount == 0) {
-            notifyItemRangeRemoved(headerItemCount, oldBodyItemCount);
-            refreshEmptyState();
-        } else if (oldBodyItemCount == 0) {
-            notifyItemRangeInserted(headerItemCount, newBodyItemCount);
+        
+        diffResult.dispatchUpdatesTo(listUpdateCallback);
+        if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
             refreshEmptyState();
         }
     }
