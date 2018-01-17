@@ -761,4 +761,40 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeRemoved(group, 1, 1);
         verify(groupAdapter).onItemRangeInserted(group, 1, 1);
     }
+
+    @Test
+    public void updateGroupWithPlaceholderNotifiesRemovePlaceholderAndInsert() {
+        List<Item> children = new ArrayList<Item>();
+        children.add(new AlwaysUpdatingItem(1));
+        children.add(new AlwaysUpdatingItem(2));
+
+        Section group = new Section();
+        group.setHeader(new DummyItem());
+        group.setPlaceholder(new DummyItem());
+        group.registerGroupDataObserver(groupAdapter);
+
+        group.update(children);
+        verify(groupAdapter).onItemRangeRemoved(group, 1, 1);
+        verify(groupAdapter).onItemRangeInserted(group, 1, 2);
+        verifyNoMoreInteractions(groupAdapter);
+    }
+
+    @Test
+    public void updateGroupToEmptyWithPlaceholderNotifiesRemoveAndInsertPlaceholder() {
+        List<Item> children = new ArrayList<Item>();
+        children.add(new AlwaysUpdatingItem(1));
+        children.add(new AlwaysUpdatingItem(2));
+
+        Section group = new Section();
+        group.setHeader(new DummyItem());
+        group.setPlaceholder(new DummyItem());
+        group.update(children);
+        group.registerGroupDataObserver(groupAdapter);
+
+        group.update(new ArrayList<Group>());
+
+        verify(groupAdapter).onItemRangeRemoved(group, 1, 2);
+        verify(groupAdapter).onItemRangeInserted(group, 1, 1);
+        verifyNoMoreInteractions(groupAdapter);
+    }
 }
