@@ -16,4 +16,5 @@
     <string name="show_offsets">Show offsets</string>
     <string name="update_with_payload">Update with payload</string>
     <string name="update_with_payload_subtitle">These items demonstrate robust, efficient partial asynchronous updates</string>
+    <string name="toggle_group">Toggleable group</string>
 </resources>

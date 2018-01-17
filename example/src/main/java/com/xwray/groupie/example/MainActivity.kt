@@ -2,6 +2,7 @@ package com.xwray.groupie.example
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
@@ -165,8 +166,45 @@ class MainActivity : AppCompatActivity() {
             groupAdapter.add(this)
         }
 
+        // Just a header item for the ToggleGroup
+        HeaderItem(R.string.toggle_group).apply {
+            groupAdapter.add(this)
+        }
+
+        // Toggleable item
+        ToggleGroup(CardItem(rainbow200[0], "0")).apply {
+            add(CardItem(rainbow200[1], "1"))
+            add(CardItem(rainbow200[2], "2"))
+            add(CardItem(rainbow200[3], "3"))
+            setVisible(0)
+            ToggleAsyncTask(this, 4, 0).execute()
+            groupAdapter.add(this)
+        }
+
         // Infinite loading section
         groupAdapter.add(infiniteLoadingSection)
+    }
+
+    class ToggleAsyncTask(
+            private val toggleGroup: ToggleGroup,
+            private var itemCount: Int,
+            private var currentVisibleIndex: Int
+    ) : AsyncTask<Void, Void, Void>() {
+
+        override fun doInBackground(vararg params: Void?): Void? {
+            Thread.sleep(2500)
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            // Change the visible group
+            if (currentVisibleIndex >= itemCount - 1) currentVisibleIndex = 0 else currentVisibleIndex += 1
+            toggleGroup.setVisible(currentVisibleIndex)
+
+            // Loop
+            ToggleAsyncTask(toggleGroup, itemCount, currentVisibleIndex).execute()
+        }
+
     }
 
     private fun makeColumnGroup(): ColumnGroup {
