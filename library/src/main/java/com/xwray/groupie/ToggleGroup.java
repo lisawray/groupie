@@ -3,6 +3,7 @@ package com.xwray.groupie;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public class ToggleGroup extends NestedGroup {
 
     private final List<Group> children = new ArrayList<>();
 
+    public ToggleGroup() {
+
+    }
+
     public ToggleGroup(final Group firstGroup) {
         super.add(firstGroup);
         children.add(firstGroup);
@@ -27,6 +32,36 @@ public class ToggleGroup extends NestedGroup {
     public void add(@NonNull final Group group) {
         super.add(group);
         children.add(group);
+    }
+
+    /**
+     * This will ignore the position param.
+     *
+     * Use {@link #add(Group)} instead.
+     */
+    @Override
+    @Deprecated
+    public void add(final int position, @NonNull final Group group) {
+        super.add(position, group);
+        children.add(group);
+    }
+
+    @Override
+    public void addAll(@NonNull final Collection<? extends Group> groups) {
+        super.addAll(groups);
+        children.addAll(groups);
+    }
+
+    /**
+     * This will ignore the position param.
+     *
+     * Use {@link #addAll(Collection)} instead.
+     */
+    @Override
+    @Deprecated
+    public void addAll(final int position, @NonNull final Collection<? extends Group> groups) {
+        super.addAll(position, groups);
+        children.addAll(groups);
     }
 
     @Override

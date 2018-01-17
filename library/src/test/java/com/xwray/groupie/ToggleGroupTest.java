@@ -2,6 +2,7 @@ package com.xwray.groupie;
 
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
 import org.junit.*;
 import org.junit.runner.*;
 import org.mockito.*;
@@ -54,4 +55,25 @@ public class ToggleGroupTest {
         verify(groupAdapter, times(4)).onItemRangeChanged(any(Group.class), eq(0), eq(1));
     }
 
+    @Test
+    public void testEmptyConstructorWithAddAll() throws Exception {
+        final ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.registerGroupDataObserver(groupAdapter);
+        toggleGroup.addAll(Arrays.asList(firstItem, secondItem));
+
+        verify(groupAdapter, never()).onItemRangeInserted(any(Group.class), anyInt(), anyInt());
+        verify(groupAdapter, never()).onItemRangeChanged(any(Group.class), anyInt(), anyInt());
+        verify(groupAdapter, never()).onItemRangeRemoved(any(Group.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testEmptyConstructorWithAddAll_SetVisibility_ShouldInsertInAdapter() throws Exception {
+        final ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.registerGroupDataObserver(groupAdapter);
+        toggleGroup.addAll(Arrays.asList(firstItem, secondItem));
+
+        toggleGroup.setVisible(0);
+
+        verify(groupAdapter, never()).onItemRangeChanged(any(Group.class), eq(0), eq(1));
+    }
 }
