@@ -129,58 +129,67 @@ public class Section extends NestedGroup {
         // Dummy section to give us access to the flattened list of items in the new groups.
         final Section section = new Section(groups);
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return getItemCount();
-            }
+        final int headerItemCount = getHeaderItemCount();
+        final int oldBodyItemCount = getItemCount(children);
+        final int newBodyItemCount = section.getItemCount();
 
-            @Override
-            public int getNewListSize() {
-                return section.getItemCount();
-            }
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return oldBodyItemCount;
+                }
 
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
-                Item newItem = section.getItem(newItemPosition);
-                return newItem.isSameAs(oldItem);
-            }
+                @Override
+                public int getNewListSize() {
+                    return newBodyItemCount;
+                }
 
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
-                Item newItem = section.getItem(newItemPosition);
-                return newItem.equals(oldItem);
-            }
-        });
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    Item oldItem = getItem(headerItemCount + oldItemPosition);
+                    Item newItem = section.getItem(newItemPosition);
+                    return newItem.isSameAs(oldItem);
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    Item oldItem = getItem(headerItemCount + oldItemPosition);
+                    Item newItem = section.getItem(newItemPosition);
+                    return newItem.equals(oldItem);
+                }
+            });
 
         super.removeAll(children);
         children.clear();
         children.addAll(groups);
         super.addAll(groups);
+        
         diffResult.dispatchUpdatesTo(listUpdateCallback);
+        if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
+            refreshEmptyState();
+        }
     }
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override
         public void onInserted(int position, int count) {
-            notifyItemRangeInserted(position, count);
+            notifyItemRangeInserted(getHeaderItemCount() + position, count);
         }
 
         @Override
         public void onRemoved(int position, int count) {
-            notifyItemRangeRemoved(position, count);
+            notifyItemRangeRemoved(getHeaderItemCount() + position, count);
         }
 
         @Override
         public void onMoved(int fromPosition, int toPosition) {
-            notifyItemMoved(fromPosition, toPosition);
+            final int headerItemCount = getHeaderItemCount();
+            notifyItemMoved(headerItemCount + fromPosition, headerItemCount + toPosition);
         }
 
         @Override
         public void onChanged(int position, int count, Object payload) {
-            notifyItemRangeChanged(position, count);
+            notifyItemRangeChanged(getHeaderItemCount() + position, count);
         }
     };
 
