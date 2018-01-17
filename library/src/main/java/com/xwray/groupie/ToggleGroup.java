@@ -5,6 +5,12 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Group which can hold multiple {@link Group}s but can only be display one.
+ *
+ * To change the current visible icon call {@link ToggleGroup#setVisible(int)} with the index
+ * you want to display.
+ */
 public class ToggleGroup extends NestedGroup {
 
     private int visibleIndex = 0;
