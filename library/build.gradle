@@ -41,7 +41,7 @@ publish {
     userOrg = 'lisawray'
     groupId = 'com.xwray'
     artifactId = 'groupie'
-    publishVersion = '2.0.2'
+    publishVersion = '2.0.3'
     desc = 'Library for groups and multiple view types in a RecyclerView'
     website = 'https://github.com/lisawray/groupie'
 }
