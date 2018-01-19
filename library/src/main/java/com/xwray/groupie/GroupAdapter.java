@@ -295,6 +295,11 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     }
 
     @Override
+    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload) {
+        notifyItemRangeChanged(getAdapterPosition(group) + positionStart, itemCount, payload);
+    }
+
+    @Override
     public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
         notifyItemRangeInserted(getAdapterPosition(group) + positionStart, itemCount);
     }

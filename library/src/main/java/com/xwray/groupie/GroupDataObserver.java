@@ -15,6 +15,8 @@ public interface GroupDataObserver {
 
     void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount);
 
+    void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload);
+
     void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount);
 
     void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount);

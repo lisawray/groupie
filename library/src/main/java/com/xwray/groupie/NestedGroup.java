@@ -183,6 +183,12 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
 
     @CallSuper
     @Override
+    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload) {
+        observable.onItemRangeChanged(this, getItemCountBeforeGroup(group) + positionStart, itemCount, payload);
+    }
+
+    @CallSuper
+    @Override
     public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
         observable.onItemRangeInserted(this, getItemCountBeforeGroup(group) + positionStart, itemCount);
     }
@@ -199,7 +205,6 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         int groupPosition = getItemCountBeforeGroup(group);
         observable.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
     }
-
 
     /**
      * A group should use this to notify that there is a change in itself.
@@ -252,6 +257,11 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         observable.onItemRangeChanged(this, positionStart, itemCount);
     }
 
+    @CallSuper
+    public void notifyItemRangeChanged(int positionStart, int itemCount, Object payload) {
+        observable.onItemRangeChanged(this, positionStart, itemCount, payload);
+    }
+
     /**
      * Iterate in reverse order in case any observer decides to remove themself from the list
      * in their callback
@@ -262,6 +272,12 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         void onItemRangeChanged(Group group, int positionStart, int itemCount) {
             for (int i = observers.size() - 1; i >= 0; i--) {
                 observers.get(i).onItemRangeChanged(group, positionStart, itemCount);
+            }
+        }
+
+        void onItemRangeChanged(Group group, int positionStart, int itemCount, Object payload) {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onItemRangeChanged(group, positionStart, itemCount, payload);
             }
         }
 

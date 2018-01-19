@@ -157,7 +157,15 @@ public class Section extends NestedGroup {
                     Item newItem = section.getItem(newItemPosition);
                     return newItem.equals(oldItem);
                 }
-            });
+
+            @Nullable
+            @Override
+            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(headerItemCount + oldItemPosition);
+                Item newItem = section.getItem(newItemPosition);
+                return oldItem.getChangePayload(newItem);
+            }
+        });
 
         super.removeAll(children);
         children.clear();

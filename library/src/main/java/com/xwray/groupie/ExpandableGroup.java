@@ -150,6 +150,13 @@ public class ExpandableGroup extends NestedGroup {
     }
 
     @Override
+    public void onItemRangeChanged(@NonNull Group group, int positionStart, int itemCount, Object payload) {
+        if (dispatchChildChanges(group)) {
+            super.onItemRangeChanged(group, positionStart, itemCount, payload);
+        }
+    }
+
+    @Override
     public void onItemRangeInserted(@NonNull Group group, int positionStart, int itemCount) {
         if (dispatchChildChanges(group)) {
             super.onItemRangeInserted(group, positionStart, itemCount);
