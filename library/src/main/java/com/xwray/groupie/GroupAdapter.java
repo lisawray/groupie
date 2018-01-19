@@ -3,6 +3,8 @@ package com.xwray.groupie;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,6 +50,75 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     public int getSpanCount() {
         return spanCount;
     }
+
+    public void update(@NonNull final Collection<? extends Group> newGroups) {
+        final int oldBodyItemCount = getItemCount();
+        final int newBodyItemCount = getItemCount(newGroups);
+
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldBodyItemCount;
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newBodyItemCount;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(oldItemPosition);
+                Item newItem = getItem(newGroups, newItemPosition);
+                return newItem.isSameAs(oldItem);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(oldItemPosition);
+                Item newItem = getItem(newGroups, newItemPosition);
+                return newItem.equals(oldItem);
+            }
+
+            @Nullable
+            @Override
+            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+                Item oldItem = getItem(oldItemPosition);
+                Item newItem = getItem(newGroups, newItemPosition);
+                return oldItem.getChangePayload(newItem);
+            }
+        });
+
+        for (Group group : groups) {
+            group.unregisterGroupDataObserver(this);
+        }
+        groups.clear();
+        groups.addAll(newGroups);
+
+        diffResult.dispatchUpdatesTo(listUpdateCallback);
+    }
+
+    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
+        @Override
+        public void onInserted(int position, int count) {
+            notifyItemRangeInserted(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            notifyItemRangeRemoved(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            notifyItemMoved(fromPosition, toPosition);
+        }
+
+        @Override
+        public void onChanged(int position, int count, Object payload) {
+            notifyItemRangeChanged(position, count, payload);
+        }
+    };
 
     /**
      * Optionally register an {@link OnItemClickListener} that listens to click at the root of
@@ -113,7 +184,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return holder.getItem();
     }
 
-    public @NonNull Item getItem(int position) {
+    private static Item getItem(Collection<? extends Group> groups, int position) {
         int count = 0;
         for (Group group : groups) {
             if (position < count + group.getItemCount()) {
@@ -124,6 +195,10 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         }
         throw new IndexOutOfBoundsException("Requested position " + position + "in group adapter " +
                 "but there are only " + count + " items");
+    }
+
+    public @NonNull Item getItem(int position) {
+        return getItem(groups, position);
     }
 
     public int getAdapterPosition(@NonNull Item contentItem) {
@@ -151,13 +226,17 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return position;
     }
 
-    @Override
-    public int getItemCount() {
+    private static int getItemCount(Collection<? extends Group> groups) {
         int count = 0;
         for (Group group : groups) {
             count += group.getItemCount();
         }
         return count;
+    }
+
+    @Override
+    public int getItemCount() {
+        return getItemCount(groups);
     }
 
     public int getItemCount(int groupIndex) {
@@ -205,6 +284,12 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         if (group == null) throw new RuntimeException("Group cannot be null");
         int position = groups.indexOf(group);
         remove(position, group);
+    }
+
+    public void removeAll(@NonNull Collection<? extends Group> groups) {
+        for (Group group : groups) {
+            remove(group);
+        }
     }
     
     public void removeGroup(int index) {

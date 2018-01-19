@@ -197,7 +197,7 @@ public class Section extends NestedGroup {
 
         @Override
         public void onChanged(int position, int count, Object payload) {
-            notifyItemRangeChanged(getHeaderItemCount() + position, count);
+            notifyItemRangeChanged(getHeaderItemCount() + position, count, payload);
         }
     };
 
