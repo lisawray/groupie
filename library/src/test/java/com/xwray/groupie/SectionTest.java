@@ -677,7 +677,7 @@ public class SectionTest {
         verifyNoMoreInteractions(groupAdapter);
 
         group.update(children);
-        verify(groupAdapter).onItemRangeChanged(group, 1, 2);
+        verify(groupAdapter).onItemRangeChanged(group, 1, 2, null);
         verifyNoMoreInteractions(groupAdapter);
     }
 
@@ -725,7 +725,7 @@ public class SectionTest {
         Item newItem = new ContentUpdatingItem(1, "new contents");
         group.update(Collections.singletonList(newItem));
 
-        verify(groupAdapter).onItemRangeChanged(group, 1, 1);
+        verify(groupAdapter).onItemRangeChanged(group, 1, 1, null);
     }
 
     @Test
