@@ -92,8 +92,13 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         for (Group group : groups) {
             group.unregisterGroupDataObserver(this);
         }
+        
         groups.clear();
         groups.addAll(newGroups);
+
+        for (Group group : newGroups) {
+            group.registerGroupDataObserver(this);
+        }
 
         diffResult.dispatchUpdatesTo(listUpdateCallback);
     }
