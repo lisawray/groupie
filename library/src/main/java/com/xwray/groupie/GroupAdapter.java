@@ -52,7 +52,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     }
 
     public void update(@NonNull final Collection<? extends Group> newGroups) {
-        final int oldBodyItemCount = getItemCount();
+        final List<Group> oldGroups = new ArrayList<>(groups);
+        final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
@@ -68,14 +69,14 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
+                Item oldItem = getItem(oldGroups, oldItemPosition);
                 Item newItem = getItem(newGroups, newItemPosition);
                 return newItem.isSameAs(oldItem);
             }
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
+                Item oldItem = getItem(oldGroups, oldItemPosition);
                 Item newItem = getItem(newGroups, newItemPosition);
                 return newItem.equals(oldItem);
             }
@@ -83,7 +84,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
             @Nullable
             @Override
             public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldItemPosition);
+                Item oldItem = getItem(oldGroups, oldItemPosition);
                 Item newItem = getItem(newGroups, newItemPosition);
                 return oldItem.getChangePayload(newItem);
             }
@@ -92,7 +93,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         for (Group group : groups) {
             group.unregisterGroupDataObserver(this);
         }
-        
+
         groups.clear();
         groups.addAll(newGroups);
 

@@ -7,6 +7,7 @@ import android.support.v7.util.ListUpdateCallback;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A group which has a list of contents and an optional header and footer.
@@ -123,15 +124,13 @@ public class Section extends NestedGroup {
      * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
      *
-     * @param groups The new content of the section
+     * @param newBodyGroups The new content of the section
      */
-    public void update(@NonNull final Collection<? extends Group> groups) {
-        // Dummy section to give us access to the flattened list of items in the new groups.
-        final Section section = new Section(groups);
+    public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
 
-        final int headerItemCount = getHeaderItemCount();
-        final int oldBodyItemCount = getItemCount(children);
-        final int newBodyItemCount = section.getItemCount();
+        final List<Group> oldBodyGroups = new ArrayList<>(children);
+        final int oldBodyItemCount = getItemCount(oldBodyGroups);
+        final int newBodyItemCount = getItemCount(newBodyGroups);
 
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
@@ -146,31 +145,31 @@ public class Section extends NestedGroup {
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(headerItemCount + oldItemPosition);
-                    Item newItem = section.getItem(newItemPosition);
+                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                    Item newItem = getItem(newBodyGroups, newItemPosition);
                     return newItem.isSameAs(oldItem);
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(headerItemCount + oldItemPosition);
-                    Item newItem = section.getItem(newItemPosition);
+                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                    Item newItem = getItem(newBodyGroups, newItemPosition);
                     return newItem.equals(oldItem);
                 }
 
             @Nullable
             @Override
             public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(headerItemCount + oldItemPosition);
-                Item newItem = section.getItem(newItemPosition);
+                Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                Item newItem = getItem(newBodyGroups, newItemPosition);
                 return oldItem.getChangePayload(newItem);
             }
         });
 
         super.removeAll(children);
         children.clear();
-        children.addAll(groups);
-        super.addAll(groups);
+        children.addAll(newBodyGroups);
+        super.addAll(newBodyGroups);
         
         diffResult.dispatchUpdatesTo(listUpdateCallback);
         if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
@@ -200,6 +199,21 @@ public class Section extends NestedGroup {
             notifyItemRangeChanged(getHeaderItemCount() + position, count, payload);
         }
     };
+
+    private static Item getItem(Collection<? extends Group> groups, int position) {
+        int previousPosition = 0;
+
+        for (Group group : groups) {
+            int size = group.getItemCount();
+            if (size + previousPosition > position) {
+                return group.getItem(position - previousPosition);
+            }
+            previousPosition += size;
+        }
+
+        throw new IndexOutOfBoundsException("Wanted item at " + position + " but there are only "
+                + previousPosition + " items");
+    }
 
     /**
      * Optional. Set a placeholder for when the section's body is empty.
