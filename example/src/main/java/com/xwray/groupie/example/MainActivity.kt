@@ -238,16 +238,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val onShuffleClicked = View.OnClickListener {
-
-
-        handler.postDelayed({
+        for (i in 0..100) { //only the last shuffle will be update
             with(ArrayList(updatableItems)) {
                 Collections.shuffle(this)
                 updatingGroup.update(this)
             }
-        }, Random().nextInt(3) * 10L)
-
-
+        }
     }
 
     override fun onDestroy() {
