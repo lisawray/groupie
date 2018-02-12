@@ -66,7 +66,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
+//                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
                 final int oldBodyItemCount = getItemCount(oldGroups);
                 final int newBodyItemCount = getItemCount(newGroups);
 
@@ -108,7 +108,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
                     @Override
                     public void run() {
                         if (mMaxScheduledGeneration == runGeneration) {
-                            Log.d("dispatch update", runGeneration+" ");
+//                            Log.d("dispatch update", runGeneration+" ");
                             dispatchResult(newGroups, diffResult);
                         }
 

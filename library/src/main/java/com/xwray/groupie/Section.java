@@ -144,7 +144,7 @@ public class Section extends NestedGroup {
         ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
+//                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
                 final int oldBodyItemCount = getItemCount(oldBodyGroups);
                 final int newBodyItemCount = getItemCount(newBodyGroups);
 
@@ -187,7 +187,7 @@ public class Section extends NestedGroup {
                     @Override
                     public void run() {
                         if (mMaxScheduledGeneration == runGeneration) {
-                            Log.d("dispatch update", runGeneration+" ");
+//                            Log.d("dispatch update", runGeneration+" ");
                             dispatchResult(newBodyGroups, diffResult);
                             if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
                                 refreshEmptyState();
