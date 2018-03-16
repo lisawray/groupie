@@ -225,6 +225,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      */
     public int getAdapterPosition(@NonNull Group group) {
         int index = groups.indexOf(group);
+        if (index == -1) return -1;
         int position = 0;
         for (int i = 0; i < index; i++) {
             position += groups.get(i).getItemCount();
