@@ -8,7 +8,7 @@ buildscript {
     ext.buildToolsVersion = '27.0.3'
     ext.minSdkVersion = 14
     ext.novodaBintrayVersion = '0.8.0'
-    ext.supportLibVersion = '27.0.2'
+    ext.supportLibVersion = '27.1.1'
 
     repositories {
         jcenter()
