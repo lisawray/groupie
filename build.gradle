@@ -2,6 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.31'
+    ext.android_plugin_version = '3.1.1'
     ext.targetSdkVersion = 27
     ext.compileSdkVersion = 27
     ext.buildToolsVersion = '27.0.3'
@@ -14,7 +15,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "com.android.tools.build:gradle:$android_plugin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
