@@ -32,9 +32,9 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:recyclerview-v7:$supportLibVersion"
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    implementation "com.android.support:recyclerview-v7:$supportLibVersion"
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 }
 
 publish {
