@@ -33,8 +33,8 @@ android {
 
 dependencies {
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
 }
 
 publish {

@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
     ext.kotlin_version = '1.2.31'
     ext.android_plugin_version = '3.1.1'
     ext.targetSdkVersion = 27
@@ -9,6 +10,10 @@ buildscript {
     ext.minSdkVersion = 14
     ext.novodaBintrayVersion = '0.8.0'
     ext.supportLibVersion = '27.1.1'
+    ext.databinding_version = '3.1.1'
+
+    ext.junit_version = '4.12'
+    ext.mockito_version = '2.16.0'
 
     repositories {
         jcenter()
