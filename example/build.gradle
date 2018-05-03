@@ -18,7 +18,6 @@ androidExtensions {
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "com.xwray.groupie.example"
