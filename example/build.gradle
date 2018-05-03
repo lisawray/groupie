@@ -39,10 +39,10 @@ android {
 }
 
 dependencies {
-    compile project(':example-shared')
-    compile project(':library')
-    compile project(':library-kotlin-android-extensions')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation project(':example-shared')
+    implementation project(':library')
+    implementation project(':library-kotlin-android-extensions')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
 }
 repositories {
