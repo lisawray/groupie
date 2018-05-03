@@ -1,9 +1,11 @@
 package com.xwray.groupie;
 
+import android.arch.core.executor.ArchTaskExecutor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +31,10 @@ public class Section extends NestedGroup {
     private boolean isHeaderAndFooterVisible = true;
 
     private boolean isPlaceholderVisible = false;
+
+    // Max generation of currently scheduled runnable
+    private int mMaxScheduledGeneration;
+
 
     public Section() {
         this(null, new ArrayList<Group>());
@@ -128,54 +134,84 @@ public class Section extends NestedGroup {
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
 
+
+        // incrementing generation means any currently-running diffs are discarded when they finish
+        final int runGeneration = ++mMaxScheduledGeneration;
+
         final List<Group> oldBodyGroups = new ArrayList<>(children);
-        final int oldBodyItemCount = getItemCount(oldBodyGroups);
-        final int newBodyItemCount = getItemCount(newBodyGroups);
 
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return oldBodyItemCount;
-                }
 
-                @Override
-                public int getNewListSize() {
-                    return newBodyItemCount;
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                    Item newItem = getItem(newBodyGroups, newItemPosition);
-                    return newItem.isSameAs(oldItem);
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                    Item newItem = getItem(newBodyGroups, newItemPosition);
-                    return newItem.equals(oldItem);
-                }
-
-            @Nullable
+        ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
             @Override
-            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                Item newItem = getItem(newBodyGroups, newItemPosition);
-                return oldItem.getChangePayload(newItem);
+            public void run() {
+//                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
+                final int oldBodyItemCount = getItemCount(oldBodyGroups);
+                final int newBodyItemCount = getItemCount(newBodyGroups);
+
+                final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                    @Override
+                    public int getOldListSize() {
+                        return oldBodyItemCount;
+                    }
+
+                    @Override
+                    public int getNewListSize() {
+                        return newBodyItemCount;
+                    }
+
+                    @Override
+                    public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                        Item newItem = getItem(newBodyGroups, newItemPosition);
+                        return newItem.isSameAs(oldItem);
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                        Item newItem = getItem(newBodyGroups, newItemPosition);
+                        return newItem.equals(oldItem);
+                    }
+
+                    @Nullable
+                    @Override
+                    public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldBodyGroups, oldItemPosition);
+                        Item newItem = getItem(newBodyGroups, newItemPosition);
+                        return oldItem.getChangePayload(newItem);
+                    }
+                });
+
+
+                ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mMaxScheduledGeneration == runGeneration) {
+//                            Log.d("dispatch update", runGeneration+" ");
+                            dispatchResult(newBodyGroups, diffResult);
+                            if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
+                                refreshEmptyState();
+                            }
+                        }
+                    }
+                });
+
             }
         });
 
+
+    }
+
+    private void dispatchResult(@NonNull final Collection<? extends Group> newBodyGroups, final DiffUtil.DiffResult diffResult) {
         super.removeAll(children);
         children.clear();
         children.addAll(newBodyGroups);
         super.addAll(newBodyGroups);
-        
+
         diffResult.dispatchUpdatesTo(listUpdateCallback);
-        if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
-            refreshEmptyState();
-        }
+
     }
+
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override

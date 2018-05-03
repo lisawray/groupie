@@ -1,7 +1,10 @@
 package com.xwray.groupie;
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import junit.framework.Assert;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -27,6 +30,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SectionTest {
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
     GroupAdapter groupAdapter;

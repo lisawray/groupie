@@ -1,5 +1,7 @@
 package com.xwray.groupie;
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import junit.framework.Assert;
 
 import org.junit.Before;

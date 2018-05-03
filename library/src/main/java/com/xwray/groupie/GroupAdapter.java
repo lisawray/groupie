@@ -1,5 +1,6 @@
 package com.xwray.groupie;
 
+import android.arch.core.executor.ArchTaskExecutor;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     private OnItemLongClickListener onItemLongClickListener;
     private int spanCount = 1;
     private Item lastItemForViewTypeLookup;
+    // Max generation of currently scheduled runnable
+    private int mMaxScheduledGeneration;
 
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
         @Override
@@ -52,44 +56,76 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     }
 
     public void update(@NonNull final Collection<? extends Group> newGroups) {
+
+        // incrementing generation means any currently-running diffs are discarded when they finish
+        final int runGeneration = ++mMaxScheduledGeneration;
+
         final List<Group> oldGroups = new ArrayList<>(groups);
-        final int oldBodyItemCount = getItemCount(oldGroups);
-        final int newBodyItemCount = getItemCount(newGroups);
 
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return oldBodyItemCount;
-            }
 
+        ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
             @Override
-            public int getNewListSize() {
-                return newBodyItemCount;
-            }
+            public void run() {
+//                Log.d("Receive update", runGeneration+" - " + mMaxScheduledGeneration);
+                final int oldBodyItemCount = getItemCount(oldGroups);
+                final int newBodyItemCount = getItemCount(newGroups);
 
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
-                return newItem.isSameAs(oldItem);
-            }
+                final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                    @Override
+                    public int getOldListSize() {
+                        return oldBodyItemCount;
+                    }
 
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
-                return newItem.equals(oldItem);
-            }
+                    @Override
+                    public int getNewListSize() {
+                        return newBodyItemCount;
+                    }
 
-            @Nullable
-            @Override
-            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
-                return oldItem.getChangePayload(newItem);
+                    @Override
+                    public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldGroups, oldItemPosition);
+                        Item newItem = getItem(newGroups, newItemPosition);
+                        return newItem.isSameAs(oldItem);
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldGroups, oldItemPosition);
+                        Item newItem = getItem(newGroups, newItemPosition);
+                        return newItem.equals(oldItem);
+                    }
+
+                    @Nullable
+                    @Override
+                    public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+                        Item oldItem = getItem(oldGroups, oldItemPosition);
+                        Item newItem = getItem(newGroups, newItemPosition);
+                        return oldItem.getChangePayload(newItem);
+                    }
+                });
+
+                ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mMaxScheduledGeneration == runGeneration) {
+//                            Log.d("dispatch update", runGeneration+" ");
+                            dispatchResult(newGroups, diffResult);
+                        }
+
+                    }
+                });
+
             }
         });
 
+    }
+
+    /**
+     *
+     * @param newGroups
+     * @param diffResult
+     */
+    private void dispatchResult(@NonNull final Collection<? extends Group> newGroups, final DiffUtil.DiffResult diffResult) {
         for (Group group : groups) {
             group.unregisterGroupDataObserver(this);
         }
@@ -103,6 +139,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
         diffResult.dispatchUpdatesTo(listUpdateCallback);
     }
+
+
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override
@@ -186,7 +224,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return lastItemForViewTypeLookup.getLayout();
     }
 
-    public @NonNull Item getItem(@NonNull VH holder) {
+    public @NonNull
+    Item getItem(@NonNull VH holder) {
         return holder.getItem();
     }
 
@@ -203,7 +242,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
                 "but there are only " + count + " items");
     }
 
-    public @NonNull Item getItem(int position) {
+    public @NonNull
+    Item getItem(int position) {
         return getItem(groups, position);
     }
 
@@ -298,7 +338,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
             remove(group);
         }
     }
-    
+
     public void removeGroup(int index) {
         Group group = getGroup(index);
         remove(index, group);

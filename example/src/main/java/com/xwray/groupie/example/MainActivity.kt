@@ -83,6 +83,38 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
+
+            adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onChanged() {
+                    // You can also do this by forcing a change with payload
+                    recycler_view.post { recycler_view.invalidateItemDecorations() }
+                }
+
+                override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeRemoved(positionStart, itemCount)
+                    onChanged()
+                }
+
+                override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+//                    super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+                    onChanged()
+                }
+
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+//                    super.onItemRangeInserted(positionStart, itemCount)
+                    onChanged()
+                }
+
+                override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+//                    super.onItemRangeChanged(positionStart, itemCount)
+                    onChanged()
+                }
+
+                override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+                    super.onItemRangeChanged(positionStart, itemCount, payload)
+                    onChanged()
+                }
+            })
         }
 
         ItemTouchHelper(touchCallback).attachToRecyclerView(recycler_view)
@@ -206,13 +238,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val onShuffleClicked = View.OnClickListener {
-        with(ArrayList(updatableItems)) {
-            Collections.shuffle(this)
-            updatingGroup.update(this)
+        for (i in 0..100) { //only the last shuffle will be update
+            with(ArrayList(updatableItems)) {
+                Collections.shuffle(this)
+                updatingGroup.update(this)
+            }
         }
-
-        // You can also do this by forcing a change with payload
-        recycler_view.post { recycler_view.invalidateItemDecorations() }
     }
 
     override fun onDestroy() {
