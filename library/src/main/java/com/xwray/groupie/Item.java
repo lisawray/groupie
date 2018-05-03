@@ -187,6 +187,10 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
         return getId() == other.getId();
     }
 
+    public boolean areContentsTheSame(Item other) {
+        return equals(other);
+    }
+
     public Object getChangePayload(Item newItem) {
         return null;
     }

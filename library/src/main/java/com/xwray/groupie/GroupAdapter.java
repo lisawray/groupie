@@ -3,6 +3,9 @@ package com.xwray.groupie;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.recyclerview.extensions.AsyncDifferConfig;
+import android.support.v7.recyclerview.extensions.AsyncListDiffer;
+import android.support.v7.util.AdapterListUpdateCallback;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * An adapter that holds a list of Groups.
@@ -56,40 +61,34 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return oldBodyItemCount;
-            }
 
-            @Override
-            public int getNewListSize() {
-                return newBodyItemCount;
-            }
 
+        DiffUtil.ItemCallback<Item> itemCallback = new DiffUtil.ItemCallback<Item>() {
             @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
+            public boolean areItemsTheSame(Item oldItem, Item newItem) {
                 return newItem.isSameAs(oldItem);
             }
 
             @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
-                return newItem.equals(oldItem);
+            public boolean areContentsTheSame(Item oldItem, Item newItem) {
+                return newItem.areContentsTheSame(oldItem);
             }
 
-            @Nullable
             @Override
-            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldGroups, oldItemPosition);
-                Item newItem = getItem(newGroups, newItemPosition);
+            public Object getChangePayload(Item oldItem, Item newItem) {
                 return oldItem.getChangePayload(newItem);
             }
-        });
+        };
 
+        AsyncDifferConfig<Item> asyncDifferConfig = new AsyncDifferConfig.Builder<>(itemCallback).build();
+
+        AsyncListDiffer<Item> differ = new AsyncListDiffer<>(listUpdateCallback, asyncDifferConfig);
+        differ.submitList(new ArrayList<Item>());
+
+
+        // This stuff needs to happen only when the result is dispatched.  Is there a way to get
+        // a callback?  Can't just rely on getContentList() because updates might come from many
+        // places.
         for (Group group : groups) {
             group.unregisterGroupDataObserver(this);
         }
@@ -100,8 +99,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         for (Group group : newGroups) {
             group.registerGroupDataObserver(this);
         }
-
-        diffResult.dispatchUpdatesTo(listUpdateCallback);
+        //
     }
 
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
