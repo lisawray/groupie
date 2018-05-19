@@ -27,17 +27,9 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
     private AsyncDiffUtil.Callback asyncDiffUtilCallbacks = new AsyncDiffUtil.Callback() {
         @Override
-        public void onResultDispatched(Collection<? extends Group> newGroups) {
-            for (Group group : groups) {
-                group.unregisterGroupDataObserver(GroupAdapter.this);
-            }
-
+        public void onDispatchResult(Collection<? extends Group> newGroups) {
             groups.clear();
             groups.addAll(newGroups);
-
-            for (Group group : newGroups) {
-                group.registerGroupDataObserver(GroupAdapter.this);
-            }
         }
 
         @Override
