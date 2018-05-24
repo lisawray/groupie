@@ -25,7 +25,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     private int spanCount = 1;
     private Item lastItemForViewTypeLookup;
 
-    private AsyncDiffUtil.Callback asyncDiffUtilCallbacks = new AsyncDiffUtil.Callback() {
+    private AsyncDiffUtil.Callback diffUtilCallbacks = new AsyncDiffUtil.Callback() {
         @Override
         public void onDispatchResult(@NonNull Collection<? extends Group> newGroups) {
             groups.clear();
@@ -53,7 +53,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         }
     };
 
-    private AsyncDiffUtil asyncDiffUtil = new AsyncDiffUtil(asyncDiffUtilCallbacks);
+    private AsyncDiffUtil asyncDiffUtil = new AsyncDiffUtil(diffUtilCallbacks);
 
     private final GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
         @Override
@@ -80,14 +80,47 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return spanCount;
     }
 
+    /**
+     * Updates the adapter with a new list that will be diffed on a background thread
+     * and displayed once diff results are calculated.
+     * @param newGroups List of {@link Group}
+     */
     @SuppressWarnings("unused")
-    public void update(@NonNull final Collection<? extends Group> newGroups) {
+    public void updateAsync(@NonNull final List<? extends Group> newGroups) {
         final List<Group> oldGroups = new ArrayList<>(groups);
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
         asyncDiffUtil.calculateDiff(newGroups,
                 new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups));
+    }
+
+    /**
+     * Updates the adapter with a new list that will be diffed on the <em>main</em> thread
+     * and displayed once diff results are calculated. Not recommended for huge lists.
+     * @param newGroups List of {@link Group}
+     */
+    @SuppressWarnings("unused")
+    public void update(@NonNull final Collection<? extends Group> newGroups) {
+        final List<Group> oldGroups = new ArrayList<>(groups);
+        final int oldBodyItemCount = getItemCount(oldGroups);
+        final int newBodyItemCount = getItemCount(newGroups);
+
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups));
+
+        for (Group group : groups) {
+            group.unregisterGroupDataObserver(this);
+        }
+
+        groups.clear();
+        groups.addAll(newGroups);
+
+        for (Group group : newGroups) {
+            group.registerGroupDataObserver(this);
+        }
+
+        diffResult.dispatchUpdatesTo(diffUtilCallbacks);
     }
 
     /**
