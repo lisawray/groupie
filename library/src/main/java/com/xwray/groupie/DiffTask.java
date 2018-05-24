@@ -5,7 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 
+/**
+ * An async task implementation that runs {@link DiffUtil#calculateDiff(DiffUtil.Callback)}
+ * in a background thread. This task will call {@link AsyncDiffUtil.Callback#onDispatchResult(Collection)}
+ * passing the new list just before dispatching the diff result to the provided
+ * {@link DiffUtil.Callback} so that the new list.
+ * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback)}.
+ */
 class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     private final DiffUtil.Callback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
