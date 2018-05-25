@@ -8,17 +8,10 @@ import com.xwray.groupie.ViewHolder
 operator fun Section.plusAssign(element: Group)  = this.add(element)
 
 
-operator fun Section.plusAssign(groups: MutableCollection<out Group>) = this.addAll(groups)
+operator fun Section.plusAssign(groups: Collection<Group>) = this.addAll(groups)
 
 
 operator fun Section.minusAssign(element: Group) = this.remove(element)
 
 
-operator fun Section.minusAssign(groups: MutableCollection<out Group>) = this.removeAll(groups)
-
-
-fun Section() {
-    val groupAdapter = GroupAdapter<ViewHolder>()
-    groupAdapter += Section()
-    groupAdapter += mutableListOf(Section(), Section())
-}
+operator fun Section.minusAssign(groups: Collection<Group>) = this.removeAll(groups)

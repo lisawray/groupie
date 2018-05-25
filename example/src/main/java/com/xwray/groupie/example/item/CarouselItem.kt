@@ -19,7 +19,7 @@ class CarouselItem(private val carouselDecoration: RecyclerView.ItemDecoration,
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.recycler_view.apply {
+        viewHolder.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carouselAdapter
 
