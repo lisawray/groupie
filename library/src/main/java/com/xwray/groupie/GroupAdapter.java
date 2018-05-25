@@ -83,6 +83,11 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     /**
      * Updates the adapter with a new list that will be diffed on a background thread
      * and displayed once diff results are calculated.
+     *
+     * NOTE: This update method is NOT compatible with partial updates (change notifications
+     * driven by individual groups and items).  If you update using this method, all partial
+     * updates will no longer work and you must use this method to update exclusively.
+     *
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
