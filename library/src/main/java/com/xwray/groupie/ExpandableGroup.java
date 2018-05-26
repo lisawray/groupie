@@ -28,7 +28,8 @@ public class ExpandableGroup extends NestedGroup {
         this.isExpanded = isExpanded;
     }
 
-    @Override public void add(@NonNull Group group) {
+    @Override
+    public void add(@NonNull Group group) {
         super.add(group);
         if (isExpanded) {
             int itemCount = getItemCount();
@@ -41,7 +42,9 @@ public class ExpandableGroup extends NestedGroup {
 
     @Override
     public void addAll(@NonNull Collection<? extends Group> groups) {
-        if (groups.isEmpty()) return;
+        if (groups.isEmpty()) {
+            return;
+        }
         super.addAll(groups);
         if (isExpanded) {
             int itemCount = getItemCount();
@@ -67,6 +70,36 @@ public class ExpandableGroup extends NestedGroup {
         }
     }
 
+
+    @Override
+    public void remove(@NonNull Group group) {
+        if (!this.children.contains(group)) return;
+        super.remove(group);
+        if (isExpanded) {
+            int position = getItemCountBeforeGroup(group);
+            children.remove(group);
+            notifyItemRangeRemoved(position, group.getItemCount());
+        } else {
+            children.remove(group);
+        }
+    }
+
+    @Override
+    public void removeAll(@NonNull Collection<? extends Group> groups) {
+        if (groups.isEmpty() || !this.children.containsAll(groups)) return;
+        super.removeAll(groups);
+        if (isExpanded) {
+            this.children.removeAll(groups);
+            for (Group group : groups) {
+                int position = getItemCountBeforeGroup(group);
+                children.remove(group);
+                notifyItemRangeRemoved(position, group.getItemCount());
+            }
+        } else {
+            this.children.removeAll(groups);
+        }
+    }
+
     public boolean isExpanded() {
         return isExpanded;
     }
@@ -80,7 +113,8 @@ public class ExpandableGroup extends NestedGroup {
         }
     }
 
-    @Override public int getPosition(@NonNull Group group) {
+    @Override
+    public int getPosition(@NonNull Group group) {
         if (group == parent) {
             return 0;
         } else {
@@ -102,7 +136,7 @@ public class ExpandableGroup extends NestedGroup {
             notifyItemRangeInserted(oldSize, newSize - oldSize);
         }
     }
-    
+
     private boolean dispatchChildChanges(Group group) {
         return isExpanded || group == parent;
     }
