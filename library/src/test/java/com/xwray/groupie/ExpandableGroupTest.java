@@ -14,6 +14,8 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpandableGroupTest {
@@ -23,10 +25,12 @@ public class ExpandableGroupTest {
 
     class DummyExpandableItem extends DummyItem implements ExpandableItem {
 
-        @Override public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
+        @Override
+        public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
 
         }
     }
+
     DummyExpandableItem parent = new DummyExpandableItem();
 
     @Test
@@ -183,5 +187,50 @@ public class ExpandableGroupTest {
         expandableGroup.onToggleExpanded();
 
         assertEquals(6, expandableGroup.getGroupCount());
+    }
+
+    @Test
+    public void testExpandedGroupCountForAdd() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        DummyItem item = new DummyItem();
+        expandableGroup.add(item);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.onToggleExpanded();
+        assertEquals(2, expandableGroup.getGroupCount());
+    }
+
+    @Test
+    public void testExpandedGroupCountForRemove() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+
+        expandableGroup.remove(items.get(0));
+
+        expandableGroup.onToggleExpanded();
+        assertEquals(5, expandableGroup.getGroupCount());
+    }
+
+
+    @Test
+    public void testGroupCountForRemoveAll() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+
+        expandableGroup.removeAll(items);
+
+        expandableGroup.onToggleExpanded();
+        assertEquals(1, expandableGroup.getGroupCount());
     }
 }
