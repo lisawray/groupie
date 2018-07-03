@@ -9,21 +9,21 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-compile 'com.xwray:groupie:2.1.0'
+compile 'com.xwray:groupie:${latest_version}'
 ```
 
 Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
 ```gradle
-compile 'com.xwray:groupie:2.1.0'
-compile 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
+compile 'com.xwray:groupie:${latest_version}'
+compile 'com.xwray:groupie-kotlin-android-extensions:${latest_version}'
 ```
 
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-compile 'com.xwray:groupie:2.1.0'
-compile 'com.xwray:groupie-databinding:2.1.0' 
+compile 'com.xwray:groupie:${latest_version}'
+compile 'com.xwray:groupie-databinding:${latest_version}' 
 ```
 
 You can also use Groupie with Java and your existing ViewHolders. 
@@ -152,7 +152,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.50'
     repositories {
         jcenter()
     }
@@ -169,9 +169,8 @@ androidExtensions {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.xwray:groupie:2.0.3'
-    implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
+    implementation 'com.xwray:groupie:${latest_version}'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:${latest_version}'
 }
 ```
 
@@ -193,7 +192,7 @@ android {
 }
 
 dependencies {
-    compile 'com.xwray:groupie-databinding:2.0.3'
+    compile 'com.xwray:groupie-databinding:${latest_version}'
 }
 ```
 
