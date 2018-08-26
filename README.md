@@ -84,7 +84,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.song.*
 
-class SongItem constructor(private val song: Song) : Item() {
+class SongItem(private val song: Song) : Item() {
 
     override fun getLayout() = R.layout.song
 
