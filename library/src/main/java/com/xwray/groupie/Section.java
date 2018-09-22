@@ -177,6 +177,22 @@ public class Section extends NestedGroup {
         }
     }
 
+    /**
+     * Overloaded version of update method in which you can pass your own DiffUtil.DiffResult
+     * @param newBodyGroups The new content of the section
+     * @param diffResult
+     */
+
+    public void update(@NonNull final Collection<? extends Group> newBodyGroups, DiffUtil.DiffResult diffResult) {
+        super.removeAll(children);
+        children.clear();
+        children.addAll(newBodyGroups);
+        super.addAll(newBodyGroups);
+
+        diffResult.dispatchUpdatesTo(listUpdateCallback);
+        refreshEmptyState();
+    }
+
     private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
         @Override
         public void onInserted(int position, int count) {
