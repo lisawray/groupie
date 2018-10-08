@@ -1,7 +1,7 @@
 package com.xwray.groupie.example
 
 import android.graphics.drawable.Animatable
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.view.View
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem

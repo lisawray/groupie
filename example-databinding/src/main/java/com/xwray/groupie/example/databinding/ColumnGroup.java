@@ -1,6 +1,6 @@
 package com.xwray.groupie.example.databinding;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupDataObserver;

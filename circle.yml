@@ -6,9 +6,9 @@ dependencies:
     - mkdir "$ANDROID_HOME/licenses" || true
     - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
     - echo "84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-    - echo y | android update sdk --no-ui --all --filter android-27
+    - echo y | android update sdk --no-ui --all --filter android-28
     - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
-    - echo y | android update sdk --no-ui --all --filter build-tools-27.0.3
+    - echo y | android update sdk --no-ui --all --filter build-tools-28.0.3
 test:
   post:
     - cp -r library/build/test-results/* $CIRCLE_TEST_REPORTS

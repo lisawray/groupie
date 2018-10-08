@@ -1,7 +1,7 @@
 package com.xwray.groupie.example.item
 
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.example.R
 import com.xwray.groupie.kotlinandroidextensions.Item

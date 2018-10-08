@@ -1,6 +1,6 @@
 package com.xwray.groupie.example.databinding.item;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 import com.xwray.groupie.example.databinding.MainActivity;
 

@@ -12,7 +12,6 @@ buildscript {
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
@@ -32,20 +31,20 @@ android {
 }
 
 dependencies {
-    compileOnly("com.android.databinding:library:$databinding_version") {
+    compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
     }
-    compileOnly("com.android.databinding:baseLibrary:$databinding_version") {
+    compileOnly("androidx.databinding:databinding-common:$databinding_version") {
         transitive = false
     }
-    compileOnly('com.xwray:groupie:2.1.0')
+    compileOnly('com.xwray:groupie:2.2.0')
 }
 
 publish {
     userOrg = 'lisawray'
     groupId = 'com.xwray'
     artifactId = 'groupie-databinding'
-    publishVersion = '2.1.0'
+    publishVersion = '2.2.0'
     desc = 'Library for groups and multiple view types in a RecyclerView'
     website = 'https://github.com/lisawray/groupie'
 }

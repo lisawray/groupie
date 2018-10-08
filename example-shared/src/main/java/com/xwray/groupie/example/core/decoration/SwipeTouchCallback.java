@@ -2,9 +2,9 @@ package com.xwray.groupie.example.core.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.ColorInt;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.ColorInt;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.View;
 
 import com.xwray.groupie.TouchCallback;

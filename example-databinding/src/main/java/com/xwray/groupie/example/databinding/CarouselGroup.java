@@ -1,7 +1,7 @@
 package com.xwray.groupie.example.databinding;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupAdapter;

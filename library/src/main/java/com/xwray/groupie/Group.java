@@ -1,6 +1,6 @@
 package com.xwray.groupie;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A group of items, to be used in an adapter.

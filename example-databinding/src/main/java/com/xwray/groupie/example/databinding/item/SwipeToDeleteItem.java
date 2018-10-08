@@ -1,7 +1,7 @@
 package com.xwray.groupie.example.databinding.item;
 
-import android.support.annotation.ColorInt;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.ColorInt;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 public class SwipeToDeleteItem extends CardItem {
     public SwipeToDeleteItem(@ColorInt int colorRes) {

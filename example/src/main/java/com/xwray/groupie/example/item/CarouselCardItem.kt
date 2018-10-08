@@ -1,6 +1,6 @@
 package com.xwray.groupie.example.item
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.example.R

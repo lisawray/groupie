@@ -1,8 +1,8 @@
 package com.xwray.groupie.example.core;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;

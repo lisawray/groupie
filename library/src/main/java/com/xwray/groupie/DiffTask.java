@@ -1,8 +1,8 @@
 package com.xwray.groupie;
 
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;

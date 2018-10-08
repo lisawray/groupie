@@ -2,22 +2,21 @@
 
 buildscript {
 
-    ext.kotlin_version = '1.2.41'
-    ext.android_plugin_version = '3.1.2'
-    ext.targetSdkVersion = 27
-    ext.compileSdkVersion = 27
-    ext.buildToolsVersion = '27.0.3'
+    ext.kotlin_version = '1.2.71'
+    ext.android_plugin_version = '3.2.0'
+    ext.targetSdkVersion = 28
+    ext.compileSdkVersion = 28
     ext.minSdkVersion = 14
     ext.novodaBintrayVersion = '0.8.1'
-    ext.supportLibVersion = '27.1.1'
-    ext.databinding_version = '3.1.1'
+    ext.androidX = "1.0.0"
+    ext.databinding_version = '3.2.0'
 
     ext.junit_version = '4.12'
     ext.mockito_version = '2.16.0'
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$android_plugin_version"
@@ -30,8 +29,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 

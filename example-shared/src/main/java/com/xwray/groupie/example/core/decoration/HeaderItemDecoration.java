@@ -3,9 +3,9 @@ package com.xwray.groupie.example.core.decoration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.ColorInt;
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 public class HeaderItemDecoration extends RecyclerView.ItemDecoration {

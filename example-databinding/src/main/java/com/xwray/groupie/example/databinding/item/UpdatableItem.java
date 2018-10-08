@@ -1,6 +1,6 @@
 package com.xwray.groupie.example.databinding.item;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 
 public class UpdatableItem extends SmallCardItem {
 

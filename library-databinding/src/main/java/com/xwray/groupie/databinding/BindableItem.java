@@ -1,9 +1,9 @@
 package com.xwray.groupie.databinding;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.xwray.groupie.Item;

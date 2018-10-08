@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:paddingEnd="@dimen/padding_standard">
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/the_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

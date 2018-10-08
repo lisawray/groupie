@@ -1,6 +1,6 @@
 package com.xwray.groupie;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public abstract class DummyGroup implements Group {
 

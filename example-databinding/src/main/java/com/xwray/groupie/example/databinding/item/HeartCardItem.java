@@ -1,8 +1,8 @@
 package com.xwray.groupie.example.databinding.item;
 
 import android.graphics.drawable.Animatable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.xwray.groupie.databinding.BindableItem;

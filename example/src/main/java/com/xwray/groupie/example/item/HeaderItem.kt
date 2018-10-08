@@ -1,7 +1,7 @@
 package com.xwray.groupie.example.item
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import android.view.View
 import com.xwray.groupie.example.R
 import com.xwray.groupie.kotlinandroidextensions.Item

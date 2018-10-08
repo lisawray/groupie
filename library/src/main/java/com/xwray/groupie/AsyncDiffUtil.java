@@ -1,9 +1,9 @@
 package com.xwray.groupie;
 
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.util.ListUpdateCallback;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
 
 import java.util.Collection;
 

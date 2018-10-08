@@ -1,6 +1,6 @@
 package com.xwray.groupie;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface GroupDataObserver {
     void onChanged(@NonNull Group group);

@@ -1,6 +1,6 @@
 package com.xwray.groupie;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * The "collapsed"/header item of an expanded group.  Some part (or all) of it is a "toggle" to

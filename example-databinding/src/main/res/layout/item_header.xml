@@ -41,7 +41,7 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon"
             android:padding="@dimen/padding_small"
             app:srcCompat="@drawable/palette"
