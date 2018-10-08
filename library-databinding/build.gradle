@@ -37,7 +37,8 @@ dependencies {
     compileOnly("androidx.databinding:databinding-common:$databinding_version") {
         transitive = false
     }
-    compileOnly('com.xwray:groupie:2.2.0')
+    compileOnly("androidx.recyclerview:recyclerview:$androidX")
+    compileOnly("androidx.annotation:annotation:$androidX")
 }
 
 publish {
