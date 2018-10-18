@@ -188,6 +188,11 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return lastItemForViewTypeLookup.getLayout();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).getId();
+    }
+
     public @NonNull Item getItem(@NonNull VH holder) {
         return holder.getItem();
     }
