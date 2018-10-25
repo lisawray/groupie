@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.recyclerview:recyclerview:$androidx_version"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
 }

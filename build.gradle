@@ -8,7 +8,6 @@ buildscript {
     ext.compileSdkVersion = 28
     ext.minSdkVersion = 14
     ext.novodaBintrayVersion = '0.8.1'
-    ext.androidx_version = '1.0.0'
     ext.databinding_version = '3.2.0'
 
     ext.junit_version = '4.12'

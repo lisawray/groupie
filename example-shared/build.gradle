@@ -22,10 +22,10 @@ android {
 
 dependencies {
     api project (':library')
-    api "androidx.recyclerview:recyclerview:$androidx_version"
-    api "androidx.appcompat:appcompat:$androidx_version"
-    api "com.google.android.material:material:$androidx_version"
-    api "androidx.cardview:cardview:$androidx_version"
-    api "androidx.vectordrawable:vectordrawable:$androidx_version"
-    api "androidx.vectordrawable:vectordrawable-animated:$androidx_version"
+    api "androidx.recyclerview:recyclerview:1.0.0"
+    api "androidx.appcompat:appcompat:1.0.0"
+    api "com.google.android.material:material:1.0.0"
+    api "androidx.cardview:cardview:1.0.0"
+    api "androidx.vectordrawable:vectordrawable:1.0.0"
+    api "androidx.vectordrawable:vectordrawable-animated:1.0.0"
 }

@@ -28,9 +28,9 @@ android {
 dependencies {
     implementation project(':library-databinding')
     implementation project(':example-shared')
-    implementation "androidx.appcompat:appcompat:$androidx_version"
-    implementation "com.google.android.material:material:$androidx_version"
-    implementation "androidx.cardview:cardview:$androidx_version"
-    implementation "androidx.vectordrawable:vectordrawable:$androidx_version"
-    implementation "androidx.vectordrawable:vectordrawable-animated:$androidx_version"
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable-animated:1.0.0"
 }

@@ -37,8 +37,8 @@ dependencies {
     compileOnly("androidx.databinding:databinding-common:$databinding_version") {
         transitive = false
     }
-    compileOnly("androidx.recyclerview:recyclerview:$androidx_version")
-    compileOnly("androidx.annotation:annotation:$androidx_version")
+    compileOnly("androidx.recyclerview:recyclerview:1.0.0")
+    compileOnly("androidx.annotation:annotation:1.0.0")
 }
 
 publish {
