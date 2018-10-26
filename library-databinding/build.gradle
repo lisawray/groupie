@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    compileOnly('com.xwray:groupie:2.2.0')
     compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
     }
