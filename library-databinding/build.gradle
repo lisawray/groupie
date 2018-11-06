@@ -6,6 +6,8 @@ buildscript {
     }
 }
 
+archivesBaseName = 'groupie-databinding'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
@@ -27,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation project(':library')
+    compileOnly project(':library')
     compileOnly "androidx.recyclerview:recyclerview:1.0.0"
     compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
@@ -38,3 +40,6 @@ dependencies {
     compileOnly("androidx.recyclerview:recyclerview:1.0.0")
     compileOnly("androidx.annotation:annotation:1.0.0")
 }
+
+apply from: rootProject.file('release-bintray.gradle')
+

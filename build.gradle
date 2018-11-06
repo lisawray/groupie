@@ -3,7 +3,7 @@
 buildscript {
 
     ext.kotlin_version = '1.2.71'
-    ext.android_plugin_version = '3.2.0'
+    ext.android_plugin_version = '3.2.1'
     ext.targetSdkVersion = 28
     ext.compileSdkVersion = 28
     ext.minSdkVersion = 14
@@ -19,6 +19,10 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$android_plugin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17"
+
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,6 +31,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://dl.bintray.com/lisawray/maven'}
         google()
         jcenter()
     }
