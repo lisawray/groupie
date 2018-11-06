@@ -22,8 +22,8 @@ compile 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-compile 'com.xwray:groupie:2.2.0'
-compile 'com.xwray:groupie-databinding:2.2.0' 
+compile 'com.xwray:groupie:2.3.0'
+compile 'com.xwray:groupie-databinding:2.3.0' 
 ```
 
 You can also use Groupie with Java and your existing ViewHolders. 
