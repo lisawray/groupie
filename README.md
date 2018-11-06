@@ -9,14 +9,14 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-compile 'com.xwray:groupie:2.1.0'
+compile 'com.xwray:groupie:2.3.0'
 ```
 
 Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
 ```gradle
-compile 'com.xwray:groupie:2.2.0'
-compile 'com.xwray:groupie-kotlin-android-extensions:2.2.0'
+compile 'com.xwray:groupie:2.3.0'
+compile 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
 ```
 
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
