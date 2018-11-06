@@ -1,0 +1,33 @@
+/**
+ * Bintray release configuration
+ * */
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = POM_BINTRAY_NAME
+
+    publishedGroupId = 'com.xwray'
+    libraryName = 'Groupie'
+    artifact = POM_ARTIFACT_ID
+    packagingType = POM_PACKAGING
+
+    libraryDescription = POM_DESCRIPTION
+
+    siteUrl = 'https://github.com/xwray/groupie'
+    gitUrl = 'https://github.com/xwray/groupie.git'
+
+    libraryVersion = POM_VERSION
+
+    developerId = 'lisawray'
+    developerName = 'Lisa Wray'
+    developerEmail = 'lisawray@gmail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://github.com/xwray/groupie/LICENSE'
+    allLicenses = ["MIT"]
+}
+
+// Set up the Android Maven publication.
+apply from: rootProject.file('jcenter/maven-install.gradle')
+
+// Publish on Bintray.
+apply from: rootProject.file('jcenter/bintray.gradle')

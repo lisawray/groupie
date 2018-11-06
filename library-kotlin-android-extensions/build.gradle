@@ -12,6 +12,8 @@ buildscript {
     }
 }
 
+archivesBaseName = 'groupie-kotlin-android-extensions'
+
 androidExtensions {
     experimental = true
 }
@@ -39,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation project(':library')
+    compileOnly project(':library')
     compileOnly "androidx.recyclerview:recyclerview:1.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
@@ -51,3 +53,5 @@ repositories {
 tasks.withType(Javadoc).all {
     enabled = false
 }
+
+apply from: rootProject.file('release-bintray.gradle')

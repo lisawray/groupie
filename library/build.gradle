@@ -6,6 +6,8 @@ buildscript {
     }
 }
 
+archivesBaseName = 'groupie'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
@@ -31,3 +33,5 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
 }
+
+apply from: rootProject.file('release-bintray.gradle')
