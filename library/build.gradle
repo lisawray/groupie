@@ -1,12 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
     repositories {
         jcenter()
-    }
-    dependencies {
-        classpath "com.novoda:bintray-release:$novodaBintrayVersion"
     }
 }
 
@@ -34,13 +30,4 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
-}
-
-publish {
-    userOrg = 'lisawray'
-    groupId = 'com.xwray'
-    artifactId = 'groupie'
-    publishVersion = '2.2.0'
-    desc = 'Library for groups and multiple view types in a RecyclerView'
-    website = 'https://github.com/lisawray/groupie'
 }

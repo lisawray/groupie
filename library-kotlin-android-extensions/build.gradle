@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
     repositories {
@@ -10,7 +9,6 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-        classpath "com.novoda:bintray-release:$novodaBintrayVersion"
     }
 }
 
@@ -41,7 +39,8 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.xwray:groupie:2.2.0'
+    implementation project(':library')
+    compileOnly "androidx.recyclerview:recyclerview:1.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
@@ -51,13 +50,4 @@ repositories {
 
 tasks.withType(Javadoc).all {
     enabled = false
-}
-
-publish {
-    userOrg = 'lisawray'
-    groupId = 'com.xwray'
-    artifactId = 'groupie-kotlin-android-extensions'
-    publishVersion = '2.2.0'
-    desc = 'Library for groups and multiple view types in a RecyclerView'
-    website = 'https://github.com/lisawray/groupie'
 }
