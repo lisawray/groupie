@@ -2,6 +2,7 @@ package com.xwray.groupie;
 
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.lang.ref.WeakReference;
@@ -18,6 +19,7 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     private final DiffUtil.Callback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
     private final int runGeneration;
+    private Exception backgroundException = null;
 
     DiffTask(@NonNull AsyncDiffUtil asyncDiffUtil,
              @NonNull DiffUtil.Callback callback,
@@ -28,16 +30,29 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     }
 
     @Override
+    @Nullable
     protected DiffUtil.DiffResult doInBackground(Void... voids) {
-        return DiffUtil.calculateDiff(diffCallback);
+        try {
+            return DiffUtil.calculateDiff(diffCallback);
+        } catch (Exception e) {
+            backgroundException = e;
+            return null;
+        }
     }
 
     @Override
-    protected void onPostExecute(DiffUtil.DiffResult diffResult) {
+    protected void onPostExecute(@Nullable DiffUtil.DiffResult diffResult) {
+        if (backgroundException != null) {
+            throw new RuntimeException(backgroundException);
+        }
         AsyncDiffUtil async = asyncListDiffer.get();
-        if (async != null && runGeneration == async.getMaxScheduledGeneration()) {
+        if (shouldDispatchResult(diffResult, async)) {
             async.getAsyncDiffUtilCallback().onDispatchResult(async.getGroups());
             diffResult.dispatchUpdatesTo(async.getAsyncDiffUtilCallback());
         }
+    }
+
+    private boolean shouldDispatchResult(@Nullable DiffUtil.DiffResult diffResult, AsyncDiffUtil async) {
+        return diffResult != null && async != null && runGeneration == async.getMaxScheduledGeneration();
     }
 }
