@@ -145,31 +145,40 @@ Items can also declare their own column span and whether they are draggable or s
 
 ## Kotlin
 
-In your app build.gradle file, include:
+In your project level `build.gradle` file, include:
 
-```gradle
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
+```
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.71'
     repositories {
         jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 }
+```
 
-// IMPORTANT!  Enables view caching in viewholders.
-// See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
-androidExtensions {
-    experimental = true
+In your app `build.gradle` file, include:
+
+```
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  ....
+  
+   // IMPORTANT!  Enables view caching in viewholders.
+   // See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
+    androidExtensions {
+        experimental = true
+    }
+	
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.xwray:groupie:[version]'
     implementation 'com.xwray:groupie-kotlin-android-extensions:[version]'
 }
