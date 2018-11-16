@@ -43,7 +43,7 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
     /**
      * Perform any actions required to set up the view for display.
      *
-     * @param holder              The viewholder to bind
+     * @param viewHolder          The viewHolder to bind
      * @param position            The adapter position
      * @param payloads            Any payloads (this list may be empty)
      * @param onItemClickListener An optional adapter-level click listener
@@ -51,9 +51,9 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
      */
     @CallSuper
     @Override
-    public void bind(@NonNull ViewHolder<T> holder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
-        super.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener);
-        holder.binding.executePendingBindings();
+    public void bind(@NonNull ViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+        super.bind(viewHolder, position, payloads, onItemClickListener, onItemLongClickListener);
+        viewHolder.binding.executePendingBindings();
     }
 
     @Override
@@ -62,8 +62,8 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
     }
 
     @Override
-    public void bind(@NonNull ViewHolder<T> holder, int position, @NonNull List<Object> payloads) {
-        bind(holder.binding, position, payloads);
+    public void bind(@NonNull ViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads) {
+        bind(viewHolder.binding, position, payloads);
     }
 
     /**

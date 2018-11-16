@@ -35,18 +35,18 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
     /**
      * Perform any actions required to set up the view for display.
      *
-     * @param holder              The viewholder to bind
+     * @param viewHolder          The viewHolder to bind
      * @param position            The adapter position
      * @param payloads            Any payloads (this list may be empty)
      * @param onItemClickListener An optional adapter-level click listener
      * @param onItemLongClickListener An optional adapter-level long click listener
      */
     @CallSuper
-    public void bind(@NonNull VH holder, int position, @NonNull List<Object> payloads,
+    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads,
                      @Nullable OnItemClickListener onItemClickListener,
                      @Nullable OnItemLongClickListener onItemLongClickListener) {
-        holder.bind(this, onItemClickListener, onItemLongClickListener);
-        bind(holder, position, payloads);
+        viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
+        bind(viewHolder, position, payloads);
     }
 
     public abstract void bind(@NonNull VH viewHolder, int position);
@@ -55,22 +55,22 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
      * the adapter will do a full rebind.
      *
-     * @param holder The ViewHolder to bind
+     * @param viewHolder The ViewHolder to bind
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
-    public void bind(@NonNull VH holder, int position, @NonNull List<Object> payloads) {
-        bind(holder, position);
+    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads) {
+        bind(viewHolder, position);
     }
 
     /**
      * Do any cleanup required for the viewholder to be reused.
      *
-     * @param holder The ViewHolder being recycled
+     * @param viewHolder The ViewHolder being recycled
      */
     @CallSuper
-    public void unbind(@NonNull VH holder) {
-        holder.unbind();
+    public void unbind(@NonNull VH viewHolder) {
+        viewHolder.unbind();
     }
 
     /**
