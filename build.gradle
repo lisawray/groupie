@@ -1,5 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+def lintReportsDir = file("${rootProject.buildDir}/lint-reports")
+def testReportsDir = "${rootProject.buildDir}/test-reports"
+def testResultsDir = "${rootProject.buildDir}/test-results"
+
 buildscript {
 
     ext.kotlin_version = '1.2.71'
@@ -29,11 +33,29 @@ buildscript {
     }
 }
 
-allprojects {
+allprojects { project ->
+
     repositories {
         maven { url 'https://dl.bintray.com/lisawray/maven'}
         google()
         jcenter()
+    }
+
+    afterEvaluate {
+        if (project.hasProperty('android')) {
+            android {
+                // use a custom location for the Lint reports so that it's easy to archive them in Circle CI
+                lintOptions {
+                    htmlOutput file("$lintReportsDir/${project.name}/lint-report.html")
+                }
+                // it would be nice to do the same with test results/reports
+                // but it doesn't work: https://issuetracker.google.com/issues/37132023
+                testOptions {
+                    reportDir "$testReportsDir/${project.name}"
+                    resultsDir "$testResultsDir/${project.name}"
+                }
+            }
+        }
     }
 }
 

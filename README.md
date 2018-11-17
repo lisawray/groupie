@@ -9,21 +9,21 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-compile 'com.xwray:groupie:2.3.0'
+implementation 'com.xwray:groupie:2.3.0'
 ```
 
 Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
 ```gradle
-compile 'com.xwray:groupie:2.3.0'
-compile 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
+implementation 'com.xwray:groupie:2.3.0'
+implementation 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
 ```
 
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-compile 'com.xwray:groupie:2.3.0'
-compile 'com.xwray:groupie-databinding:2.3.0' 
+implementation 'com.xwray:groupie:2.3.0'
+implementation 'com.xwray:groupie-databinding:2.3.0' 
 ```
 
 You can also use Groupie with Java and your existing ViewHolders. 
@@ -145,31 +145,40 @@ Items can also declare their own column span and whether they are draggable or s
 
 ## Kotlin
 
-In your app build.gradle file, include:
+In your project level `build.gradle` file, include:
 
-```gradle
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
+```
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.71'
     repositories {
         jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 }
+```
 
-// IMPORTANT!  Enables view caching in viewholders.
-// See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
-androidExtensions {
-    experimental = true
+In your app `build.gradle` file, include:
+
+```
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  ....
+  
+   // IMPORTANT!  Enables view caching in viewholders.
+   // See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
+    androidExtensions {
+        experimental = true
+    }
+	
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.xwray:groupie:[version]'
     implementation 'com.xwray:groupie-kotlin-android-extensions:[version]'
 }
