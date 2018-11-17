@@ -87,17 +87,36 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * NOTE: This update method is NOT compatible with partial updates (change notifications
      * driven by individual groups and items).  If you update using this method, all partial
      * updates will no longer work and you must use this method to update exclusively.
+     * <br/> <br/>
+     * If you want to receive a callback once the update is complete call the
+     * {@link #updateAsync(List, OnAsyncUpdateListener)} version
      *
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups) {
+        this.updateAsync(newGroups, null);
+    }
+
+    /**
+     * Updates the adapter with a new list that will be diffed on a background thread
+     * and displayed once diff results are calculated.
+     *
+     * NOTE: This update method is NOT compatible with partial updates (change notifications
+     * driven by individual groups and items).  If you update using this method, all partial
+     * updates will no longer work and you must use this method to update exclusively.
+     *
+     * @param newGroups List of {@link Group}
+     * @param onAsyncUpdateListener Optional callback for when the async update is complete
+     */
+    @SuppressWarnings("unused")
+    public void updateAsync(@NonNull final List<? extends Group> newGroups, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
         final List<Group> oldGroups = new ArrayList<>(groups);
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
         asyncDiffUtil.calculateDiff(newGroups,
-                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups));
+                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups), onAsyncUpdateListener);
     }
 
     /**
