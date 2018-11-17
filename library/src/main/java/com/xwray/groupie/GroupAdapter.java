@@ -332,8 +332,9 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * @param position
      * @return
      */
+    @SuppressWarnings("WeakerAccess")
     @NonNull
-    private Group getGroup(int position) {
+    public Group getGroup(int position) {
         int previous = 0;
         int size;
         for (Group group : groups) {
