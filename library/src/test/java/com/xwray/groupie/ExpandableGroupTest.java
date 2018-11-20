@@ -14,8 +14,6 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpandableGroupTest {
@@ -105,6 +103,17 @@ public class ExpandableGroupTest {
     public void testGetHeaderPosition() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         assertEquals(0, expandableGroup.getPosition(parent));
+    }
+
+    @Test
+    public void testGetPosition() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        Section section = new Section();
+        expandableGroup.add(section);
+        Section notAddedSection = new Section();
+
+        assertEquals(1, expandableGroup.getPosition(section));
+        assertEquals(-1, expandableGroup.getPosition(notAddedSection));
     }
 
     @Test
