@@ -117,9 +117,12 @@ public class ExpandableGroup extends NestedGroup {
     public int getPosition(@NonNull Group group) {
         if (group == parent) {
             return 0;
-        } else {
-            return 1 + children.indexOf(group);
         }
+        int index = children.indexOf(group);
+        if (index >= 0) {
+            return index + 1;
+        }
+        return -1;
     }
 
     public int getGroupCount() {
