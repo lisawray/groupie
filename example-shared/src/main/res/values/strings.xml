@@ -5,6 +5,7 @@
     <string name="vertical_columns">Vertical columns</string>
     <string name="full_bleed_item">A full bleed item</string>
     <string name="live_data_group">LiveData Group</string>
+    <string name="live_data_group_subtitle">Update value from a background thread every 500ms by using liveData</string>
     <string name="multiple_columns">Multiple columns with even spacing</string>
     <string name="infinite_loading">Infinite loading</string>
     <string name="expanding_group_subtitle">Tap on the header to expand or contract the group.</string>

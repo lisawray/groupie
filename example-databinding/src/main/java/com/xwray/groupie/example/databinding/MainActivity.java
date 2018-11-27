@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // LiveData & Databinding sample
-        Section liveDataSection = new Section(new HeaderItem(R.string.live_data_group));
+        Section liveDataSection = new Section(new HeaderItem(R.string.live_data_group, R.string.live_data_group_subtitle));
         liveDataSection.add(new LiveDataItem());
         groupAdapter.add(liveDataSection);
 
