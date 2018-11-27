@@ -2,12 +2,15 @@ package com.xwray.groupie;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import java.util.Map;
 
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
     private Item item;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
@@ -35,8 +38,27 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         }
     };
 
+    // This is the registry use for the LifecycleOwner
+    private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+
     public ViewHolder(@NonNull View rootView) {
         super(rootView);
+        lifecycleRegistry.markState(Lifecycle.State.INITIALIZED);
+    }
+
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
+
+    void onViewAttachedToWindow() {
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
+    }
+
+    void onViewDetachedFromWindow() {
+        lifecycleRegistry.markState(Lifecycle.State.DESTROYED);
     }
 
     public void bind(@NonNull Item item, @Nullable OnItemClickListener onItemClickListener, @Nullable OnItemLongClickListener onItemLongClickListener) {

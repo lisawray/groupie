@@ -9,5 +9,6 @@ public class ViewHolder<T extends ViewDataBinding> extends com.xwray.groupie.Vie
     public ViewHolder(@NonNull T binding) {
         super(binding.getRoot());
         this.binding = binding;
+        this.binding.setLifecycleOwner(this);
     }
 }

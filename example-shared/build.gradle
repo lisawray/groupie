@@ -21,8 +21,8 @@ android {
 }
 
 dependencies {
-    //api project (':library')
-    api 'com.xwray:groupie:2.2.0'
+    api project (':library')
+    //api 'com.xwray:groupie:2.2.0'
     api "androidx.recyclerview:recyclerview:1.0.0"
     api "androidx.appcompat:appcompat:1.0.0"
     api "com.google.android.material:material:1.0.0"

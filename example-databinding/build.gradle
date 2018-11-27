@@ -26,8 +26,8 @@ android {
 }
 
 dependencies {
-    //implementation project(':library-databinding')
-    implementation 'com.xwray:groupie-databinding:2.2.0'
+    implementation project(':library-databinding')
+    //implementation 'com.xwray:groupie-databinding:2.2.0'
     implementation project(':example-shared')
     implementation "androidx.appcompat:appcompat:1.0.0"
     implementation "com.google.android.material:material:1.0.0"

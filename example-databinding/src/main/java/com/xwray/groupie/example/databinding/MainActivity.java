@@ -29,15 +29,7 @@ import com.xwray.groupie.example.core.decoration.CarouselItemDecoration;
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration;
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback;
 import com.xwray.groupie.example.databinding.databinding.ActivityMainBinding;
-import com.xwray.groupie.example.databinding.item.CardItem;
-import com.xwray.groupie.example.databinding.item.CarouselCardItem;
-import com.xwray.groupie.example.databinding.item.ColumnItem;
-import com.xwray.groupie.example.databinding.item.FullBleedCardItem;
-import com.xwray.groupie.example.databinding.item.HeaderItem;
-import com.xwray.groupie.example.databinding.item.HeartCardItem;
-import com.xwray.groupie.example.databinding.item.SmallCardItem;
-import com.xwray.groupie.example.databinding.item.SwipeToDeleteItem;
-import com.xwray.groupie.example.databinding.item.UpdatableItem;
+import com.xwray.groupie.example.databinding.item.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setLifecycleOwner(this);
         prefs = Prefs.get(this);
 
         gray = ContextCompat.getColor(this, R.color.background);
@@ -121,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
         Section fullBleedItemSection = new Section(new HeaderItem(R.string.full_bleed_item));
         fullBleedItemSection.add(new FullBleedCardItem(R.color.purple_200));
         groupAdapter.add(fullBleedItemSection);
+
+
+        // LiveData & Databinding sample
+        Section liveDataSection = new Section(new HeaderItem(R.string.live_data_group));
+        liveDataSection.add(new LiveDataItem());
+        groupAdapter.add(liveDataSection);
 
         // Update in place group
         Section updatingSection = new Section();
