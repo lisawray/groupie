@@ -34,4 +34,5 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.vectordrawable:vectordrawable:1.0.0"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.0.0"
+    implementation "com.squareup.leakcanary:leakcanary-android:1.6.2"
 }
