@@ -89,7 +89,6 @@ public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwne
         this.onItemClickListener = null;
         this.onItemLongClickListener = null;
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
-
     }
 
     public @NonNull Map<String, Object> getExtras() {

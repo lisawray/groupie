@@ -34,6 +34,8 @@ import com.xwray.groupie.example.databinding.item.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Hold a reference to the updating group, so we can, well, update it
     private Section updatingGroup;
+
+    private Thread thread;
+    private AtomicBoolean threadShouldStop = new AtomicBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +123,26 @@ public class MainActivity extends AppCompatActivity {
 
         // LiveData & Databinding sample
         Section liveDataSection = new Section(new HeaderItem(R.string.live_data_group, R.string.live_data_group_subtitle));
-        liveDataSection.add(new LiveDataItem());
+        final LiveDataItem liveDataItem = new LiveDataItem();
+        liveDataSection.add(liveDataItem);
         groupAdapter.add(liveDataSection);
+
+
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Random random = new Random();
+                while(!threadShouldStop.get()) {
+                    liveDataItem.internalDataWrapper.getData().postValue(String.valueOf(random.nextLong()));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
 
         // Update in place group
         Section updatingSection = new Section();
@@ -250,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override protected void onDestroy() {
         prefs.unregisterListener(onSharedPrefChangeListener);
+        threadShouldStop.set(true);
         super.onDestroy();
     }
 
