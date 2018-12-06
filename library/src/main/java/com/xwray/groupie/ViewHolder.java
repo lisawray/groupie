@@ -53,14 +53,6 @@ public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwne
         return lifecycleRegistry;
     }
 
-    void onViewAttachedToWindow() {
-        lifecycleRegistry.markState(Lifecycle.State.STARTED);
-    }
-
-    void onViewDetachedFromWindow() {
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED);
-    }
-
     public void bind(@NonNull Item item, @Nullable OnItemClickListener onItemClickListener, @Nullable OnItemLongClickListener onItemLongClickListener) {
         this.item = item;
 
@@ -79,6 +71,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwne
             itemView.setOnLongClickListener(onLongClickListener);
             this.onItemLongClickListener = onItemLongClickListener;
         }
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
     public void unbind() {
@@ -95,6 +88,8 @@ public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwne
         this.item = null;
         this.onItemClickListener = null;
         this.onItemLongClickListener = null;
+        lifecycleRegistry.markState(Lifecycle.State.CREATED);
+
     }
 
     public @NonNull Map<String, Object> getExtras() {

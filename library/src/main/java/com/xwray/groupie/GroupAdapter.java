@@ -193,18 +193,6 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return getItem(position).getId();
     }
 
-    @Override
-    public void onViewAttachedToWindow(@NonNull VH holder) {
-        super.onViewAttachedToWindow(holder);
-        holder.onViewAttachedToWindow();
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull VH holder) {
-        super.onViewDetachedFromWindow(holder);
-        holder.onViewDetachedFromWindow();
-    }
-
     public @NonNull Item getItem(@NonNull VH holder) {
         return holder.getItem();
     }
