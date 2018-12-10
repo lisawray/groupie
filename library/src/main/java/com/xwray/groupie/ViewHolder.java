@@ -46,7 +46,6 @@ public class ViewHolder extends RecyclerView.ViewHolder implements LifecycleOwne
         lifecycleRegistry.markState(Lifecycle.State.INITIALIZED);
     }
 
-
     @NonNull
     @Override
     public Lifecycle getLifecycle() {

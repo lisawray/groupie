@@ -12,7 +12,6 @@ public class LiveDataItem extends BindableItem<ItemLiveDataBinding> {
     public class DataWrapper {
         private MutableLiveData<String> data = new MutableLiveData<>();
 
-
         public MutableLiveData<String> getData() {
             return data;
         }
