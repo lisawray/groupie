@@ -1,9 +1,9 @@
-package com.xwray.groupie.example.databinding;
+package com.xwray.groupie.example.core;
 
 import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
-public class ExempleApplication extends Application {
+public class ExampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
