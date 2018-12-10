@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@color/white"
+    android:elevation="2dp"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/background"
+        android:text="@{wrapper.data}"
+        tools:text="This is text here" />
+
+</FrameLayout>

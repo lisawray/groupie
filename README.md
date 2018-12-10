@@ -125,6 +125,54 @@ If you're converting existing ViewHolders, you can reference any named views (e.
 
 You can also mix and match `BindableItem` and other `Items` in the adapter, so you can leave legacy viewholders as they are by making an `Item<MyExistingViewHolder>`.  
 
+
+### Item with LiveData :
+
+The `ViewHolder` is a `LifecycleOwner` so you can use `LiveData` with Databinding
+
+```kotlin
+pubic class LiveDataItem extends BindableItem<ItemLiveDataBinding> {
+
+    // Simple wrapper around liveData
+    public class DataWrapper {
+        private MutableLiveData<String> data = new MutableLiveData<>();
+
+        public MutableLiveData<String> getData() {
+            return data;
+        }
+    }
+
+    public DataWrapper internalDataWrapper = new DataWrapper();
+
+    public LiveDataItem() {
+        super();
+    }
+
+    @Override public int getLayout() {
+        return R.layout.item_live_data;
+    }
+
+    @Override public void bind(@NonNull ItemLiveDataBinding viewBinding, int position) {
+        viewBinding.setWrapper(internalDataWrapper);
+    }
+}
+```
+
+or simply by observe the data of the LiveData in the `bind` method and update the view 
+
+```kotlin
+class LiveDataItem(private val data: LiveData<String>) : Item() {
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        data.observe(viewHolder, Observer {
+            viewHolder.text.text = it
+        })
+    }
+
+    override fun getLayout(): Int = R.layout.item_live_data
+}
+```
+
 ### Legacy item (your own ViewHolder)
 You can leave legacy viewholders as they are by converting `MyExistingViewHolder` to extend Groupie's `ViewHolder` rather than `RecyclerView.ViewHolder`. Make sure to change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.ViewHolder`. 
 
@@ -202,7 +250,7 @@ android {
 }
 
 dependencies {
-    compile 'com.xwray:groupie-databinding:[version]'
+    implementation 'com.xwray:groupie-databinding:[version]'
 }
 ```
 

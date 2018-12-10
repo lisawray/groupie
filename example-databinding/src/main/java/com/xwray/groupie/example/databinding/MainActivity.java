@@ -120,13 +120,11 @@ public class MainActivity extends AppCompatActivity {
         fullBleedItemSection.add(new FullBleedCardItem(R.color.purple_200));
         groupAdapter.add(fullBleedItemSection);
 
-
         // LiveData & Databinding sample
         Section liveDataSection = new Section(new HeaderItem(R.string.live_data_group, R.string.live_data_group_subtitle));
         final LiveDataItem liveDataItem = new LiveDataItem();
         liveDataSection.add(liveDataItem);
         groupAdapter.add(liveDataSection);
-
 
         thread = new Thread(new Runnable() {
             @Override

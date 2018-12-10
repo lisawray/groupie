@@ -3,15 +3,15 @@ package com.xwray.groupie.example
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.*
 import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
@@ -22,6 +22,7 @@ import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
 import com.xwray.groupie.example.item.*
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import java.util.*
 
 val INSET_TYPE_KEY = "inset_type"
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private val groupAdapter = GroupAdapter<ViewHolder>() //TODO get rid of this parameter
     private lateinit var groupLayoutManager: GridLayoutManager
     private val prefs: Prefs by lazy { Prefs.get(this) }
-    private val handler = Handler()
 
     private val gray: Int by lazy { ContextCompat.getColor(this, R.color.background) }
     private val betweenPadding: Int by lazy { resources.getDimensionPixelSize(R.dimen.padding_small) }
@@ -101,6 +101,20 @@ class MainActivity : AppCompatActivity() {
             add(FullBleedCardItem(R.color.purple_200))
         }
 
+        // LiveData & Databinding sample
+        val data = MutableLiveData<String>()
+        groupAdapter += Section(HeaderItem(R.string.live_data_group, R.string.live_data_group_subtitle)).apply {
+            add(LiveDataItem(data))
+        }
+
+        GlobalScope.launch(Dispatchers.IO + untilDestroy) {
+            val random = Random()
+            while (true) {
+                data.postValue(random.nextLong().toString())
+                delay(500)
+            }
+        }
+
         // Update in place group
         groupAdapter += Section().apply {
             val updatingHeader = HeaderItem(
@@ -148,14 +162,18 @@ class MainActivity : AppCompatActivity() {
         // Update with payload
         groupAdapter += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
             rainbow500.indices.forEach { i ->
-                add(HeartCardItem(rainbow200[i], i.toLong(), { item, favorite ->
+                add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
                     // Pretend to make a network request
-                    handler.postDelayed({
-                        // Network request was successful!
-                        item.setFavorite(favorite)
-                        item.notifyChanged(FAVORITE)
-                    }, 1000)
-                }))
+                    GlobalScope.launch(Dispatchers.IO + untilDestroy) {
+                        delay(1000)
+                        withContext(Dispatchers.Main + untilDestroy) {
+                            with(item) {
+                                setFavorite(favorite)
+                                notifyChanged(FAVORITE)
+                            }
+                        }
+                    }
+                })
             }
         }
 
@@ -236,3 +254,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+val LifecycleOwner.untilDestroy: Job
+    get() {
+        val job = Job()
+
+        lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+            fun onDestroy() {
+                job.cancel()
+            }
+        })
+
+        return job
+    }
