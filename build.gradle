@@ -6,7 +6,7 @@ def testResultsDir = "${rootProject.buildDir}/test-results"
 
 buildscript {
 
-    ext.kotlin_version = '1.2.71'
+    ext.kotlin_version = '1.3.11'
     ext.android_plugin_version = '3.2.1'
     ext.targetSdkVersion = 28
     ext.compileSdkVersion = 28
