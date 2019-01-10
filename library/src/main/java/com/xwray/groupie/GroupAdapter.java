@@ -1,6 +1,5 @@
 package com.xwray.groupie;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
@@ -150,10 +149,10 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
     @Override
     @NonNull
-    public VH onCreateViewHolder(@NonNull ViewGroup parent, int layoutResId) {
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        Item<VH> item = getItemForViewType(layoutResId);
-        View itemView = inflater.inflate(layoutResId, parent, false);
+        Item<VH> item = getItemForViewType(viewType);
+        View itemView = inflater.inflate(item.getLayout(), parent, false);
         return item.createViewHolder(itemView);
     }
 
@@ -185,7 +184,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         lastItemForViewTypeLookup = getItem(position);
         if (lastItemForViewTypeLookup == null)
             throw new RuntimeException("Invalid position " + position);
-        return lastItemForViewTypeLookup.getLayout();
+        return lastItemForViewTypeLookup.getViewType();
     }
 
     @Override
@@ -429,9 +428,9 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * To be safe, we fallback to searching through all models for a view type match. This is slow and
      * shouldn't be needed, but is a guard against RecyclerView behavior changing.
      */
-    private Item<VH> getItemForViewType(@LayoutRes int layoutResId) {
+    private Item<VH> getItemForViewType(int viewType) {
         if (lastItemForViewTypeLookup != null
-                && lastItemForViewTypeLookup.getLayout() == layoutResId) {
+                && lastItemForViewTypeLookup.getViewType() == viewType) {
             // We expect this to be a hit 100% of the time
             return lastItemForViewTypeLookup;
         }
@@ -439,12 +438,12 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         // To be extra safe in case RecyclerView implementation details change...
         for (int i = 0; i < getItemCount(); i++) {
             Item item = getItem(i);
-            if (item.getLayout() == layoutResId) {
+            if (item.getViewType() == viewType) {
                 return item;
             }
         }
 
-        throw new IllegalStateException("Could not find model for view type: " + layoutResId);
+        throw new IllegalStateException("Could not find model for view type: " + viewType);
     }
 
     private static class DiffCallback extends DiffUtil.Callback {

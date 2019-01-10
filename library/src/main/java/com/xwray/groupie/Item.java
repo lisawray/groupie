@@ -100,6 +100,15 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
     @LayoutRes
     public abstract int getLayout();
 
+    /**
+     * Override this method if the same layout needs to have different viewTypes.
+     * @return the viewType, defaults to the layoutId
+     * @see RecyclerView.Adapter#getItemViewType(int)
+     */
+    public int getViewType() {
+        return getLayout();
+    }
+
     @Override
     public int getItemCount() {
         return 1;
@@ -181,7 +190,7 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * The default implementation compares both view type and id.
      */
     public boolean isSameAs(Item other) {
-        if (getLayout() != other.getLayout()) {
+        if (getViewType() != other.getViewType()) {
             return false;
         }
         return getId() == other.getId();
