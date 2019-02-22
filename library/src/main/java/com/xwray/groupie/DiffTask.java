@@ -16,7 +16,7 @@ import java.util.Collection;
  * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback, OnAsyncUpdateListener)}.
  */
 class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
-    private final DiffUtil.Callback diffCallback;
+    @NonNull private final DiffUtil.Callback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
     private final int runGeneration;
     @Nullable private WeakReference<OnAsyncUpdateListener> onAsyncUpdateListener;
