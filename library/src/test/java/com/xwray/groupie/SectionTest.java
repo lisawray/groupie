@@ -663,6 +663,35 @@ public class SectionTest {
     }
 
     @Test
+    public void clearRemovesAllBodyContents() {
+        final Section rootSection = new Section();
+        rootSection.setHeader(header);
+        rootSection.setFooter(footer);
+
+        rootSection.registerGroupDataObserver(groupAdapter);
+        groupAdapter.add(rootSection);
+
+        final Section nestedSection1 = new Section(Arrays.asList(new DummyItem(), new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection1);
+
+        final Section nestedSection2 = new Section(Collections.singletonList(new DummyItem()));
+        rootSection.add(nestedSection2);
+
+        final Section nestedSection3 = new Section(Arrays.asList(new DummyItem(), new DummyItem()));
+        rootSection.add(nestedSection3);
+
+        reset(groupAdapter);
+        rootSection.clear();
+
+        final InOrder adapterCalls = inOrder(groupAdapter, groupAdapter, groupAdapter);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 2, 3);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 2, 1);
+        adapterCalls.verify(groupAdapter).onItemRangeRemoved(rootSection, 2, 2);
+
+        assertEquals(rootSection.getItemCount(), headerSize + footerSize);
+    }
+
+    @Test
     public void updateGroupChangesRange() {
         List<Item> children = new ArrayList<Item>();
         children.add(new AlwaysUpdatingItem(1));

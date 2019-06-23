@@ -114,6 +114,24 @@ public class Section extends NestedGroup {
     }
 
     /**
+     * Remove all existing body content.
+     */
+    public void clear() {
+        if (children.isEmpty()) {
+            return;
+        }
+
+        final List<Group> oldBodyGroups = new ArrayList<>(children);
+        super.removeAll(children);
+        for (Group group : oldBodyGroups) {
+            int position = getItemCountBeforeGroup(group);
+            children.remove(group);
+            notifyItemRangeRemoved(position, group.getItemCount());
+        }
+        refreshEmptyState();
+    }
+
+    /**
      * Replace all existing body content and dispatch fine-grained change notifications to the
      * parent using DiffUtil.
      * <p>
