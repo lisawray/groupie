@@ -202,7 +202,7 @@ android {
 }
 
 dependencies {
-    compile 'com.xwray:groupie-databinding:[version]'
+    implementation 'com.xwray:groupie-databinding:[version]'
 }
 ```
 
