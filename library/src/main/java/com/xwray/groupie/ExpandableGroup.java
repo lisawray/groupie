@@ -1,10 +1,10 @@
 package com.xwray.groupie;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * An ExpandableContentItem is one "base" content item with a list of children (any of which
@@ -127,6 +127,10 @@ public class ExpandableGroup extends NestedGroup {
 
     public int getGroupCount() {
         return 1 + (isExpanded ? children.size() : 0);
+    }
+
+    public int getChildCount() {
+        return children.size();
     }
 
     public void onToggleExpanded() {
