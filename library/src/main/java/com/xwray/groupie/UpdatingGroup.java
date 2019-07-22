@@ -1,11 +1,11 @@
 package com.xwray.groupie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Deprecated.  Please use Section.update() instead.
@@ -98,10 +98,7 @@ public class UpdatingGroup extends NestedGroup {
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             Item oldItem = items.get(oldItemPosition);
             Item newItem = newList.get(newItemPosition);
-            if (oldItem.getLayout() != newItem.getLayout()) {
-                return false;
-            }
-            return oldItem.getId() == newItem.getId();
+            return newItem.isSameAs(oldItem);
         }
 
         @Override
