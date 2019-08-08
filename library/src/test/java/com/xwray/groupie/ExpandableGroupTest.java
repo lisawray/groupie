@@ -1,7 +1,5 @@
 package com.xwray.groupie;
 
-import androidx.annotation.NonNull;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,6 +8,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -132,6 +132,21 @@ public class ExpandableGroupTest {
     }
 
     @Test
+    public void testUnexpandedChildCount() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+
+        assertEquals(2, expandableGroup.getChildCount());
+    }
+
+    @Test
     public void expandNotifies() throws Exception {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
         Section section = new Section();
@@ -241,5 +256,82 @@ public class ExpandableGroupTest {
 
         expandableGroup.onToggleExpanded();
         assertEquals(1, expandableGroup.getGroupCount());
+    }
+
+    @Test
+    public void testExpandedChildCount() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.onToggleExpanded();
+
+        assertEquals(2, expandableGroup.getChildCount());
+    }
+
+    @Test
+    public void testExpandedChildCountForAddAll() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.onToggleExpanded();
+
+        assertEquals(5, expandableGroup.getChildCount());
+    }
+
+    @Test
+    public void testExpandedChildCountForAdd() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        DummyItem item = new DummyItem();
+        expandableGroup.add(item);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.onToggleExpanded();
+        assertEquals(1, expandableGroup.getChildCount());
+    }
+
+    @Test
+    public void testExpandedChildCountForRemove() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+
+        expandableGroup.remove(items.get(0));
+
+        expandableGroup.onToggleExpanded();
+        assertEquals(4, expandableGroup.getChildCount());
+    }
+
+
+    @Test
+    public void testChildCountForRemoveAll() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = new ArrayList<>();
+        int itemsCount = 5;
+        for (int i = 0; i < itemsCount; i++) {
+            items.add(new DummyItem());
+        }
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+
+        expandableGroup.removeAll(items);
+
+        expandableGroup.onToggleExpanded();
+        assertEquals(0, expandableGroup.getChildCount());
     }
 }
