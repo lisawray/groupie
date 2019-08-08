@@ -2,6 +2,7 @@ package com.xwray.groupie;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
@@ -41,10 +42,10 @@ class AsyncDiffUtil {
         return maxScheduledGeneration;
     }
 
-    void calculateDiff(@NonNull Collection<? extends Group> newGroups, @NonNull DiffUtil.Callback diffUtilCallback) {
+    void calculateDiff(@NonNull Collection<? extends Group> newGroups, @NonNull DiffUtil.Callback diffUtilCallback, @Nullable OnAsyncUpdateListener onAsyncUpdateListener) {
         groups = newGroups;
         // incrementing generation means any currently-running diffs are discarded when they finish
         final int runGeneration = ++maxScheduledGeneration;
-        new DiffTask(this, diffUtilCallback, runGeneration).execute();
+        new DiffTask(this, diffUtilCallback, runGeneration, onAsyncUpdateListener).execute();
     }
 }
