@@ -180,6 +180,78 @@ public class ExpandableGroupTest {
 
         Mockito.verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, 6);
     }
+    
+    @Test
+    public void setExpandedShouldntNotifiesExpandWhenTheValueNotChanged() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.setExpanded(true);
+
+        Mockito.verifyNoMoreInteractions(groupAdapter);
+        assertTrue(expandableGroup.isExpanded());
+    }
+
+    @Test
+    public void setExpandedShouldntNotifiesCollapseWhenTheValueNotChanged() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.setExpanded(false);
+
+        Mockito.verifyNoMoreInteractions(groupAdapter);
+        assertFalse(expandableGroup.isExpanded());
+    }
+
+    @Test
+    public void setExpandedShouldNotifiesExpandWhenTheValueChanged() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.setExpanded(true);
+
+        Mockito.verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 6);
+        assertTrue(expandableGroup.isExpanded());
+    }
+
+    @Test
+    public void setExpandedShouldNotifiesCollapseWhenTheValueChanged() throws Exception {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
+        Section section = new Section();
+        int sectionSize = 5;
+        for (int i = 0; i < sectionSize; i++) {
+            section.add(new DummyItem());
+        }
+        expandableGroup.add(section);
+        Item lastItem = new DummyItem();
+        expandableGroup.add(lastItem);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+        expandableGroup.setExpanded(false);
+
+        Mockito.verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, 6);
+        assertFalse(expandableGroup.isExpanded());
+    }
 
     @Test
     public void testExpandedGroupCount() throws Exception {

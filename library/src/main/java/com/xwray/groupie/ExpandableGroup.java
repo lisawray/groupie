@@ -144,6 +144,12 @@ public class ExpandableGroup extends NestedGroup {
         }
     }
 
+    public void setExpanded(boolean isExpanded) {
+        if (this.isExpanded != isExpanded) {
+            onToggleExpanded();
+        }
+    }
+
     private boolean dispatchChildChanges(Group group) {
         return isExpanded || group == parent;
     }
