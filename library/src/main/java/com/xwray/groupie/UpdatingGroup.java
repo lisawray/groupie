@@ -98,7 +98,7 @@ public class UpdatingGroup extends NestedGroup {
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             Item oldItem = items.get(oldItemPosition);
             Item newItem = newList.get(newItemPosition);
-            if (oldItem.getLayout() != newItem.getLayout()) {
+            if (oldItem.getViewType() != newItem.getViewType()) {
                 return false;
             }
             return oldItem.getId() == newItem.getId();
