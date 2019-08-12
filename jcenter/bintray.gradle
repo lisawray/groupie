@@ -59,6 +59,7 @@ if (propertiesFile.exists()) {
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
+    dryRun = properties.getProperty("bintray.dryrun").toBoolean()
 
     configurations = ['archives']
     pkg {

@@ -21,12 +21,11 @@ android {
 }
 
 dependencies {
-    //api project (':library')
-    api 'com.xwray:groupie:2.2.0'
+    api project (':library')
     api "androidx.recyclerview:recyclerview:1.0.0"
-    api "androidx.appcompat:appcompat:1.0.0"
+    api "androidx.appcompat:appcompat:1.0.2"
     api "com.google.android.material:material:1.0.0"
     api "androidx.cardview:cardview:1.0.0"
-    api "androidx.vectordrawable:vectordrawable:1.0.0"
+    api "androidx.vectordrawable:vectordrawable:1.0.1"
     api "androidx.vectordrawable:vectordrawable-animated:1.0.0"
 }

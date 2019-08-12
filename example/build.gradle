@@ -39,10 +39,8 @@ android {
 
 dependencies {
     implementation project(':example-shared')
-    //implementation project(':library')
-    //implementation project(':library-kotlin-android-extensions')
-    implementation 'com.xwray:groupie-kotlin-android-extensions:2.2.0'
-
+    implementation project(':library')
+    implementation project(':library-kotlin-android-extensions')
 }
 
 repositories {
