@@ -44,6 +44,9 @@ public class Section extends NestedGroup {
 
     public Section(@Nullable Group header, @NonNull Collection<? extends Group> children) {
         this.header = header;
+        if (header != null) {
+            header.registerGroupDataObserver(this);
+        }
         addAll(children);
     }
 
@@ -396,12 +399,21 @@ public class Section extends NestedGroup {
     public void setHeader(@NonNull Group header) {
         if (header == null)
             throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
+        if (this.header != null) {
+            this.header.unregisterGroupDataObserver(this);
+        }
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = header;
+        header.registerGroupDataObserver(this);
         notifyHeaderItemsChanged(previousHeaderItemCount);
     }
 
     public void removeHeader() {
+        if (this.header == null) {
+            return;
+        }
+
+        this.header.unregisterGroupDataObserver(this);
         int previousHeaderItemCount = getHeaderItemCount();
         this.header = null;
         notifyHeaderItemsChanged(previousHeaderItemCount);
@@ -421,12 +433,21 @@ public class Section extends NestedGroup {
     public void setFooter(@NonNull Group footer) {
         if (footer == null)
             throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
+        if (this.footer != null) {
+            this.footer.unregisterGroupDataObserver(this);
+        }
         int previousFooterItemCount = getFooterItemCount();
         this.footer = footer;
+        footer.registerGroupDataObserver(this);
         notifyFooterItemsChanged(previousFooterItemCount);
     }
 
     public void removeFooter() {
+        if (this.footer == null) {
+            return;
+        }
+
+        this.footer.unregisterGroupDataObserver(this);
         int previousFooterItemCount = getFooterItemCount();
         this.footer = null;
         notifyFooterItemsChanged(previousFooterItemCount);
