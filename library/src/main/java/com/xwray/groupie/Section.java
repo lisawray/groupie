@@ -182,7 +182,6 @@ public class Section extends NestedGroup {
      * @param newBodyGroups The new content of the section
      * @param diffResult
      */
-
     public void update(@NonNull final Collection<? extends Group> newBodyGroups, DiffUtil.DiffResult diffResult) {
         super.removeAll(children);
         children.clear();

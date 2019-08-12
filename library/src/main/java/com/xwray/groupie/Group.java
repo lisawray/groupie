@@ -12,9 +12,9 @@ public interface Group {
     @NonNull Item getItem(int position);
 
     /**
-     * Gets the position of a
-     * @param item
-     * @return
+     * Gets the position of an item inside this Group
+     * @param item item to return position of
+     * @return The position of the item or -1 if not present
      */
     int getPosition(@NonNull Item item);
 

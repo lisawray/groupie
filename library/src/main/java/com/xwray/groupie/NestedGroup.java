@@ -71,12 +71,6 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
                 + getItemCount() + " items");
     }
 
-    /**
-     * Gets the position of an
-     *
-     * @param item
-     * @return
-     */
     public final int getPosition(@NonNull Item item) {
         int previousPosition = 0;
 
