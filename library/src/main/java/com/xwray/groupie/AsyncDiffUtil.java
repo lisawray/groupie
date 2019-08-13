@@ -42,10 +42,13 @@ class AsyncDiffUtil {
         return maxScheduledGeneration;
     }
 
-    void calculateDiff(@NonNull Collection<? extends Group> newGroups, @NonNull DiffUtil.Callback diffUtilCallback, @Nullable OnAsyncUpdateListener onAsyncUpdateListener) {
+    void calculateDiff(@NonNull Collection<? extends Group> newGroups,
+                       @NonNull DiffUtil.Callback diffUtilCallback,
+                       @Nullable OnAsyncUpdateListener onAsyncUpdateListener,
+                       boolean detectMoves) {
         groups = newGroups;
         // incrementing generation means any currently-running diffs are discarded when they finish
         final int runGeneration = ++maxScheduledGeneration;
-        new DiffTask(this, diffUtilCallback, runGeneration, onAsyncUpdateListener).execute();
+        new DiffTask(this, diffUtilCallback, runGeneration, detectMoves, onAsyncUpdateListener).execute();
     }
 }

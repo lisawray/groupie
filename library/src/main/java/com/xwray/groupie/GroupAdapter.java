@@ -93,7 +93,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      */
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups) {
-        this.updateAsync(newGroups, null);
+        this.updateAsync(newGroups, true, null);
     }
 
     /**
@@ -106,15 +106,17 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      *
      * @param newGroups List of {@link Group}
      * @param onAsyncUpdateListener Optional callback for when the async update is complete
+     * @param detectMoves Boolean is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to true
+     *                    if you want DiffUtil to detect moved items.
      */
     @SuppressWarnings("unused")
-    public void updateAsync(@NonNull final List<? extends Group> newGroups, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+    public void updateAsync(@NonNull final List<? extends Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
         final List<Group> oldGroups = new ArrayList<>(groups);
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
         final DiffCallback diffUtilCallback = new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups);
-        asyncDiffUtil.calculateDiff(newGroups, diffUtilCallback, onAsyncUpdateListener);
+        asyncDiffUtil.calculateDiff(newGroups, diffUtilCallback, onAsyncUpdateListener, detectMoves);
     }
 
     /**
