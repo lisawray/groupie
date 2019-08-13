@@ -124,12 +124,26 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      */
     @SuppressWarnings("unused")
     public void update(@NonNull final Collection<? extends Group> newGroups) {
+        update(newGroups, true);
+    }
+
+    /**
+     * Updates the adapter with a new list that will be diffed on the <em>main</em> thread
+     * and displayed once diff results are calculated. Not recommended for huge lists.
+     * @param newGroups List of {@link Group}
+     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to true
+     *                    if you don't want DiffUtil to detect moved items.
+     */
+    @SuppressWarnings("unused")
+    public void update(@NonNull final Collection<? extends Group> newGroups, boolean detectMoves) {
         final List<Group> oldGroups = new ArrayList<>(groups);
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
-                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups));
+                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups),
+                detectMoves
+        );
 
         setNewGroups(newGroups);
 
