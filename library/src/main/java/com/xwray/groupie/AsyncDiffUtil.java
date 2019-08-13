@@ -17,7 +17,7 @@ class AsyncDiffUtil {
          * Called on the main thread before DiffUtil dispatches the result
          */
         @MainThread
-        void onDispatchResult(@NonNull Collection<? extends Group> newGroups);
+        void onDispatchAsyncResult(@NonNull Collection<? extends Group> newGroups);
     }
 
     private final Callback asyncDiffUtilCallback;

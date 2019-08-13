@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * An async task implementation that runs {@link DiffUtil#calculateDiff(DiffUtil.Callback)}
- * in a background thread. This task will call {@link AsyncDiffUtil.Callback#onDispatchResult(Collection)}
+ * in a background thread. This task will call {@link AsyncDiffUtil.Callback#onDispatchAsyncResult(Collection)}
  * passing the new list just before dispatching the diff result to the provided
  * {@link DiffUtil.Callback} so that the new list.
  * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback, OnAsyncUpdateListener)}.
@@ -52,7 +52,7 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
         }
         AsyncDiffUtil async = asyncListDiffer.get();
         if (shouldDispatchResult(diffResult, async)) {
-            async.getAsyncDiffUtilCallback().onDispatchResult(async.getGroups());
+            async.getAsyncDiffUtilCallback().onDispatchAsyncResult(async.getGroups());
             diffResult.dispatchUpdatesTo(async.getAsyncDiffUtilCallback());
             if (onAsyncUpdateListener != null && onAsyncUpdateListener.get() != null) {
                 onAsyncUpdateListener.get().onUpdateComplete();
