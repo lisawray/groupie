@@ -248,6 +248,13 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return position;
     }
 
+    /**
+     * Returns the number of top-level groups present in the adapter.
+     */
+    public int getGroupCount() {
+        return groups.size();
+    }
+
     private static int getItemCount(Collection<? extends Group> groups) {
         int count = 0;
         for (Group group : groups) {
