@@ -26,9 +26,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
 
     private AsyncDiffUtil.Callback diffUtilCallbacks = new AsyncDiffUtil.Callback() {
         @Override
-        public void onDispatchResult(@NonNull Collection<? extends Group> newGroups) {
-            groups.clear();
-            groups.addAll(newGroups);
+        public void onDispatchAsyncResult(@NonNull Collection<? extends Group> newGroups) {
+            setNewGroups(newGroups);
         }
 
         @Override
@@ -114,8 +113,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         final int oldBodyItemCount = getItemCount(oldGroups);
         final int newBodyItemCount = getItemCount(newGroups);
 
-        asyncDiffUtil.calculateDiff(newGroups,
-                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups), onAsyncUpdateListener);
+        final DiffCallback diffUtilCallback = new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups);
+        asyncDiffUtil.calculateDiff(newGroups, diffUtilCallback, onAsyncUpdateListener);
     }
 
     /**
@@ -132,16 +131,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
                 new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups));
 
-        for (Group group : groups) {
-            group.unregisterGroupDataObserver(this);
-        }
-
-        groups.clear();
-        groups.addAll(newGroups);
-
-        for (Group group : newGroups) {
-            group.registerGroupDataObserver(this);
-        }
+        setNewGroups(newGroups);
 
         diffResult.dispatchUpdatesTo(diffUtilCallbacks);
     }
@@ -380,6 +370,19 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
             }
         }
         throw new IndexOutOfBoundsException("Item is not present in adapter or in any group");
+    }
+
+    private void setNewGroups(@NonNull Collection<? extends Group> newGroups) {
+        for (Group group : groups) {
+            group.unregisterGroupDataObserver(this);
+        }
+
+        groups.clear();
+        groups.addAll(newGroups);
+
+        for (Group group : newGroups) {
+            group.registerGroupDataObserver(this);
+        }
     }
 
     @Override
