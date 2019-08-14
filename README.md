@@ -9,21 +9,21 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-implementation 'com.xwray:groupie:2.4.0'
+implementation "com.xwray:groupie:2.4.0"
 ```
 
 Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
 ```gradle
-implementation 'com.xwray:groupie:2.4.0'
-implementation 'com.xwray:groupie-kotlin-android-extensions:2.4.0'
+implementation "com.xwray:groupie:2.4.0"
+implementation "com.xwray:groupie-kotlin-android-extensions:2.4.0"
 ```
 
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-implementation 'com.xwray:groupie:2.4.0'
-implementation 'com.xwray:groupie-databinding:2.4.0' 
+implementation "com.xwray:groupie:2.4.0"
+implementation "com.xwray:groupie-databinding:2.4.0" 
 ```
 
 You can also use Groupie with Java and your existing ViewHolders. 
@@ -76,6 +76,9 @@ You can implement the `Group` interface directly if you want.  However, in most 
 Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
 
 ### Item with Kotlin:
+
+**WARNING - there is currently a [Kotlin bug](https://youtrack.jetbrains.com/issue/KT-28617) that prevents synthetic caching from working correctly. We are tracking this under issue #235. In order to get the
+following behaviour working correctly, [look here.](#workaround-for-kotlin-synthetic-caching-bug) )**
 
 The `Item` class gives you simple callbacks to bind your model object to the generated fields.  Because of Kotlin Android extensions, there's no need to write a view holder.
 
@@ -189,6 +192,25 @@ Remember to include
 import kotlinx.android.synthetic.main.my_item_layout.*
 ```
 in the corresponding Item class for generated view references.
+
+### Workaround for Kotlin Synthetic caching bug
+
+The current workaround is to copy the Groupie classes yourself to your project and use them rather than the Groupie ones. Look at issue #235 for more info.
+
+```kotlin
+class ViewHolder(override val containerView: View) : com.xwray.groupie.ViewHolder(containerView),
+        LayoutContainer
+        
+abstract class Item : Item<ViewHolder> {
+
+    constructor() : super()
+    constructor(id: Long) : super(id)
+
+    override fun createViewHolder(itemView: View): ViewHolder {
+        return ViewHolder(itemView)
+    }
+}
+```
 
 ## Data binding
 
