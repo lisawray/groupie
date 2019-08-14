@@ -17,7 +17,7 @@ open class CardItem (@ColorInt private val colorRes: Int, val text: CharSequence
     override fun getLayout() = R.layout.item_card
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        //viewBinding.getRoot().setBackgroundColor(colorRes);
+        viewHolder.root.setBackgroundColor(colorRes)
         viewHolder.text.text = text
     }
 }
