@@ -120,15 +120,7 @@ public class Section extends NestedGroup {
         if (children.isEmpty()) {
             return;
         }
-
-        final List<Group> oldBodyGroups = new ArrayList<>(children);
-        super.removeAll(children);
-        for (Group group : oldBodyGroups) {
-            int position = getItemCountBeforeGroup(group);
-            children.remove(group);
-            notifyItemRangeRemoved(position, group.getItemCount());
-        }
-        refreshEmptyState();
+        removeAll(new ArrayList<>(children));
     }
 
     /**
