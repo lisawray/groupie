@@ -77,8 +77,8 @@ Groupie abstracts away the complexity of multiple item view types.  Each Item de
 
 ### Item with Kotlin:
 
-**WARNING - there is currently a [Kotlin bug](https://youtrack.jetbrains.com/issue/KT-28617) that prevents synthetic caching from working correctly. We are tracking this under issue #235. In order to get the
-following behaviour working correctly, [look here.](#workaround-for-kotlin-synthetic-caching-bug) )**
+**WARNING - there is currently a [Kotlin bug](https://youtrack.jetbrains.com/issue/KT-28617) that prevents synthetic caching from working correctly. We are tracking this under issue [#235](https://github.com/lisawray/groupie/issues/235). In order to get the
+following behaviour working correctly, [look here.](#workaround-for-kotlin-synthetic-caching-bug)**
 
 The `Item` class gives you simple callbacks to bind your model object to the generated fields.  Because of Kotlin Android extensions, there's no need to write a view holder.
 
@@ -195,7 +195,7 @@ in the corresponding Item class for generated view references.
 
 ### Workaround for Kotlin Synthetic caching bug
 
-The current workaround is to copy the Groupie classes yourself to your project and use them rather than the Groupie ones. Look at issue #235 for more info.
+The current workaround is to copy the Groupie classes yourself to your project and use them rather than the Groupie ones. Look issue [#235](https://github.com/lisawray/groupie/issues/235) for more info.
 
 ```kotlin
 class ViewHolder(override val containerView: View) : com.xwray.groupie.ViewHolder(containerView),
