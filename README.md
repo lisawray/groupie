@@ -172,7 +172,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
   ....
   
-   // IMPORTANT!  Enables view caching in viewholders.
+   // IMPORTANT!  Enables kotlin synthetic view properties.
    // See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
     androidExtensions {
         experimental = true
