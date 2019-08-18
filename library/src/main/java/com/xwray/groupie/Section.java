@@ -137,6 +137,8 @@ public class Section extends NestedGroup {
      * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
      *
+     * This will default detectMoves to true.
+     *
      * @param newBodyGroups The new content of the section
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {

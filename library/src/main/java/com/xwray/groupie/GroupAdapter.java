@@ -89,6 +89,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * If you want to receive a callback once the update is complete call the
      * {@link #updateAsync(List, OnAsyncUpdateListener)} version
      *
+     * This will default detectMoves to true.
+     *
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
@@ -122,6 +124,9 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     /**
      * Updates the adapter with a new list that will be diffed on the <em>main</em> thread
      * and displayed once diff results are calculated. Not recommended for huge lists.
+     *
+     * This will default detectMoves to true.
+     *
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
