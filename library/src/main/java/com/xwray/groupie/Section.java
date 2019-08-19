@@ -137,9 +137,30 @@ public class Section extends NestedGroup {
      * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
      *
+     * This will default detectMoves to true.
+     *
      * @param newBodyGroups The new content of the section
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
+        update(newBodyGroups, true);
+    }
+
+    /**
+     * Replace all existing body content and dispatch fine-grained change notifications to the
+     * parent using DiffUtil.
+     * <p>
+     * Item comparisons are made using:
+     * - Item.isSameAs(Item otherItem) (are items the same?)
+     * - Item.equals() (are contents the same?)
+     * <p>
+     * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
+     * meaning your Group will consider every update a complete change of everything.
+     *
+     * @param newBodyGroups The new content of the section
+     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
+     *                    don't want DiffUtil to detect moved items.
+     */
+    public void update(@NonNull final Collection<? extends Group> newBodyGroups, boolean detectMoves) {
 
         final List<Group> oldBodyGroups = new ArrayList<>(children);
         final int oldBodyItemCount = getItemCount(oldBodyGroups);
@@ -177,7 +198,7 @@ public class Section extends NestedGroup {
                 Item newItem = getItem(newBodyGroups, newItemPosition);
                 return oldItem.getChangePayload(newItem);
             }
-        });
+        }, detectMoves);
 
         super.removeAll(children);
         children.clear();

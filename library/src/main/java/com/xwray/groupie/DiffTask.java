@@ -19,16 +19,19 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     @NonNull private final DiffUtil.Callback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
     private final int runGeneration;
+    private final boolean detectMoves;
     @Nullable private WeakReference<OnAsyncUpdateListener> onAsyncUpdateListener;
     private Exception backgroundException = null;
 
     DiffTask(@NonNull AsyncDiffUtil asyncDiffUtil,
              @NonNull DiffUtil.Callback callback,
              int runGeneration,
+             boolean detectMoves,
              @Nullable OnAsyncUpdateListener onAsyncUpdateListener) {
         this.diffCallback = callback;
         this.asyncListDiffer = new WeakReference<>(asyncDiffUtil);
         this.runGeneration = runGeneration;
+        this.detectMoves = detectMoves;
         if (onAsyncUpdateListener != null) {
             this.onAsyncUpdateListener = new WeakReference<>(onAsyncUpdateListener);
         }
@@ -38,7 +41,7 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     @Nullable
     protected DiffUtil.DiffResult doInBackground(Void... voids) {
         try {
-            return DiffUtil.calculateDiff(diffCallback);
+            return DiffUtil.calculateDiff(diffCallback, detectMoves);
         } catch (Exception e) {
             backgroundException = e;
             return null;
