@@ -87,7 +87,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * updates will no longer work and you must use this method to update exclusively.
      * <br/> <br/>
      * If you want to receive a callback once the update is complete call the
-     * {@link #updateAsync(List, OnAsyncUpdateListener)} version
+     * {@link #updateAsync(List, boolean, OnAsyncUpdateListener)} version
      *
      * This will default detectMoves to true.
      *
@@ -96,6 +96,25 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups) {
         this.updateAsync(newGroups, true, null);
+    }
+
+    /**
+     * Updates the adapter with a new list that will be diffed on a background thread
+     * and displayed once diff results are calculated.
+     *
+     * NOTE: This update method is NOT compatible with partial updates (change notifications
+     * driven by individual groups and items).  If you update using this method, all partial
+     * updates will no longer work and you must use this method to update exclusively.
+     * <br/> <br/>
+     *
+     * This will default detectMoves to true.
+     *
+     * @see #updateAsync(List, boolean, OnAsyncUpdateListener)
+     * @param newGroups List of {@link Group}
+     */
+    @SuppressWarnings("unused")
+    public void updateAsync(@NonNull final List<? extends Group> newGroups, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+        this.updateAsync(newGroups, true, onAsyncUpdateListener);
     }
 
     /**
@@ -138,7 +157,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
      * Updates the adapter with a new list that will be diffed on the <em>main</em> thread
      * and displayed once diff results are calculated. Not recommended for huge lists.
      * @param newGroups List of {@link Group}
-     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to true
+     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false
      *                    if you don't want DiffUtil to detect moved items.
      */
     @SuppressWarnings("unused")

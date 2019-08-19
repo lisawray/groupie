@@ -139,6 +139,7 @@ public class Section extends NestedGroup {
      *
      * This will default detectMoves to true.
      *
+     * @see #update(Collection, boolean)
      * @param newBodyGroups The new content of the section
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
