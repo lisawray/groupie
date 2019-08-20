@@ -13,7 +13,7 @@ import java.util.Collection;
  * in a background thread. This task will call {@link AsyncDiffUtil.Callback#onDispatchAsyncResult(Collection)}
  * passing the new list just before dispatching the diff result to the provided
  * {@link DiffUtil.Callback} so that the new list.
- * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback, OnAsyncUpdateListener)}.
+ * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, DiffUtil.Callback, OnAsyncUpdateListener, boolean)}.
  */
 class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     @NonNull private final DiffUtil.Callback diffCallback;
