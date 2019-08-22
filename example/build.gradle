@@ -17,12 +17,12 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdkVersion rootProject.sdkVersion
 
     defaultConfig {
         applicationId "com.xwray.groupie.example"
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion rootProject.minimumSdkVersion
+        targetSdkVersion rootProject.sdkVersion
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary true
