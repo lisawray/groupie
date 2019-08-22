@@ -397,7 +397,7 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
             if (position - previous < size) return group;
             previous += group.getItemCount();
         }
-        throw new IndexOutOfBoundsException("Requested position " + position + "in group adapter " +
+        throw new IndexOutOfBoundsException("Requested position " + position + " in group adapter " +
                 "but there are only " + previous + " items");
     }
 
