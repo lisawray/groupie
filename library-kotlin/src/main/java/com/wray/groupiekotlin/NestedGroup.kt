@@ -6,9 +6,7 @@ abstract class NestedGroup: Group, GroupDataObserver {
 
     private val observable = GroupDataObservable()
 
-    //region: NestedGroup
-
-    abstract fun getGroup(index: Int): Group
+    abstract fun getGroup(position: Int): Group
 
     abstract val groupCount: Int
 
@@ -32,32 +30,32 @@ abstract class NestedGroup: Group, GroupDataObserver {
     }
 
     @CallSuper
-    fun add(group: Group) {
+    open fun add(group: Group) {
         group.registerGroupDataObserver(this)
     }
 
     @CallSuper
-    fun <T : Group> addAll(groups: Collection<T>) {
+    open fun <T : Group> addAll(groups: Collection<T>) {
         groups.forEach { group -> group.registerGroupDataObserver(this) }
     }
 
     @CallSuper
-    fun add(position: Int, group: Group) {
+    open fun add(position: Int, group: Group) {
         add(group)
     }
 
     @CallSuper
-    fun <T : Group> addAll(position: Int, groups: Collection<T>) {
+    open fun <T : Group> addAll(position: Int, groups: Collection<T>) {
         addAll(groups)
     }
 
     @CallSuper
-    fun remove(group: Group) {
+    open fun remove(group: Group) {
         group.unregisterGroupDataObserver(this)
     }
 
     @CallSuper
-    fun <T : Group> removeAll(groups: Collection<T>) {
+    open fun <T : Group> removeAll(groups: Collection<T>) {
         groups.forEach { group -> group.unregisterGroupDataObserver(this) }
     }
 
@@ -68,56 +66,54 @@ abstract class NestedGroup: Group, GroupDataObserver {
      * @param itemCount
      */
     @CallSuper
-    fun notifyItemRangeInserted(positionStart: Int, itemCount: Int) {
+    open fun notifyItemRangeInserted(positionStart: Int, itemCount: Int) {
         observable.onItemRangeInserted(this, positionStart, itemCount)
     }
 
     @CallSuper
-    fun notifyItemRangeRemoved(positionStart: Int, itemCount: Int) {
+    open fun notifyItemRangeRemoved(positionStart: Int, itemCount: Int) {
         observable.onItemRangeRemoved(this, positionStart, itemCount)
     }
 
     @CallSuper
-    fun notifyItemMoved(fromPosition: Int, toPosition: Int) {
+    open fun notifyItemMoved(fromPosition: Int, toPosition: Int) {
         observable.onItemMoved(this, fromPosition, toPosition)
     }
 
     @CallSuper
-    fun notifyChanged() {
+    open fun notifyChanged() {
         observable.onChanged(this)
     }
 
     @CallSuper
-    fun notifyItemInserted(position: Int) {
+    open fun notifyItemInserted(position: Int) {
         observable.onItemInserted(this, position)
     }
 
     @CallSuper
-    fun notifyItemChanged(position: Int) {
+    open fun notifyItemChanged(position: Int) {
         observable.onItemChanged(this, position)
     }
 
     @CallSuper
-    fun notifyItemChanged(position: Int, payload: Any) {
+    open fun notifyItemChanged(position: Int, payload: Any) {
         observable.onItemChanged(this, position, payload)
     }
 
     @CallSuper
-    fun notifyItemRemoved(position: Int) {
+    open fun notifyItemRemoved(position: Int) {
         observable.onItemRemoved(this, position)
     }
 
     @CallSuper
-    fun notifyItemRangeChanged(positionStart: Int, itemCount: Int) {
+    open fun notifyItemRangeChanged(positionStart: Int, itemCount: Int) {
         observable.onItemRangeChanged(this, positionStart, itemCount)
     }
 
     @CallSuper
-    fun notifyItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any) {
+    open fun notifyItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any) {
         observable.onItemRangeChanged(this, positionStart, itemCount, payload)
     }
-
-    //endregion: NestedGroup
 
     //region: Group interface
 
