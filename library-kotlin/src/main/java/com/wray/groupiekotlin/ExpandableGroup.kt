@@ -25,7 +25,7 @@ interface ExpandableItem: Group {
  * may themselves be a group.)
  **/
 
-class ExpandableGroup(
+open class ExpandableGroup(
     private val parent: ExpandableItem,
     isExpanded: Boolean = false
 ): NestedGroup() {

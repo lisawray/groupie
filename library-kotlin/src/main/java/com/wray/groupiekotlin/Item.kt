@@ -110,7 +110,7 @@ abstract class Item<VH : GroupieViewHolder>(
     open val id: Long
         get() = _id
 
-    open fun isSameAs(other: Item<VH>): Boolean =
+    open fun isSameAs(other: AnyItem): Boolean =
         if (viewType != other.viewType) {
             false
         } else id == other.id
