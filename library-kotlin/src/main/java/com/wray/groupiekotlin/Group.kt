@@ -17,3 +17,19 @@ interface Group {
 
     fun unregisterGroupDataObserver(groupDataObserver: GroupDataObserver)
 }
+
+internal fun Collection<Group>.getItem(position: Int): AnyItem {
+    var previousPosition = 0
+    for (group in this) {
+        val size = group.itemCount
+        if (size + previousPosition > position) {
+            return group.getItem(position - previousPosition)
+        }
+        previousPosition += size
+    }
+
+    throw IndexOutOfBoundsException("Wanted item at $position but there are only $previousPosition items")
+}
+
+internal val Collection<Group>.itemCount: Int
+    get() = this.sumBy { it.itemCount }

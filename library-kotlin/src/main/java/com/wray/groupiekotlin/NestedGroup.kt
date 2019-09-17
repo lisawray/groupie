@@ -12,9 +12,6 @@ abstract class NestedGroup: Group, GroupDataObserver {
 
     abstract fun getPosition(group: Group): Int
 
-    protected val <T : Group> Collection<T>.itemCount: Int
-        get() = this.sumBy { it.itemCount }
-
     protected fun getItemCountBeforeGroup(group: Group): Int {
         val groupIndex = getPosition(group)
         return getItemCountBeforeGroupIndex(groupIndex)

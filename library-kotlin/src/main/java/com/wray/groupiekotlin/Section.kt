@@ -165,36 +165,10 @@ open class Section(
      */
     fun update(newBodyGroups: List<Group>, detectMoves: Boolean = true) {
         val oldBodyGroups = children.toList()
-        val oldBodyItemCount = oldBodyGroups.itemCount
-        val newBodyItemCount = newBodyGroups.itemCount
+        val diffCallback = DiffCallback(oldBodyGroups, newBodyGroups)
 
-        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int = oldBodyItemCount
-
-            override fun getNewListSize(): Int = newBodyItemCount
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldItem = oldBodyGroups.getItem(oldItemPosition)
-                val newItem = newBodyGroups.getItem(newItemPosition)
-                return newItem.isSameAs(oldItem)
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldItem = oldBodyGroups.getItem(oldItemPosition)
-                val newItem = newBodyGroups.getItem(newItemPosition)
-                return newItem == oldItem
-            }
-        }, detectMoves)
-
-        super.removeAll(children)
-        children.clear()
-        children.addAll(newBodyGroups)
-        super.addAll(newBodyGroups)
-
-        diffResult.dispatchUpdatesTo(listUpdateCallback)
-        if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
-            refreshEmptyState()
-        }
+        val diffResult = DiffUtil.calculateDiff(diffCallback, detectMoves)
+        update(newBodyGroups, diffResult)
     }
 
     /**
@@ -417,17 +391,4 @@ open class Section(
         super.onItemRangeRemoved(group, positionStart, itemCount)
         refreshEmptyState()
     }
-}
-
-private fun <T : Group> Collection<T>.getItem(position: Int): AnyItem {
-    var previousPosition = 0
-    for (group in this) {
-        val size = group.itemCount
-        if (size + previousPosition > position) {
-            return group.getItem(position - previousPosition)
-        }
-        previousPosition += size
-    }
-
-    throw IndexOutOfBoundsException("Wanted item at $position but there are only $previousPosition items")
 }

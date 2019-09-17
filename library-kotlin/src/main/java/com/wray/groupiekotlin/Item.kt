@@ -51,7 +51,7 @@ abstract class Item<VH : GroupieViewHolder>(
     private var parentDataObserver: GroupDataObserver? = null
 
     @Suppress("UNCHECKED_CAST")
-    fun onCreateViewHolder(itemView: View): VH = GroupieViewHolder(itemView) as VH
+    fun createViewHolder(itemView: View): VH = GroupieViewHolder(itemView) as VH
 
     /**
      * Perform any actions required to set up the view for display.
