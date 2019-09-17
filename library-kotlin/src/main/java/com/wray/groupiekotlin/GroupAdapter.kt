@@ -157,7 +157,7 @@ open class GroupAdapter<VH : GroupieViewHolder> : RecyclerView.Adapter<VH>(), Gr
         notifyItemRangeInserted(itemCountBeforeGroup, group.itemCount)
     }
 
-    fun addAll(groups: List<Group>) {
+    fun addAll(groups: Collection<Group>) {
         val itemCountBeforeGroup = itemCount
         var additionalSize = 0
         for (group in groups) {
@@ -176,7 +176,7 @@ open class GroupAdapter<VH : GroupieViewHolder> : RecyclerView.Adapter<VH>(), Gr
         remove(position, getGroupAtPosition(position))
     }
 
-    fun removeAll(groups: List<Group>) {
+    fun removeAll(groups: Collection<Group>) {
         groups.forEach { group -> remove(group) }
     }
 

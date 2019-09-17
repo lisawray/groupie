@@ -4,32 +4,48 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
-import com.xwray.groupie.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.wray.groupiekotlin.AnyItem
+import com.wray.groupiekotlin.ExpandableGroup
+import com.wray.groupiekotlin.GroupAdapter
+import com.wray.groupiekotlin.GroupieViewHolder
+import com.wray.groupiekotlin.OnItemClickListener
+import com.wray.groupiekotlin.OnItemLongClickListener
+import com.wray.groupiekotlin.Section
 import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
 import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
-import com.xwray.groupie.example.item.*
+import com.xwray.groupie.example.item.CardItem
+import com.xwray.groupie.example.item.CarouselCardItem
+import com.xwray.groupie.example.item.CarouselItem
+import com.xwray.groupie.example.item.ColumnItem
+import com.xwray.groupie.example.item.FAVORITE
+import com.xwray.groupie.example.item.FullBleedCardItem
+import com.xwray.groupie.example.item.HeaderItem
+import com.xwray.groupie.example.item.HeartCardItem
+import com.xwray.groupie.example.item.SmallCardItem
+import com.xwray.groupie.example.item.SwipeToDeleteItem
+import com.xwray.groupie.example.item.UpdatableItem
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.ArrayList
 
 val INSET_TYPE_KEY = "inset_type"
 val INSET = "inset"
 
 class MainActivity : AppCompatActivity() {
 
-    private val groupAdapter = GroupAdapter<ViewHolder>() //TODO get rid of this parameter
+    private val groupAdapter = GroupAdapter<GroupieViewHolder>() //TODO get rid of this parameter
     private lateinit var groupLayoutManager: GridLayoutManager
     private val prefs: Prefs by lazy { Prefs.get(this) }
     private val handler = Handler()
@@ -148,14 +164,14 @@ class MainActivity : AppCompatActivity() {
         // Update with payload
         groupAdapter += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
             rainbow500.indices.forEach { i ->
-                add(HeartCardItem(rainbow200[i], i.toLong(), { item, favorite ->
+                add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
                     // Pretend to make a network request
                     handler.postDelayed({
                         // Network request was successful!
                         item.setFavorite(favorite)
                         item.notifyChanged(FAVORITE)
                     }, 1000)
-                }))
+                })
             }
         }
 
@@ -178,25 +194,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeCarouselItem(): CarouselItem {
         val carouselDecoration = CarouselItemDecoration(gray, betweenPadding)
-        val carouselAdapter = GroupAdapter<ViewHolder>()
+        val carouselAdapter = GroupAdapter<com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder>()
         for (i in 0..29) {
             carouselAdapter += CarouselCardItem(rainbow200[7])
         }
         return CarouselItem(carouselDecoration, carouselAdapter)
     }
 
-    private val onItemClickListener = OnItemClickListener { item, _ ->
-        if (item is CardItem && !TextUtils.isEmpty(item.text)) {
-            Toast.makeText(this@MainActivity, item.text, Toast.LENGTH_SHORT).show()
+    private val onItemClickListener = object : OnItemClickListener {
+        override fun onItemClick(item: AnyItem, view: View) {
+            if (item is CardItem && !TextUtils.isEmpty(item.text)) {
+                Toast.makeText(this@MainActivity, item.text, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private val onItemLongClickListener = OnItemLongClickListener { item, _ ->
-        if (item is CardItem && !item.text.isNullOrBlank()) {
-            Toast.makeText(this@MainActivity, "Long clicked: " + item.text, Toast.LENGTH_SHORT).show()
-            return@OnItemLongClickListener true
+    private val onItemLongClickListener = object: OnItemLongClickListener {
+        override fun onItemLongClick(item: AnyItem, view: View): Boolean {
+            if (item is CardItem && !item.text.isNullOrBlank()) {
+                Toast.makeText(this@MainActivity, "Long clicked: " + item.text, Toast.LENGTH_SHORT).show()
+                return true
+            }
+            return false
         }
-        false
     }
 
     private val onShuffleClicked = View.OnClickListener {

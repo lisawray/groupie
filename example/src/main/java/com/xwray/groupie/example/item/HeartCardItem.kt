@@ -5,8 +5,8 @@ import androidx.annotation.ColorInt
 import com.xwray.groupie.example.INSET
 import com.xwray.groupie.example.INSET_TYPE_KEY
 import com.xwray.groupie.example.R
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_heart_card.*
 
 val FAVORITE = "FAVORITE"
@@ -22,9 +22,9 @@ class HeartCardItem(@ColorInt private val colorRes: Int, id: Long,
         extras.put(INSET_TYPE_KEY, INSET)
     }
 
-    override fun getLayout() = R.layout.item_heart_card
+    override val layoutRes: Int = R.layout.item_heart_card
 
-    private fun bindHeart(holder: ViewHolder) {
+    private fun bindHeart(holder: GroupieViewHolder) {
         if (inProgress) {
             animateProgress(holder)
         } else {
@@ -33,7 +33,7 @@ class HeartCardItem(@ColorInt private val colorRes: Int, id: Long,
         holder.favorite.isChecked = checked
     }
 
-    private fun animateProgress(holder: ViewHolder) {
+    private fun animateProgress(holder: GroupieViewHolder) {
         holder.favorite.apply {
             setImageResource(R.drawable.avd_favorite_progress)
             (drawable as Animatable).start()
@@ -45,25 +45,25 @@ class HeartCardItem(@ColorInt private val colorRes: Int, id: Long,
         checked = favorite
     }
 
-    override fun isClickable() = false
+    override val isClickable: Boolean = false
 
-    override fun bind(holder: ViewHolder, position: Int) {
-        //holder.getRoot().setBackgroundColor(colorRes);
-        bindHeart(holder)
-        holder.text.text = (id + 1).toString()
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        //viewHolder.getRoot().setBackgroundColor(colorRes);
+        bindHeart(viewHolder)
+        viewHolder.text.text = (id + 1).toString()
 
-        holder.favorite.setOnClickListener {
+        viewHolder.favorite.setOnClickListener {
             inProgress = true
-            animateProgress(holder)
+            animateProgress(viewHolder)
             onFavoriteListener(this@HeartCardItem, !checked)
         }
     }
 
-    override fun bind(holder: ViewHolder, position: Int, payloads: List<Any>) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int, payloads: List<Any>) {
         if (payloads.contains(FAVORITE)) {
-            bindHeart(holder)
+            bindHeart(viewHolder)
         } else {
-            bind(holder, position)
+            bind(viewHolder, position)
         }
     }
 }

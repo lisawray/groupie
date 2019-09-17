@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    api project (':library')
+    api project (':library-kotlin')
     api "androidx.recyclerview:recyclerview:1.0.0"
     api "androidx.appcompat:appcompat:1.0.2"
     api "com.google.android.material:material:1.0.0"

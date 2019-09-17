@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.View;
 
-import com.xwray.groupie.TouchCallback;
+import com.wray.groupiekotlin.TouchCallback;
 
 public abstract class SwipeTouchCallback extends TouchCallback {
 

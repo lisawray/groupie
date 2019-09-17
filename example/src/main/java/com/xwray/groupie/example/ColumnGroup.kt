@@ -1,16 +1,16 @@
 package com.xwray.groupie.example
 
-import com.xwray.groupie.Group
-import com.xwray.groupie.GroupDataObserver
-import com.xwray.groupie.Item
+import com.wray.groupiekotlin.AnyItem
+import com.wray.groupiekotlin.Group
+import com.wray.groupiekotlin.GroupDataObserver
 import java.util.*
 
 /**
  * A simple, non-editable, non-nested group of Items which displays a list as vertical columns.
  */
-class ColumnGroup(items: List<Item<*>>) : Group {
+class ColumnGroup(items: List<AnyItem>) : Group {
 
-    private val items = ArrayList<Item<*>>()
+    private val items = ArrayList<AnyItem>()
 
     init {
         for (i in items.indices) {
@@ -37,15 +37,14 @@ class ColumnGroup(items: List<Item<*>>) : Group {
         // no need to do anything here
     }
 
-    override fun getItem(position: Int): Item<*> {
+    override fun getItem(position: Int): AnyItem {
         return items[position]
     }
 
-    override fun getPosition(item: Item<*>): Int {
+    override fun getPosition(item: AnyItem): Int {
         return items.indexOf(item)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override val itemCount: Int
+        get() = items.size
 }

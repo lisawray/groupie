@@ -30,15 +30,10 @@ open class ExpandableGroup(
     isExpanded: Boolean = false
 ): NestedGroup() {
 
-    var isExpanded: Boolean = isExpanded
-        set(value) {
-            if (field != value) {
-                onToggleExpanded()
-            }
-            field = value
-        }
-
     private val children = mutableListOf<Group>()
+    var isExpanded: Boolean = false
+        private set
+
 
     init {
         parent.setExpandableGroup(this)
@@ -127,6 +122,12 @@ open class ExpandableGroup(
 
     val childCount: Int
         get() = children.size
+
+    fun setExpanded(isExpanded: Boolean) {
+        if (this.isExpanded != isExpanded) {
+            onToggleExpanded()
+        }
+    }
 
     fun onToggleExpanded() {
         val oldSize = itemCount

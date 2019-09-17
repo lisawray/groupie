@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import android.view.View
 import com.xwray.groupie.example.R
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_header.*
 
 open class HeaderItem(
@@ -14,11 +14,9 @@ open class HeaderItem(
         @DrawableRes private val iconResId: Int? = null,
         private val onIconClickListener: View.OnClickListener? = null) : Item() {
 
-    override fun getLayout(): Int {
-        return R.layout.item_header
-    }
+    override val layoutRes: Int = R.layout.item_header
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.title.setText(titleStringResId)
 
         viewHolder.subtitle.apply {

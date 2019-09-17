@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    compileOnly project(':library')
+    compileOnly project(':library-kotlin')
     compileOnly "androidx.recyclerview:recyclerview:1.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

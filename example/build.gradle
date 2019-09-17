@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation project(':example-shared')
-    implementation project(':library')
+    implementation project(':library-kotlin')
     implementation project(':library-kotlin-android-extensions')
 }
 

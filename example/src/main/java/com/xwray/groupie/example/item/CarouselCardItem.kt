@@ -1,18 +1,18 @@
 package com.xwray.groupie.example.item
 
 import androidx.annotation.ColorInt
-import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.example.R
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 
 /**
  * A card item with a fixed width so it can be used with a horizontal layout manager.
  */
-class CarouselCardItem(@ColorInt private val colorRes: Int) : Item<ViewHolder>() {
+class CarouselCardItem(@ColorInt private val colorRes: Int) : Item() {
 
-    override fun getLayout() = R.layout.item_square_card
+    override val layoutRes: Int = R.layout.item_square_card
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         //viewHolder.getRoot().setBackgroundResource(colorRes);
     }
 }

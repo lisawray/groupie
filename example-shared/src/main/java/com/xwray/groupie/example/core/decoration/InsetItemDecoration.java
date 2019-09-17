@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
-import com.xwray.groupie.ViewHolder;
+import com.wray.groupiekotlin.GroupieViewHolder;
 
 /**
  * An ItemDecoration which applies an even visual padding on the left and right edges of a grid and
@@ -35,7 +35,7 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     private boolean isInset(View view, RecyclerView parent) {
-        ViewHolder viewHolder = (ViewHolder) parent.getChildViewHolder(view);
+        GroupieViewHolder viewHolder = (GroupieViewHolder) parent.getChildViewHolder(view);
         if (viewHolder.getExtras().containsKey(key)) {
             return viewHolder.getExtras().get(key).equals(value);
         } else {
