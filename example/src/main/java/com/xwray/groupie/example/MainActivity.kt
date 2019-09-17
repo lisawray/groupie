@@ -22,10 +22,9 @@ import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
 import com.xwray.groupie.example.item.*
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
-val INSET_TYPE_KEY = "inset_type"
-val INSET = "inset"
+const val INSET_TYPE_KEY = "inset_type"
+const val INSET = "inset"
 
 class MainActivity : AppCompatActivity() {
 
@@ -148,14 +147,14 @@ class MainActivity : AppCompatActivity() {
         // Update with payload
         groupAdapter += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
             rainbow500.indices.forEach { i ->
-                add(HeartCardItem(rainbow200[i], i.toLong(), { item, favorite ->
+                add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
                     // Pretend to make a network request
                     handler.postDelayed({
                         // Network request was successful!
                         item.setFavorite(favorite)
                         item.notifyChanged(FAVORITE)
                     }, 1000)
-                }))
+                })
             }
         }
 

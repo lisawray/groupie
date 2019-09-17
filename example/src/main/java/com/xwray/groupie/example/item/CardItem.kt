@@ -8,16 +8,16 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_card.*
 
-open class CardItem (@ColorInt private val colorRes: Int, val text: CharSequence? = "") : Item() {
+open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence? = "") : Item() {
 
     init {
-        extras.put(INSET_TYPE_KEY, INSET)
+        extras[INSET_TYPE_KEY] = INSET
     }
 
     override fun getLayout() = R.layout.item_card
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.root.setBackgroundColor(colorRes)
+        viewHolder.root.setBackgroundColor(colorInt)
         viewHolder.text.text = text
     }
 }

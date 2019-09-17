@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_heart_card.*
 
 val FAVORITE = "FAVORITE"
 
-class HeartCardItem(@ColorInt private val colorRes: Int, id: Long,
+class HeartCardItem(@ColorInt private val colorInt: Int, id: Long,
                     private val onFavoriteListener: (item: HeartCardItem, favorite: Boolean) -> Unit) :
         Item(id) {
 
@@ -48,7 +48,7 @@ class HeartCardItem(@ColorInt private val colorRes: Int, id: Long,
     override fun isClickable() = false
 
     override fun bind(holder: ViewHolder, position: Int) {
-        //holder.getRoot().setBackgroundColor(colorRes);
+        holder.root.setBackgroundColor(colorInt)
         bindHeart(holder)
         holder.text.text = (id + 1).toString()
 
