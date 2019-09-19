@@ -1,13 +1,14 @@
 package com.xwray.groupie;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,10 +134,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
         final List<Group> oldGroups = new ArrayList<>(groups);
-        final int oldBodyItemCount = getItemCount(oldGroups);
-        final int newBodyItemCount = getItemCount(newGroups);
 
-        final DiffCallback diffUtilCallback = new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups);
+        final DiffCallback diffUtilCallback = new DiffCallback(oldGroups, newGroups);
         asyncDiffUtil.calculateDiff(newGroups, diffUtilCallback, onAsyncUpdateListener, detectMoves);
     }
 
@@ -163,11 +162,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
     @SuppressWarnings("unused")
     public void update(@NonNull final Collection<? extends Group> newGroups, boolean detectMoves) {
         final List<Group> oldGroups = new ArrayList<>(groups);
-        final int oldBodyItemCount = getItemCount(oldGroups);
-        final int newBodyItemCount = getItemCount(newGroups);
-
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
-                new DiffCallback(oldBodyItemCount, newBodyItemCount, oldGroups, newGroups),
+                new DiffCallback(oldGroups, newGroups),
                 detectMoves
         );
 
@@ -513,54 +509,5 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         }
 
         throw new IllegalStateException("Could not find model for view type: " + viewType);
-    }
-
-    private static class DiffCallback extends DiffUtil.Callback {
-        private final int oldBodyItemCount;
-        private final int newBodyItemCount;
-        private final Collection<? extends Group> oldGroups;
-        private final Collection<? extends Group> newGroups;
-
-        DiffCallback(int oldBodyItemCount,
-                     int newBodyItemCount,
-                     Collection<? extends Group> oldGroups,
-                     Collection<? extends Group> newGroups) {
-            this.oldBodyItemCount = oldBodyItemCount;
-            this.newBodyItemCount = newBodyItemCount;
-            this.oldGroups = oldGroups;
-            this.newGroups = newGroups;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldBodyItemCount;
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newBodyItemCount;
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = getItem(oldGroups, oldItemPosition);
-            Item newItem = getItem(newGroups, newItemPosition);
-            return newItem.isSameAs(oldItem);
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Item oldItem = getItem(oldGroups, oldItemPosition);
-            Item newItem = getItem(newGroups, newItemPosition);
-            return newItem.equals(oldItem);
-        }
-
-        @Nullable
-        @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-            Item oldItem = getItem(oldGroups, oldItemPosition);
-            Item newItem = getItem(newGroups, newItemPosition);
-            return oldItem.getChangePayload(newItem);
-        }
     }
 }

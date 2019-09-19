@@ -54,7 +54,7 @@ public class Section extends NestedGroup {
     public void add(int position, @NonNull Group group) {
         super.add(position, group);
         children.add(position, group);
-        final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
+        final int notifyPosition = getHeaderItemCount() + GroupUtils.getItemCount(children.subList(0, position));
         notifyItemRangeInserted(notifyPosition, group.getItemCount());
         refreshEmptyState();
     }
@@ -65,7 +65,7 @@ public class Section extends NestedGroup {
         super.addAll(groups);
         int position = getItemCountWithoutFooter();
         this.children.addAll(groups);
-        notifyItemRangeInserted(position, getItemCount(groups));
+        notifyItemRangeInserted(position, GroupUtils.getItemCount(groups));
         refreshEmptyState();
     }
 
@@ -78,8 +78,8 @@ public class Section extends NestedGroup {
         super.addAll(position, groups);
         this.children.addAll(position, groups);
 
-        final int notifyPosition = getHeaderItemCount() + getItemCount(children.subList(0, position));
-        notifyItemRangeInserted(notifyPosition, getItemCount(groups));
+        final int notifyPosition = getHeaderItemCount() + GroupUtils.getItemCount(children.subList(0, position));
+        notifyItemRangeInserted(notifyPosition, GroupUtils.getItemCount(groups));
         refreshEmptyState();
     }
 
@@ -162,54 +162,9 @@ public class Section extends NestedGroup {
      *                    don't want DiffUtil to detect moved items.
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups, boolean detectMoves) {
-
         final List<Group> oldBodyGroups = new ArrayList<>(children);
-        final int oldBodyItemCount = getItemCount(oldBodyGroups);
-        final int newBodyItemCount = getItemCount(newBodyGroups);
-
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return oldBodyItemCount;
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return newBodyItemCount;
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                    Item newItem = getItem(newBodyGroups, newItemPosition);
-                    return newItem.isSameAs(oldItem);
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                    Item newItem = getItem(newBodyGroups, newItemPosition);
-                    return newItem.equals(oldItem);
-                }
-
-            @Nullable
-            @Override
-            public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-                Item oldItem = getItem(oldBodyGroups, oldItemPosition);
-                Item newItem = getItem(newBodyGroups, newItemPosition);
-                return oldItem.getChangePayload(newItem);
-            }
-        }, detectMoves);
-
-        super.removeAll(children);
-        children.clear();
-        children.addAll(newBodyGroups);
-        super.addAll(newBodyGroups);
-        
-        diffResult.dispatchUpdatesTo(listUpdateCallback);
-        if (newBodyItemCount == 0 || oldBodyItemCount == 0) {
-            refreshEmptyState();
-        }
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffCallback(oldBodyGroups, newBodyGroups), detectMoves);
+        this.update(newBodyGroups, diffResult);
     }
 
     /**
@@ -249,21 +204,6 @@ public class Section extends NestedGroup {
             notifyItemRangeChanged(getHeaderItemCount() + position, count, payload);
         }
     };
-
-    private static Item getItem(Collection<? extends Group> groups, int position) {
-        int previousPosition = 0;
-
-        for (Group group : groups) {
-            int size = group.getItemCount();
-            if (size + previousPosition > position) {
-                return group.getItem(position - previousPosition);
-            }
-            previousPosition += size;
-        }
-
-        throw new IndexOutOfBoundsException("Wanted item at " + position + " but there are only "
-                + previousPosition + " items");
-    }
 
     /**
      * Optional. Set a placeholder for when the section's body is empty.
@@ -306,7 +246,7 @@ public class Section extends NestedGroup {
      * @return
      */
     protected boolean isEmpty() {
-        return children.isEmpty() || getItemCount(children) == 0;
+        return children.isEmpty() || GroupUtils.getItemCount(children) == 0;
     }
 
     private void hideDecorations() {
@@ -340,7 +280,7 @@ public class Section extends NestedGroup {
     }
 
     private int getBodyItemCount() {
-        return isPlaceholderVisible ? getPlaceholderItemCount() : getItemCount(children);
+        return isPlaceholderVisible ? getPlaceholderItemCount() : GroupUtils.getItemCount(children);
     }
 
     private int getItemCountWithoutFooter() {

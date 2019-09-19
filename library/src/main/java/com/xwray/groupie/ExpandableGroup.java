@@ -33,7 +33,7 @@ public class ExpandableGroup extends NestedGroup {
         super.add(position, group);
         children.add(position, group);
         if (isExpanded) {
-            final int notifyPosition = 1 + getItemCount(children.subList(0, position));
+            final int notifyPosition = 1 + GroupUtils.getItemCount(children.subList(0, position));
             notifyItemRangeInserted(notifyPosition, group.getItemCount());
         }
     }
@@ -59,7 +59,7 @@ public class ExpandableGroup extends NestedGroup {
         if (isExpanded) {
             int itemCount = getItemCount();
             this.children.addAll(groups);
-            notifyItemRangeInserted(itemCount, getItemCount(groups));
+            notifyItemRangeInserted(itemCount, GroupUtils.getItemCount(groups));
         } else {
             this.children.addAll(groups);
         }
@@ -74,8 +74,8 @@ public class ExpandableGroup extends NestedGroup {
         this.children.addAll(position, groups);
 
         if (isExpanded) {
-            final int notifyPosition = 1 + getItemCount(children.subList(0, position));
-            notifyItemRangeInserted(notifyPosition, getItemCount(groups));
+            final int notifyPosition = 1 + GroupUtils.getItemCount(children.subList(0, position));
+            notifyItemRangeInserted(notifyPosition, GroupUtils.getItemCount(groups));
         }
     }
 
