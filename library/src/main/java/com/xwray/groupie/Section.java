@@ -132,9 +132,9 @@ public class Section extends NestedGroup {
      * <p>
      * Item comparisons are made using:
      * - Item.isSameAs(Item otherItem) (are items the same?)
-     * - Item.equals() (are contents the same?)
+     * - Item.hasSameContentAs() (are contents the same?)
      * <p>
-     * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
+     * If you don't customize getId() or isSameAs() and hasSameContentAs(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
      *
      * This will default detectMoves to true.
@@ -152,9 +152,9 @@ public class Section extends NestedGroup {
      * <p>
      * Item comparisons are made using:
      * - Item.isSameAs(Item otherItem) (are items the same?)
-     * - Item.equals() (are contents the same?)
+     * - Item.hasSameContentAs() (are contents the same?)
      * <p>
-     * If you don't customize getId() or isSameAs() and equals(), the default implementations will return false,
+     * If you don't customize getId() or isSameAs() and hasSameContentAs(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
      *
      * @param newBodyGroups The new content of the section

@@ -188,12 +188,28 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
      * even if there has been a change in that data.
      * <p>
      * The default implementation compares both view type and id.
+     *
+     * @return True if the items are the same, false otherwise.
      */
     public boolean isSameAs(Item other) {
         if (getViewType() != other.getViewType()) {
             return false;
         }
         return getId() == other.getId();
+    }
+
+    /**
+     * Whether this item has the same content as another when compared using DiffUtil.
+     *
+     * After two items have been determined to be the same using {@link #isSameAs(Item)} this function
+     * should check whether their contents are the same.
+     *
+     * The default implementation does this using {@link #equals(Object)}
+     *
+     * @return True if both items have the same content, false otherwise
+     */
+    public boolean hasSameContentAs(Item other) {
+        return this.equals(other);
     }
 
     @Nullable
