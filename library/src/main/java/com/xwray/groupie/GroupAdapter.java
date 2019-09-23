@@ -241,21 +241,8 @@ public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH
         return holder.getItem();
     }
 
-    private static Item getItem(Collection<? extends Group> groups, int position) {
-        int count = 0;
-        for (Group group : groups) {
-            if (position < count + group.getItemCount()) {
-                return group.getItem(position - count);
-            } else {
-                count += group.getItemCount();
-            }
-        }
-        throw new IndexOutOfBoundsException("Requested position " + position + "in group adapter " +
-                "but there are only " + count + " items");
-    }
-
     public @NonNull Item getItem(int position) {
-        return getItem(groups, position);
+        return GroupUtils.getItem(groups, position);
     }
 
     public int getAdapterPosition(@NonNull Item contentItem) {
