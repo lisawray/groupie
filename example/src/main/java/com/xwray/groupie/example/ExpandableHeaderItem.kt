@@ -6,7 +6,7 @@ import android.view.View
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.example.item.HeaderItem
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_header.*
 
 class ExpandableHeaderItem(@StringRes titleStringResId: Int,
@@ -15,7 +15,7 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int,
 
     private lateinit var expandableGroup: ExpandableGroup
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         super.bind(viewHolder, position)
 
         // Initial icon state -- not animated.
@@ -29,7 +29,7 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int,
         }
     }
 
-    private fun bindIcon(viewHolder: ViewHolder) {
+    private fun bindIcon(viewHolder: GroupieViewHolder) {
         viewHolder.icon.apply {
             visibility = View.VISIBLE
             setImageResource(if (expandableGroup.isExpanded) R.drawable.collapse_animated else R.drawable.expand_animated)

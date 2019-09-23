@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @param <T> The ViewDataBinding subclass associated with this Item.
  */
-public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewHolder<T>> {
+public abstract class BindableItem<T extends ViewDataBinding> extends Item<GroupieViewHolder<T>> {
 
     public BindableItem() {
         super();
@@ -35,9 +35,9 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
 
     @NonNull
     @Override
-    public ViewHolder<T> createViewHolder(@NonNull View itemView) {
+    public GroupieViewHolder<T> createViewHolder(@NonNull View itemView) {
         T viewDataBinding = DataBindingUtil.bind(itemView);
-        return new ViewHolder<>(viewDataBinding);
+        return new GroupieViewHolder<>(viewDataBinding);
     }
 
     /**
@@ -51,18 +51,18 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<ViewH
      */
     @CallSuper
     @Override
-    public void bind(@NonNull ViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
         super.bind(viewHolder, position, payloads, onItemClickListener, onItemLongClickListener);
         viewHolder.binding.executePendingBindings();
     }
 
     @Override
-    public void bind(@NonNull ViewHolder<T> viewHolder, int position) {
+    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position) {
         throw new RuntimeException("Doesn't get called");
     }
 
     @Override
-    public void bind(@NonNull ViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads) {
+    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads) {
         bind(viewHolder.binding, position, payloads);
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * An adapter that holds a list of Groups.
  */
-public class GroupAdapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH> implements GroupDataObserver {
+public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Adapter<VH> implements GroupDataObserver {
 
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
