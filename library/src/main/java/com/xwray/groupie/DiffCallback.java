@@ -39,7 +39,7 @@ class DiffCallback extends DiffUtil.Callback {
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
         Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
-        return newItem.equals(oldItem);
+        return newItem.hasSameContentAs(oldItem);
     }
 
     @Nullable

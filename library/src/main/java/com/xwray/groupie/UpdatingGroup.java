@@ -16,8 +16,8 @@ import java.util.List;
  * <p>
  * Item comparisons are made using:
  * - Item.getId() (are items the same?)
- * - Item.equals() (are contents the same?)
- * If you don't customize getId() or equals(), the default implementations will return false,
+ * - Item.hasSameContentAs() (are contents the same?)
+ * If you don't customize getId() or hasSameContentAs(), the default implementations will return false,
  * meaning your Group will consider every update a complete change of everything.
  */
 @Deprecated
@@ -108,7 +108,7 @@ public class UpdatingGroup extends NestedGroup {
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             Item oldItem = items.get(oldItemPosition);
             Item newItem = newList.get(newItemPosition);
-            return oldItem.equals(newItem);
+            return oldItem.hasSameContentAs(newItem);
         }
     }
 }
