@@ -81,14 +81,14 @@ The `Item` class gives you simple callbacks to bind your model object to the gen
 
 ```kotlin
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.song.*
 
 class SongItem(private val song: Song) : Item() {
 
     override fun getLayout() = R.layout.song
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.title.text = song.title
         viewHolder.title.artist = song.artist
     }
@@ -126,7 +126,7 @@ If you're converting existing ViewHolders, you can reference any named views (e.
 You can also mix and match `BindableItem` and other `Items` in the adapter, so you can leave legacy viewholders as they are by making an `Item<MyExistingViewHolder>`.  
 
 ### Legacy item (your own ViewHolder)
-You can leave legacy viewholders as they are by converting `MyExistingViewHolder` to extend Groupie's `ViewHolder` rather than `RecyclerView.ViewHolder`. Make sure to change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.ViewHolder`. 
+You can leave legacy viewholders as they are by converting `MyExistingViewHolder` to extend `GroupieViewHolder` rather than `RecyclerView.ViewHolder`. Make sure to change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.GroupieViewHolder`. 
 
 Finally, in your `Item<MyExistingViewHolder>`, override 
 

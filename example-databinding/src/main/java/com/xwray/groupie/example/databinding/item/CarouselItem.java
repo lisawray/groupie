@@ -9,7 +9,7 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.databinding.BindableItem;
-import com.xwray.groupie.databinding.ViewHolder;
+import com.xwray.groupie.databinding.GroupieViewHolder;
 import com.xwray.groupie.example.databinding.R;
 import com.xwray.groupie.example.databinding.databinding.ItemCarouselBinding;
 
@@ -28,8 +28,8 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
     }
 
     @Override
-    public ViewHolder<ItemCarouselBinding> createViewHolder(@NonNull View itemView) {
-        ViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
+    public GroupieViewHolder<ItemCarouselBinding> createViewHolder(@NonNull View itemView) {
+        GroupieViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
         RecyclerView recyclerView = viewHolder.binding.recyclerView;
         recyclerView.addItemDecoration(carouselDecoration);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));

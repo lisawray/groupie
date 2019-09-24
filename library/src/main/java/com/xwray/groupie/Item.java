@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProvider {
+public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanSizeProvider {
 
     private static AtomicLong ID_COUNTER = new AtomicLong(0);
     protected GroupDataObserver parentDataObserver;
@@ -29,7 +29,7 @@ public abstract class Item<VH extends ViewHolder> implements Group, SpanSizeProv
 
     @NonNull
     public VH createViewHolder(@NonNull View itemView) {
-        return (VH) new ViewHolder(itemView);
+        return (VH) new GroupieViewHolder(itemView);
     }
 
     /**

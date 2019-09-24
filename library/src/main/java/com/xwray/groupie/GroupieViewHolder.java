@@ -7,7 +7,7 @@ import android.view.View;
 
 import java.util.Map;
 
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class GroupieViewHolder extends RecyclerView.ViewHolder {
     private Item item;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
@@ -35,7 +35,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         }
     };
 
-    public ViewHolder(@NonNull View rootView) {
+    public GroupieViewHolder(@NonNull View rootView) {
         super(rootView);
     }
 

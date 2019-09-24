@@ -28,7 +28,7 @@ const val INSET = "inset"
 
 class MainActivity : AppCompatActivity() {
 
-    private val groupAdapter = GroupAdapter<ViewHolder>() //TODO get rid of this parameter
+    private val groupAdapter = GroupAdapter<GroupieViewHolder>() //TODO get rid of this parameter
     private lateinit var groupLayoutManager: GridLayoutManager
     private val prefs: Prefs by lazy { Prefs.get(this) }
     private val handler = Handler()
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeCarouselItem(): CarouselItem {
         val carouselDecoration = CarouselItemDecoration(gray, betweenPadding)
-        val carouselAdapter = GroupAdapter<ViewHolder>()
+        val carouselAdapter = GroupAdapter<GroupieViewHolder>()
         for (i in 0..29) {
             carouselAdapter += CarouselCardItem(rainbow200[7])
         }

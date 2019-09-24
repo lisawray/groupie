@@ -17,12 +17,12 @@ class DummyItem extends Item {
     }
 
     @Override
-    public ViewHolder createViewHolder(View itemView) {
+    public GroupieViewHolder createViewHolder(View itemView) {
         return null;
     }
 
     @Override
-    public void bind(ViewHolder viewHolder, int position) {
+    public void bind(GroupieViewHolder viewHolder, int position) {
 
     }
 }

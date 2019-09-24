@@ -20,7 +20,7 @@ public class ViewTypeTest {
         Assert.assertEquals(item.getViewType(), 20);
     }
 
-    static class ItemWithoutViewTypeOverride extends Item<ViewHolder> {
+    static class ItemWithoutViewTypeOverride extends Item<GroupieViewHolder> {
         private final int layout;
 
         ItemWithoutViewTypeOverride(int layout) {
@@ -28,7 +28,7 @@ public class ViewTypeTest {
         }
 
         @Override
-        public void bind(@NonNull ViewHolder viewHolder, int position) {
+        public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
 
         }
 
@@ -38,7 +38,7 @@ public class ViewTypeTest {
         }
     }
 
-    static class ItemWithViewTypeOverride extends Item<ViewHolder> {
+    static class ItemWithViewTypeOverride extends Item<GroupieViewHolder> {
         private final int layout;
         private final int viewType;
 
@@ -49,7 +49,7 @@ public class ViewTypeTest {
 
 
         @Override
-        public void bind(@NonNull ViewHolder viewHolder, int position) {
+        public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
 
         }
 
