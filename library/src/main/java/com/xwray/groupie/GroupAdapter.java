@@ -278,20 +278,18 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         return groups.size();
     }
 
-    private static int getItemCount(Collection<? extends Group> groups) {
-        int count = 0;
-        for (Group group : groups) {
-            count += group.getItemCount();
-        }
-        return count;
-    }
-
+    /**
+     * This returns the total number of items contained in all groups in this adapter
+     */
     @Override
     public int getItemCount() {
-        return getItemCount(groups);
+        return GroupUtils.getItemCount(groups);
     }
 
-    public int getItemCount(int groupIndex) {
+    /**
+     * This returns the total number of items contained in the top level group at the passed index
+     */
+    public int getItemCountForGroup(int groupIndex) {
         if (groupIndex >= groups.size()) {
             throw new IndexOutOfBoundsException("Requested group index " + groupIndex + " but there are " + groups.size() + " groups");
         }
@@ -343,10 +341,14 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
             remove(group);
         }
     }
-    
-    public void removeGroup(int index) {
-        Group group = getGroup(index);
-        remove(index, group);
+
+    /**
+     * Remove a Group at a raw adapter position
+     * @param position raw adapter position of Group to remove
+     */
+    public void removeGroupAtAdapterPosition(int position) {
+        Group group = getGroupAtAdapterPosition(position);
+        remove(position, group);
     }
 
     private void remove(int position, @NonNull Group group) {
@@ -365,14 +367,27 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     }
 
     /**
-     * Get group, given a raw position in the list.
+     * Get group, given a top level group position. If you want to get a group at an adapter position
+     * then use {@link #getGroupAtAdapterPosition(int)}
      *
-     * @param position
-     * @return
+     * @param position Top level group position
+     * @return Group at that position or throws {@link IndexOutOfBoundsException}
      */
     @SuppressWarnings("WeakerAccess")
     @NonNull
     public Group getGroup(int position) {
+        return groups.get(position);
+    }
+
+    /**
+     * Get group, given a raw adapter position. If you want to get a top level group by position
+     * then use {@link #getGroup(int)}
+     *
+     * @param position raw adapter position
+     * @return Group at that position or throws {@link IndexOutOfBoundsException}
+     */
+    @NonNull
+    public Group getGroupAtAdapterPosition(int position) {
         int previous = 0;
         int size;
         for (Group group : groups) {
@@ -384,14 +399,12 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
                 "but there are only " + previous + " items");
     }
 
-    private int getItemCountBeforeGroup(int groupIndex) {
-        int count = 0;
-        for (Group group : groups.subList(0, groupIndex)) {
-            count += group.getItemCount();
-        }
-        return count;
-    }
-
+    /**
+     * Returns the Group which contains this item or throws an {@link IndexOutOfBoundsException} if not present.
+     * This is the item's <b>direct</b> parent, not necessarily one of the top level groups present in this adapter.
+     * @param contentItem Item to find the parent group for.
+     * @return Parent group of this item.
+     */
     @NonNull
     public Group getGroup(Item contentItem) {
         for (Group group : groups) {
@@ -400,19 +413,6 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
             }
         }
         throw new IndexOutOfBoundsException("Item is not present in adapter or in any group");
-    }
-
-    private void setNewGroups(@NonNull Collection<? extends Group> newGroups) {
-        for (Group group : groups) {
-            group.unregisterGroupDataObserver(this);
-        }
-
-        groups.clear();
-        groups.addAll(newGroups);
-
-        for (Group group : newGroups) {
-            group.registerGroupDataObserver(this);
-        }
     }
 
     @Override
@@ -497,4 +497,26 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
 
         throw new IllegalStateException("Could not find model for view type: " + viewType);
     }
+
+    private int getItemCountBeforeGroup(int groupIndex) {
+        int count = 0;
+        for (Group group : groups.subList(0, groupIndex)) {
+            count += group.getItemCount();
+        }
+        return count;
+    }
+
+    private void setNewGroups(@NonNull Collection<? extends Group> newGroups) {
+        for (Group group : groups) {
+            group.unregisterGroupDataObserver(this);
+        }
+
+        groups.clear();
+        groups.addAll(newGroups);
+
+        for (Group group : newGroups) {
+            group.registerGroupDataObserver(this);
+        }
+    }
+
 }
