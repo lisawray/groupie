@@ -466,6 +466,22 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         notifyItemMoved(groupAdapterPosition + fromPosition, groupAdapterPosition + toPosition);
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull VH holder) {
+        super.onViewAttachedToWindow(holder);
+        Item item = getItem(holder);
+        //noinspection unchecked
+        item.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull VH holder) {
+        super.onViewDetachedFromWindow(holder);
+        Item item = getItem(holder);
+        //noinspection unchecked
+        item.onViewDetachedFromWindow(holder);
+    }
+
     /**
      * This idea was copied from Epoxy. :wave: Bright idea guys!
      * <p>
