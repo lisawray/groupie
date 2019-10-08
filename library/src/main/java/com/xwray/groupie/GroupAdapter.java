@@ -225,6 +225,22 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     }
 
     @Override
+    public void onViewAttachedToWindow(@NonNull VH holder) {
+        super.onViewAttachedToWindow(holder);
+        Item item = getItem(holder);
+        //noinspection unchecked
+        item.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull VH holder) {
+        super.onViewDetachedFromWindow(holder);
+        Item item = getItem(holder);
+        //noinspection unchecked
+        item.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public int getItemViewType(int position) {
         lastItemForViewTypeLookup = getItem(position);
         if (lastItemForViewTypeLookup == null)
@@ -464,22 +480,6 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
         int groupAdapterPosition = getAdapterPosition(group);
         notifyItemMoved(groupAdapterPosition + fromPosition, groupAdapterPosition + toPosition);
-    }
-
-    @Override
-    public void onViewAttachedToWindow(@NonNull VH holder) {
-        super.onViewAttachedToWindow(holder);
-        Item item = getItem(holder);
-        //noinspection unchecked
-        item.onViewAttachedToWindow(holder);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull VH holder) {
-        super.onViewDetachedFromWindow(holder);
-        Item item = getItem(holder);
-        //noinspection unchecked
-        item.onViewDetachedFromWindow(holder);
     }
 
     /**
