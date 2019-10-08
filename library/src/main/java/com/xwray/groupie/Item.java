@@ -100,6 +100,10 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
     @LayoutRes
     public abstract int getLayout();
 
+    public void onViewAttachedToWindow(@NonNull VH viewHolder) {}
+
+    public void onViewDetachedFromWindow(@NonNull VH viewHolder) {}
+
     /**
      * Override this method if the same layout needs to have different viewTypes.
      * @return the viewType, defaults to the layoutId
