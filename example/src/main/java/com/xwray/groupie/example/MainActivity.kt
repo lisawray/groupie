@@ -121,6 +121,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Reordering a Section of Expandable Groups
+        val section = Section(HeaderItem(R.string.reorderable_section))
+        val swappableExpandableGroup = mutableListOf<ExpandableGroup>()
+        for (i in 0..1) {
+            val header = ExpandableHeaderItem(R.string.reorderable_item_title, R.string.reorderable_item_subtitle)
+            val group = ExpandableGroup(header).apply {
+                for (j in 0..1) {
+                    add(CardItem(rainbow200[i*2 + j]))
+                }
+            }
+            header.clickListener = {
+                swappableExpandableGroup.remove(group)
+                swappableExpandableGroup.add(group)
+
+                section.update(swappableExpandableGroup)
+            }
+            swappableExpandableGroup.add(group)
+        }
+        section.addAll(swappableExpandableGroup)
+        groupAdapter += section
+
         // Columns
         groupAdapter += Section(HeaderItem(R.string.vertical_columns)).apply {
             add(makeColumnGroup())

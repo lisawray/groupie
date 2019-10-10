@@ -16,4 +16,7 @@
     <string name="show_offsets">Show offsets</string>
     <string name="update_with_payload">Update with payload</string>
     <string name="update_with_payload_subtitle">These items demonstrate robust, efficient partial asynchronous updates</string>
+    <string name="reorderable_section">Reorderable Section</string>
+    <string name="reorderable_item_title">Tap to Move</string>
+    <string name="reorderable_item_subtitle">Tapping on the title sends this group to the bottom of the section</string>
 </resources>
