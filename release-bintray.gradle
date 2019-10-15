@@ -12,8 +12,8 @@ ext {
 
     libraryDescription = POM_DESCRIPTION
 
-    siteUrl = 'https://github.com/xwray/groupie'
-    gitUrl = 'https://github.com/xwray/groupie.git'
+    siteUrl = 'https://github.com/lisawray/groupie'
+    gitUrl = 'https://github.com/lisawray/groupie.git'
 
     libraryVersion = POM_VERSION
 
@@ -22,7 +22,7 @@ ext {
     developerEmail = 'lisawray@gmail.com'
 
     licenseName = 'MIT'
-    licenseUrl = 'https://github.com/xwray/groupie/LICENSE'
+    licenseUrl = 'https://github.com/lisawray/groupie/blob/master/LICENSE.md'
     allLicenses = ["MIT"]
 }
 
