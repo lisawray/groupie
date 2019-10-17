@@ -124,11 +124,18 @@ class MainActivity : AppCompatActivity() {
         // Reordering a Section of Expandable Groups
         val section = Section(HeaderItem(R.string.reorderable_section))
         val swappableExpandableGroup = mutableListOf<ExpandableGroup>()
-        for (i in 0..1) {
+        var colorIndex = 0
+        for (i in 0..2) {
             val header = ExpandableHeaderItem(R.string.reorderable_item_title, R.string.reorderable_item_subtitle)
             val group = ExpandableGroup(header).apply {
-                for (j in 0..1) {
-                    add(CardItem(rainbow200[i*2 + j]))
+                val numChildren= i * 2 // groups will continue to grow by 2
+                for (j in 0..numChildren) {
+                    add(CardItem(rainbow200[colorIndex]))
+                    if (colorIndex + 1 >= rainbow200.size) {
+                        colorIndex = 0
+                    } else {
+                        colorIndex += 1
+                    }
                 }
             }
             header.clickListener = {
