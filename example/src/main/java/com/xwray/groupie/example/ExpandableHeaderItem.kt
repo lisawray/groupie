@@ -13,6 +13,8 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int,
                            @StringRes subtitleResId: Int)
     : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
 
+    var clickListener: ((ExpandableHeaderItem) -> Unit)? = null
+
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
@@ -26,6 +28,10 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int,
                 expandableGroup.onToggleExpanded()
                 bindIcon(viewHolder)
             }
+        }
+
+        viewHolder.itemView.setOnClickListener {
+            clickListener?.invoke(this)
         }
     }
 
