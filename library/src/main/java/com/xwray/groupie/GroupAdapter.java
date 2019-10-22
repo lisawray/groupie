@@ -312,6 +312,15 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         return groups.get(groupIndex).getItemCount();
     }
 
+    /**
+     * This returns the total number of items contained in the top level group at the passed index
+     * @deprecated This method has been deprecated in favour of {@link #getItemCountForGroup(int)}. Please use that method instead.
+     */
+    @Deprecated
+    public int getItemCount(int groupIndex) {
+        return getItemCountForGroup(groupIndex);
+    }
+
     public void clear() {
         for (Group group : groups) {
             group.unregisterGroupDataObserver(this);
@@ -367,6 +376,16 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         remove(position, group);
     }
 
+    /**
+     * Remove a Group at a raw adapter position.
+     * @param adapterPosition raw adapter position of Group to remove.
+     * @deprecated This method has been deprecated in favor of {@link #removeGroupAtAdapterPosition(int)}. Please use that method instead.
+     */
+    @Deprecated
+    public void removeGroup(int adapterPosition) {
+        removeGroupAtAdapterPosition(adapterPosition);
+    }
+
     private void remove(int position, @NonNull Group group) {
         int itemCountBeforeGroup = getItemCountBeforeGroup(position);
         group.unregisterGroupDataObserver(this);
@@ -391,13 +410,13 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      */
     @SuppressWarnings("WeakerAccess")
     @NonNull
-    public Group getGroup(int position) {
+    public Group getTopLevelGroup(int position) {
         return groups.get(position);
     }
 
     /**
      * Get group, given a raw adapter position. If you want to get a top level group by position
-     * then use {@link #getGroup(int)}
+     * then use {@link #getTopLevelGroup(int)}
      *
      * @param position raw adapter position
      * @return Group at that position or throws {@link IndexOutOfBoundsException}
@@ -413,6 +432,20 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         }
         throw new IndexOutOfBoundsException("Requested position " + position + " in group adapter " +
                 "but there are only " + previous + " items");
+    }
+
+    /**
+     * Get group, given a raw adapter position. If you want to get a top level group by position
+     * then use {@link #getTopLevelGroup(int)}
+     *
+     * @param adapterPosition raw adapter position
+     * @return Group at that position or throws {@link IndexOutOfBoundsException}
+     * @deprecated This method is deprecated and has been replaced with {@link #getGroupAtAdapterPosition(int)}. Please use that method instead.
+     */
+    @Deprecated
+    @NonNull
+    public Group getGroup(int adapterPosition) {
+        return getGroupAtAdapterPosition(adapterPosition);
     }
 
     /**
