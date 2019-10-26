@@ -8,7 +8,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_card.*
 
-open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence? = "") : Item() {
+open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence? = "") : Item(1) {
 
     init {
         extras[INSET_TYPE_KEY] = INSET
@@ -19,5 +19,11 @@ open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.root.setBackgroundColor(colorInt)
         viewHolder.text.text = text
+    }
+
+    override fun equals(obj: Any?): Boolean {
+        return if (obj is CardItem) {
+            (obj as CardItem).text == text
+        } else super.equals(obj)
     }
 }

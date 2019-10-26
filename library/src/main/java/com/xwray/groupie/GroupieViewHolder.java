@@ -8,6 +8,8 @@ import android.view.View;
 import java.util.Map;
 
 public class GroupieViewHolder extends RecyclerView.ViewHolder {
+    public static final String PAYLOAD_NO_CHANGE = "payload_no_change";
+    public static final String PAYLOAD_CHANGE = "payload_change";
     private Item item;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
@@ -93,5 +95,9 @@ public class GroupieViewHolder extends RecyclerView.ViewHolder {
 
     public View getRoot() {
         return itemView;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

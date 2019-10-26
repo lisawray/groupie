@@ -1,6 +1,5 @@
 package com.xwray.groupie.example
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -8,16 +7,13 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.xwray.groupie.*
-import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
-import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
-import com.xwray.groupie.example.core.decoration.DebugItemDecoration
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
 import com.xwray.groupie.example.item.*
 import com.xwray.groupie.groupiex.plusAssign
@@ -58,39 +54,67 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        groupAdapter.apply {
-            setOnItemClickListener(onItemClickListener)
-            setOnItemLongClickListener(onItemLongClickListener)
-            spanCount = 12
+        val section = Section()
+
+        groupAdapter.setOnItemClickListener { item, view ->
+            val position = groupAdapter.getAdapterPosition(item);
+            if (position == -1) {
+                Toast.makeText(this@MainActivity, "Problem", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, position.toString(), Toast.LENGTH_SHORT).show()
+
+                addSameItems(section)
+            }
         }
+        groupAdapter.add(section)
 
-        populateAdapter()
-        groupLayoutManager = GridLayoutManager(this, groupAdapter.spanCount).apply {
-            spanSizeLookup = groupAdapter.spanSizeLookup
-        }
+        recyclerView.setLayoutManager(LinearLayoutManager(this))
+        recyclerView.setAdapter(groupAdapter)
 
-        recyclerView.apply {
-            layoutManager = groupLayoutManager
-            addItemDecoration(HeaderItemDecoration(gray, betweenPadding))
-            addItemDecoration(InsetItemDecoration(gray, betweenPadding))
-            addItemDecoration(DebugItemDecoration(context))
-            adapter = groupAdapter
-            addOnScrollListener(object : InfiniteScrollListener(groupLayoutManager) {
-                override fun onLoadMore(currentPage: Int) {
-                    val color = rainbow200[currentPage % rainbow200.size]
-                    for (i in 0..4) {
-                        infiniteLoadingSection.add(CardItem(color))
-                    }
-                }
-            })
-        }
+        addSameItems(section)
 
-        ItemTouchHelper(touchCallback).attachToRecyclerView(recyclerView)
 
-        fab.setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
+//        groupAdapter.apply {
+//            setOnItemClickListener(onItemClickListener)
+//            setOnItemLongClickListener(onItemLongClickListener)
+//            spanCount = 12
+//        }
+//
+//        populateAdapter()
+//        groupLayoutManager = GridLayoutManager(this, groupAdapter.spanCount).apply {
+//            spanSizeLookup = groupAdapter.spanSizeLookup
+//        }
+//
+//        recyclerView.apply {
+//            layoutManager = LinearLayoutManager()
+//            addItemDecoration(HeaderItemDecoration(gray, betweenPadding))
+//            addItemDecoration(InsetItemDecoration(gray, betweenPadding))
+//            addItemDecoration(DebugItemDecoration(context))
+//            adapter = groupAdapter
+//            addOnScrollListener(object : InfiniteScrollListener(groupLayoutManager) {
+//                override fun onLoadMore(currentPage: Int) {
+//                    val color = rainbow200[currentPage % rainbow200.size]
+//                    for (i in 0..4) {
+//                        infiniteLoadingSection.add(CardItem(color))
+//                    }
+//                }
+//            })
+//        }
+//
+//        ItemTouchHelper(touchCallback).attachToRecyclerView(recyclerView)
+//
+//        fab.setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
+//
+//        prefs.registerListener(onSharedPrefChangeListener)
 
-        prefs.registerListener(onSharedPrefChangeListener)
+    }
 
+
+    private fun addSameItems(section: Section) {
+        val items = mutableListOf<CardItem>()
+        items += CardItem(rainbow500[0], "Test")
+
+        section.update(items)
     }
 
     private fun populateAdapter() {
@@ -128,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 0..2) {
             val header = ExpandableHeaderItem(R.string.reorderable_item_title, R.string.reorderable_item_subtitle)
             val group = ExpandableGroup(header).apply {
-                val numChildren= i * 2 // groups will continue to grow by 2
+                val numChildren = i * 2 // groups will continue to grow by 2
                 for (j in 0..numChildren) {
                     add(CardItem(rainbow200[colorIndex]))
                     if (colorIndex + 1 >= rainbow200.size) {

@@ -37,9 +37,7 @@ class DiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
-        return newItem.hasSameContentAs(oldItem);
+        return false;
     }
 
     @Nullable
@@ -47,6 +45,10 @@ class DiffCallback extends DiffUtil.Callback {
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
         Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
         Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+
+        if (newItem.hasSameContentAs(oldItem)) {
+            return GroupieViewHolder.PAYLOAD_NO_CHANGE;
+        }
         return oldItem.getChangePayload(newItem);
     }
 }
