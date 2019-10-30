@@ -7,7 +7,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 /**
- * An ExpandableContentItem is one "base" content item with a list of children (any of which
+ * An ExpandableGroup is one "base" content item with a list of children (any of which
  * may themselves be a group.)
  **/
 
