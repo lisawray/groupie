@@ -70,7 +70,7 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
     }
 
     @Override
-    public void bind(@NonNull ItemHeartCardBinding binding, int position, List<Object> payloads) {
+    public void bind(@NonNull ItemHeartCardBinding binding, int position, @NonNull List<Object> payloads) {
         if (payloads.contains(FAVORITE)) {
             bindHeart(binding);
         } else {

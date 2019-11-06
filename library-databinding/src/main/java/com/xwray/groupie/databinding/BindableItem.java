@@ -84,7 +84,7 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<Group
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
-    public void bind(@NonNull T viewBinding, int position, List<Object> payloads) {
+    public void bind(@NonNull T viewBinding, int position, @NonNull List<Object> payloads) {
         bind(viewBinding, position);
     }
 }
