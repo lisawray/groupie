@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.Collection;
 
 class GroupUtils {
+    @NonNull
     static Item getItem(Collection<? extends Group> groups, int position) {
         int previousPosition = 0;
 

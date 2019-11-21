@@ -195,7 +195,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      *
      * @return True if the items are the same, false otherwise.
      */
-    public boolean isSameAs(Item other) {
+    public boolean isSameAs(@NonNull Item other) {
         if (getViewType() != other.getViewType()) {
             return false;
         }
@@ -212,12 +212,12 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      *
      * @return True if both items have the same content, false otherwise
      */
-    public boolean hasSameContentAs(Item other) {
+    public boolean hasSameContentAs(@NonNull Item other) {
         return this.equals(other);
     }
 
     @Nullable
-    public Object getChangePayload(Item newItem) {
+    public Object getChangePayload(@NonNull Item newItem) {
         return null;
     }
 }
