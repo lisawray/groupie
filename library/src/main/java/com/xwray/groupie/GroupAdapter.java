@@ -133,6 +133,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      */
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+        // Fast simple first insert
         if (groups.isEmpty()) {
             update(newGroups, detectMoves);
             if (onAsyncUpdateListener != null) {
