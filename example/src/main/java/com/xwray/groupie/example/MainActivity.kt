@@ -4,22 +4,38 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
-import com.xwray.groupie.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.Group
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.OnItemClickListener
+import com.xwray.groupie.OnItemLongClickListener
+import com.xwray.groupie.Section
 import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
 import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
-import com.xwray.groupie.example.item.*
+import com.xwray.groupie.example.item.CardItem
+import com.xwray.groupie.example.item.CarouselCardItem
+import com.xwray.groupie.example.item.CarouselItem
+import com.xwray.groupie.example.item.ColumnItem
+import com.xwray.groupie.example.item.FAVORITE
+import com.xwray.groupie.example.item.FullBleedCardItem
+import com.xwray.groupie.example.item.HeaderItem
+import com.xwray.groupie.example.item.HeartCardItem
+import com.xwray.groupie.example.item.SmallCardItem
+import com.xwray.groupie.example.item.SwipeToDeleteItem
+import com.xwray.groupie.example.item.UpdatableItem
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private val groupAdapter = GroupAdapter<GroupieViewHolder>() //TODO get rid of this parameter
     private lateinit var groupLayoutManager: GridLayoutManager
-    private val prefs: Prefs by lazy { Prefs.get(this) }
+    private val prefs by lazy { Prefs.get(this) }
     private val handler = Handler()
 
     private val gray: Int by lazy { ContextCompat.getColor(this, R.color.background) }
@@ -64,7 +80,8 @@ class MainActivity : AppCompatActivity() {
             spanCount = 12
         }
 
-        populateAdapter()
+        recreateAdapter()
+
         groupLayoutManager = GridLayoutManager(this, groupAdapter.spanCount).apply {
             spanSizeLookup = groupAdapter.spanSizeLookup
         }
@@ -91,6 +108,16 @@ class MainActivity : AppCompatActivity() {
 
         prefs.registerListener(onSharedPrefChangeListener)
 
+    }
+
+    private fun recreateAdapter() {
+        groupAdapter.clear()
+
+        if (prefs.useAsync) {
+            populateAdapterAsync()
+        } else {
+            populateAdapter()
+        }
     }
 
     private fun populateAdapter() {
@@ -190,6 +217,107 @@ class MainActivity : AppCompatActivity() {
         groupAdapter += infiniteLoadingSection
     }
 
+    private fun populateAdapterAsync() {
+
+        val allGroups = mutableListOf<Group>()
+
+        // Full bleed item
+        allGroups += Section(HeaderItem(R.string.full_bleed_item)).apply {
+            add(FullBleedCardItem(R.color.purple_200))
+        }
+
+        // Update in place group
+        allGroups += Section().apply {
+            val updatingHeader = HeaderItem(
+                R.string.updating_group,
+                R.string.updating_group_subtitle,
+                R.drawable.shuffle,
+                onShuffleClicked)
+            setHeader(updatingHeader)
+
+            updatingGroup.update(updatableItems)
+            add(updatingGroup)
+        }
+
+        // Expandable group
+        val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
+        allGroups += ExpandableGroup(expandableHeaderItem).apply {
+            for (i in 0..1) {
+                add(CardItem(rainbow200[1]))
+            }
+        }
+
+        // Reordering a Section of Expandable Groups
+        val section = Section(HeaderItem(R.string.reorderable_section))
+        val swappableExpandableGroup = mutableListOf<ExpandableGroup>()
+        var colorIndex = 0
+        for (i in 0..2) {
+            val header = ExpandableHeaderItem(R.string.reorderable_item_title, R.string.reorderable_item_subtitle)
+            val group = ExpandableGroup(header).apply {
+                val numChildren= i * 2 // groups will continue to grow by 2
+                for (j in 0..numChildren) {
+                    add(CardItem(rainbow200[colorIndex]))
+                    if (colorIndex + 1 >= rainbow200.size) {
+                        colorIndex = 0
+                    } else {
+                        colorIndex += 1
+                    }
+                }
+            }
+            header.clickListener = {
+                swappableExpandableGroup.remove(group)
+                swappableExpandableGroup.add(group)
+
+                section.update(swappableExpandableGroup)
+            }
+            swappableExpandableGroup.add(group)
+        }
+        section.addAll(swappableExpandableGroup)
+        allGroups += section
+
+        // Columns
+        allGroups += Section(HeaderItem(R.string.vertical_columns)).apply {
+            add(makeColumnGroup())
+        }
+
+        // Group showing even spacing with multiple columns
+        allGroups += Section(HeaderItem(R.string.multiple_columns)).apply {
+            for (i in 0..11) {
+                add(SmallCardItem(rainbow200[5]))
+            }
+        }
+
+        // Swipe to delete (with add button in header)
+        for (i in 0..2) {
+            swipeSection += SwipeToDeleteItem(rainbow200[6])
+        }
+        allGroups += swipeSection
+
+        // Horizontal carousel
+        allGroups += Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
+            add(makeCarouselItem())
+        }
+
+        // Update with payload
+        allGroups += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
+            rainbow500.indices.forEach { i ->
+                add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
+                    // Pretend to make a network request
+                    handler.postDelayed({
+                        // Network request was successful!
+                        item.setFavorite(favorite)
+                        item.notifyChanged(FAVORITE)
+                    }, 1000)
+                })
+            }
+        }
+
+        // Infinite loading section
+        allGroups += infiniteLoadingSection
+
+        groupAdapter.updateAsync(allGroups)
+    }
+
     private fun makeColumnGroup(): ColumnGroup {
         val columnItems = ArrayList<ColumnItem>()
         for (i in 1..5) {
@@ -259,7 +387,7 @@ class MainActivity : AppCompatActivity() {
 
     private val onSharedPrefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
         // This is pretty evil, try not to do this
-        groupAdapter.notifyDataSetChanged()
+        recreateAdapter()
     }
 
 }

@@ -133,6 +133,13 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      */
     @SuppressWarnings("unused")
     public void updateAsync(@NonNull final List<? extends Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+        if (groups.isEmpty()) {
+            update(newGroups, detectMoves);
+            if (onAsyncUpdateListener != null) {
+                onAsyncUpdateListener.onUpdateComplete();
+            }
+            return;
+        }
         final List<Group> oldGroups = new ArrayList<>(groups);
 
         final DiffCallback diffUtilCallback = new DiffCallback(oldGroups, newGroups);

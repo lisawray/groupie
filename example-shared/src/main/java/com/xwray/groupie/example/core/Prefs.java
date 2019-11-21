@@ -8,6 +8,7 @@ public class Prefs {
 
     private static final String KEY_COLOR = "KEY_COLOR";
     private static final String KEY_BOUNDS = "KEY_BOUNDS";
+    private static final String KEY_ASYNC = "KEY_ASYNC";
     private static final String KEY_OFFSETS = "KEY_OFFSETS";
 
     private static volatile Prefs singleton;
@@ -15,12 +16,14 @@ public class Prefs {
 
     private boolean showColor;
     private boolean showBounds;
+    private boolean useAsync;
     private boolean showOffsets;
 
     private Prefs(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         showColor = prefs.getBoolean(KEY_COLOR, false);
         showBounds = prefs.getBoolean(KEY_BOUNDS, false);
+        useAsync = prefs.getBoolean(KEY_ASYNC, false);
         showOffsets = prefs.getBoolean(KEY_OFFSETS, false);
     }
 
@@ -45,6 +48,10 @@ public class Prefs {
         return showBounds;
     }
 
+    public boolean getUseAsync() {
+        return useAsync;
+    }
+
     public boolean getShowOffsets() {
         return showOffsets;
     }
@@ -58,14 +65,19 @@ public class Prefs {
         prefs.edit().putBoolean(KEY_COLOR, showColor).apply();
     }
 
-    public void setShowOffsets(boolean showOffsets) {
+    void setShowOffsets(boolean showOffsets) {
         this.showOffsets = showOffsets;
         prefs.edit().putBoolean(KEY_OFFSETS, showOffsets).apply();
     }
 
-    public void setShowBounds(boolean showBounds) {
+    void setShowBounds(boolean showBounds) {
         this.showBounds = showBounds;
         prefs.edit().putBoolean(KEY_BOUNDS, showBounds).apply();
+    }
+
+    void setUseAsync(boolean useAsync) {
+        this.useAsync = useAsync;
+        prefs.edit().putBoolean(KEY_ASYNC, useAsync).apply();
     }
 
 }

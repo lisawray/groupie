@@ -7,6 +7,10 @@
     android:padding="@dimen/padding_standard">
 
     <include
+        android:id="@+id/use_async"
+        layout="@layout/switch_pref" />
+
+    <include
         android:id="@+id/show_bounds"
         layout="@layout/switch_pref" />
 
