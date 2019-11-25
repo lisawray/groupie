@@ -12,6 +12,7 @@
     <string name="updating_group">Updating group</string>
     <string name="updating_group_subtitle">Click the shuffle icon to update the list with a random set of changes.</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="use_async">Use async adapter</string>
     <string name="show_bounds">Show bounds</string>
     <string name="show_offsets">Show offsets</string>
     <string name="update_with_payload">Update with payload</string>
