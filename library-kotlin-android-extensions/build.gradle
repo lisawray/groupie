@@ -32,8 +32,13 @@ android {
 
     }
 
+    signingConfigs {
+        release {
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
         }
     }
@@ -42,7 +47,7 @@ android {
 
 dependencies {
     compileOnly project(':library')
-    compileOnly "androidx.recyclerview:recyclerview:1.0.0"
+    compileOnly "androidx.recyclerview:recyclerview:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

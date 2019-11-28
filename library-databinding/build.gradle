@@ -17,8 +17,13 @@ android {
         versionCode 20
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
         }
     }
@@ -30,7 +35,7 @@ android {
 
 dependencies {
     compileOnly project(':library')
-    compileOnly "androidx.recyclerview:recyclerview:1.0.0"
+    compileOnly "androidx.recyclerview:recyclerview:1.1.0"
     compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
     }
