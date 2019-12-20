@@ -90,7 +90,7 @@ class SongItem(private val song: Song) : Item() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.title.text = song.title
-        viewHolder.title.artist = song.artist
+        viewHolder.artist.text = song.artist
     }
 }
 ```
