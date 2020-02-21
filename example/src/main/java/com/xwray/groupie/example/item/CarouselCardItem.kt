@@ -12,7 +12,7 @@ class CarouselCardItem(@ColorInt private val colorInt: Int) : Item<GroupieViewHo
 
     override fun getLayout() = R.layout.item_square_card
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
         viewHolder.root.setBackgroundColor(colorInt)
     }
 }

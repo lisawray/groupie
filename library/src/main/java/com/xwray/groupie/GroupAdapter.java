@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     private final List<Group> groups = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
+    private SelectionTracker<Long> selectionTracker;
     private int spanCount = 1;
     private Item lastItemForViewTypeLookup;
 
@@ -200,6 +202,10 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
+    public void setSelectionTracker(@Nullable SelectionTracker<Long> selectionTracker) {
+        this.selectionTracker = selectionTracker;
+    }
+
     @Override
     @NonNull
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -217,7 +223,11 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position, @NonNull List<Object> payloads) {
         Item contentItem = getItem(position);
-        contentItem.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener);
+        if (selectionTracker != null) {
+            contentItem.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener, selectionTracker.isSelected(contentItem.getId()));
+        }else {
+            contentItem.bind(holder, position, payloads, onItemClickListener, onItemLongClickListener, false);
+        }
     }
 
     @Override

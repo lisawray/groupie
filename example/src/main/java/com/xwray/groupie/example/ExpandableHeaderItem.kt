@@ -17,8 +17,8 @@ class ExpandableHeaderItem(@StringRes titleStringResId: Int,
 
     private lateinit var expandableGroup: ExpandableGroup
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        super.bind(viewHolder, position)
+    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
+        super.bind(viewHolder, position, isSelected)
 
         // Initial icon state -- not animated.
         viewHolder.icon.apply {

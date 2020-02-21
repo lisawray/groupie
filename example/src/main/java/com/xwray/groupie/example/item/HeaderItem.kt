@@ -18,7 +18,7 @@ open class HeaderItem(
         return R.layout.item_header
     }
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
         viewHolder.title.setText(titleStringResId)
 
         viewHolder.subtitle.apply {

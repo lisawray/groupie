@@ -4,6 +4,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
@@ -40,16 +41,18 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * @param payloads            Any payloads (this list may be empty)
      * @param onItemClickListener An optional adapter-level click listener
      * @param onItemLongClickListener An optional adapter-level long click listener
+     * @param isSelected
      */
     @CallSuper
     public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads,
                      @Nullable OnItemClickListener onItemClickListener,
-                     @Nullable OnItemLongClickListener onItemLongClickListener) {
+                     @Nullable OnItemLongClickListener onItemLongClickListener,
+                     boolean isSelected) {
         viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
-        bind(viewHolder, position, payloads);
+        bind(viewHolder, position, payloads, isSelected);
     }
 
-    public abstract void bind(@NonNull VH viewHolder, int position);
+    public abstract void bind(@NonNull VH viewHolder, int position, boolean isSelected);
 
     /**
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
@@ -58,9 +61,10 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * @param viewHolder The ViewHolder to bind
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
+     * @param isSelected
      */
-    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads) {
-        bind(viewHolder, position);
+    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads, boolean isSelected) {
+        bind(viewHolder, position, isSelected);
     }
 
     /**

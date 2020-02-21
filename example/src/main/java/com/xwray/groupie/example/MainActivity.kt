@@ -9,33 +9,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.Group
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.OnItemClickListener
-import com.xwray.groupie.OnItemLongClickListener
-import com.xwray.groupie.Section
+import com.xwray.groupie.*
 import com.xwray.groupie.example.core.InfiniteScrollListener
 import com.xwray.groupie.example.core.Prefs
 import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
-import com.xwray.groupie.example.item.CardItem
-import com.xwray.groupie.example.item.CarouselCardItem
-import com.xwray.groupie.example.item.CarouselItem
-import com.xwray.groupie.example.item.ColumnItem
-import com.xwray.groupie.example.item.FAVORITE
-import com.xwray.groupie.example.item.FullBleedCardItem
-import com.xwray.groupie.example.item.HeaderItem
-import com.xwray.groupie.example.item.HeartCardItem
-import com.xwray.groupie.example.item.SmallCardItem
-import com.xwray.groupie.example.item.SwipeToDeleteItem
-import com.xwray.groupie.example.item.UpdatableItem
+import com.xwray.groupie.example.item.*
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -56,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     private val infiniteLoadingSection = Section(HeaderItem(R.string.infinite_loading))
     private val swipeSection = Section(HeaderItem(R.string.swipe_to_delete))
+
+    private var tracker: SelectionTracker<Long>? = null
 
     // Normally there's no need to hold onto a reference to this list, but for demonstration
     // purposes, we'll shuffle this list and post an update periodically
@@ -102,6 +92,16 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        tracker = SelectionTracker.Builder<Long>(
+                "groupie-selection",
+                recyclerView,
+                StableIdKeyProvider(recyclerView),
+                GroupieLookup(recyclerView),
+                StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectAnything())
+                .build()
+        groupAdapter.setSelectionTracker(tracker)
+
         ItemTouchHelper(touchCallback).attachToRecyclerView(recyclerView)
 
         fab.setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
@@ -112,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun recreateAdapter() {
         groupAdapter.clear()
+        groupAdapter.setHasStableIds(true)
 
         if (prefs.useAsync) {
             populateAdapterAsync()
@@ -144,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
         groupAdapter += ExpandableGroup(expandableHeaderItem).apply {
             for (i in 0..1) {
-                add(CardItem(rainbow200[1]))
+                add(SelectionItem(rainbow200[1]))
             }
         }
 
