@@ -33,6 +33,7 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
         return ItemCarouselBinding.bind(view);
     }
 
+    @NonNull
     @Override
     public GroupieViewHolder<ItemCarouselBinding> createViewHolder(@NonNull View itemView) {
         GroupieViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
