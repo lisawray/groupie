@@ -16,6 +16,11 @@ android {
             minifyEnabled false
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     viewBinding {
         enabled = true
     }
