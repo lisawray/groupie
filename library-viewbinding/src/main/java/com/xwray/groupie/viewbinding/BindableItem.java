@@ -1,11 +1,15 @@
 package com.xwray.groupie.viewbinding;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
 import android.view.View;
 
 import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
+import com.xwray.groupie.OnItemLongClickListener;
 
 import java.util.List;
 
@@ -48,6 +52,25 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
     @Override
     public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads) {
         bind(viewHolder.binding, position, payloads);
+    }
+
+    /**
+     * Perform any actions required to set up the view for display.
+     *
+     * @param viewHolder          The viewHolder to bind
+     * @param position            The adapter position
+     * @param payloads            Any payloads (this list may be empty)
+     * @param onItemClickListener An optional adapter-level click listener
+     * @param onItemLongClickListener An optional adapter-level long click listener
+     */
+    @CallSuper
+    @Override
+    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
+        super.bind(viewHolder, position, payloads, onItemClickListener, onItemLongClickListener);
+        T binding = viewHolder.binding;
+        if (binding instanceof ViewDataBinding) {
+            ((ViewDataBinding) binding).executePendingBindings();
+        }
     }
 
     /**
