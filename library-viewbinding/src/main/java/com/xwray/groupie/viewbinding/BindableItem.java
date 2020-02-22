@@ -40,8 +40,8 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
     @NonNull
     @Override
     public GroupieViewHolder<T> createViewHolder(@NonNull View itemView) {
-        T viewDataBinding = initializeViewBinding(itemView);
-        return new GroupieViewHolder<>(viewDataBinding);
+        T binding = initializeViewBinding(itemView);
+        return new GroupieViewHolder<>(binding);
     }
 
     @Override
