@@ -18,7 +18,7 @@ class CarouselItem(private val carouselDecoration: RecyclerView.ItemDecoration,
         return R.layout.item_carousel
     }
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carouselAdapter

@@ -19,6 +19,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
     protected GroupDataObserver parentDataObserver;
     private final long id;
     private Map<String, Object> extras = new HashMap<>();
+    private boolean isSelectable = false;
 
     public Item() {
         this(ID_COUNTER.decrementAndGet());
@@ -49,10 +50,11 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
                      @Nullable OnItemLongClickListener onItemLongClickListener,
                      boolean isSelected) {
         viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
-        bind(viewHolder, position, payloads, isSelected);
+        isSelectable = isSelected;
+        bind(viewHolder, position, payloads);
     }
 
-    public abstract void bind(@NonNull VH viewHolder, int position, boolean isSelected);
+    public abstract void bind(@NonNull VH viewHolder, int position);
 
     /**
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
@@ -61,10 +63,9 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * @param viewHolder The ViewHolder to bind
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
-     * @param isSelected
      */
-    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads, boolean isSelected) {
-        bind(viewHolder, position, isSelected);
+    public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads) {
+        bind(viewHolder, position);
     }
 
     /**
@@ -154,6 +155,10 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
 
     public boolean isLongClickable() {
         return true;
+    }
+
+    public boolean isSelectable() {
+        return isSelectable;
     }
 
     public void notifyChanged() {

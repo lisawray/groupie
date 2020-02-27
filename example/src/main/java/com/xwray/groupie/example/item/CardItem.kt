@@ -16,7 +16,7 @@ open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence
 
     override fun getLayout() = R.layout.item_card
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.root.setBackgroundColor(colorInt)
         viewHolder.text.text = text
     }

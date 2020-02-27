@@ -17,8 +17,8 @@ open class SelectionItem (@ColorInt private val colorInt: Int, val text: CharSeq
 
     override fun getLayout() = R.layout.item_card
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int, isSelected: Boolean) {
-        if (isSelected) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        if (isSelectable) {
             viewHolder.root.setBackgroundColor(Color.GRAY)
         } else {
             viewHolder.root.setBackgroundColor(colorInt)

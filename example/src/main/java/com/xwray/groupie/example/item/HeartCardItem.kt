@@ -47,7 +47,7 @@ class HeartCardItem(@ColorInt private val colorInt: Int, id: Long,
 
     override fun isClickable() = false
 
-    override fun bind(holder: GroupieViewHolder, position: Int, isSelected: Boolean) {
+    override fun bind(holder: GroupieViewHolder, position: Int) {
         holder.root.setBackgroundColor(colorInt)
         bindHeart(holder)
         holder.text.text = (id + 1).toString()
@@ -59,11 +59,11 @@ class HeartCardItem(@ColorInt private val colorInt: Int, id: Long,
         }
     }
 
-    override fun bind(holder: GroupieViewHolder, position: Int, payloads: List<Any>, isSelected: Boolean) {
+    override fun bind(holder: GroupieViewHolder, position: Int, payloads: List<Any>) {
         if (payloads.contains(FAVORITE)) {
             bindHeart(holder)
         } else {
-            bind(holder, position, isSelected)
+            bind(holder, position)
         }
     }
 }
