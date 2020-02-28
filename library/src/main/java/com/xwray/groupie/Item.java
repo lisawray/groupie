@@ -42,15 +42,15 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * @param payloads            Any payloads (this list may be empty)
      * @param onItemClickListener An optional adapter-level click listener
      * @param onItemLongClickListener An optional adapter-level long click listener
-     * @param isSelected
+     * @param isSelected          An optional property stating if a selectable item is selected
      */
     @CallSuper
     public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads,
                      @Nullable OnItemClickListener onItemClickListener,
                      @Nullable OnItemLongClickListener onItemLongClickListener,
                      boolean isSelected) {
-        viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
         isSelectable = isSelected;
+        viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
         bind(viewHolder, position, payloads);
     }
 
@@ -75,6 +75,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      */
     @CallSuper
     public void unbind(@NonNull VH viewHolder) {
+        isSelectable = false;
         viewHolder.unbind();
     }
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GroupieLookup extends ItemDetailsLookup<Long> {
 
+    public final static String GROUPIE_SELECTION_ID = "groupie-selection";
     private RecyclerView recyclerView;
 
     public GroupieLookup(RecyclerView recyclerView) {

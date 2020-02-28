@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         tracker = SelectionTracker.Builder<Long>(
-                "groupie-selection",
+                GroupieLookup.GROUPIE_SELECTION_ID,
                 recyclerView,
                 StableIdKeyProvider(recyclerView),
                 GroupieLookup(recyclerView),
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
         groupAdapter += ExpandableGroup(expandableHeaderItem).apply {
             for (i in 0..1) {
-                add(SelectionItem(rainbow200[1]))
+                add(CardItem(rainbow200[1]))
             }
         }
 
