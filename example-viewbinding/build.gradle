@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.sdkVersion
@@ -28,12 +30,20 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation project(':library-viewbinding')
     implementation project(':example-shared')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.2.0"
     implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
     implementation "com.google.android.material:material:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
