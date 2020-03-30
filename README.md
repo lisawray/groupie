@@ -1,4 +1,4 @@
-# groupie 
+# groupie
 
 Groupie is a simple, flexible library for complex RecyclerView layouts.  
 
