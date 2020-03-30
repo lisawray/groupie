@@ -21,8 +21,11 @@ import java.util.List;
  * If you want to use Groups, because Item extends Group, you can mix and match adding Items and
  * other Groups directly to the adapter.
  *
+ * @deprecated Use groupie-viewbinding
+ *
  * @param <T> The ViewDataBinding subclass associated with this Item.
  */
+@Deprecated
 public abstract class BindableItem<T extends ViewDataBinding> extends Item<GroupieViewHolder<T>> {
 
     public BindableItem() {
