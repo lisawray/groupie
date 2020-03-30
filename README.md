@@ -1,4 +1,4 @@
-# groupie
+# groupie 
 
 Groupie is a simple, flexible library for complex RecyclerView layouts.  
 
@@ -7,6 +7,8 @@ Groupie lets you treat your content as logical groups and handles change notific
 <img src="http://i.imgur.com/eftOE0v.gif" width="300px"/>
 
 # Try it out:
+
+[ ![Download](https://api.bintray.com/packages/lisawray/maven/groupie/images/download.svg) ](https://bintray.com/lisawray/maven/groupie/_latestVersion)
 
 ```gradle
 implementation "com.xwray:groupie:$groupie_version"
@@ -26,10 +28,10 @@ implementation "com.xwray:groupie:$groupie_version"
 implementation "com.xwray:groupie-databinding:$groupie_version" 
 ```
 
-Groupie also has a support module for Android's [view binding](https://developer.android.com/topic/libraries/view-binding). This module also supports Android data binding, so if your project uses both data vinding and view binding, you don't have to add the dependency on the data binding support module. [Setup here.](#view-binding)
+Groupie also has a support module for Android's [view binding](https://developer.android.com/topic/libraries/view-binding). This module also supports Android data binding, so if your project uses both data binding and view binding, you don't have to add the dependency on the data binding support module. [Setup here.](#view-binding)
 
 ### Note:
-`groupie-viewbinding` can also be used for the project using only data binding, but in this case the version of Android Gradle Plugin must be 3.6.0 or more.
+`groupie-viewbinding` can also be used for projects using only data binding when using Android Gradle Plugin 3.6.0 or higher.
 
 ```gradle
 implementation "com.xwray:groupie:$groupie_version"
@@ -263,7 +265,7 @@ dependencies {
 }
 ```
 
-Because ViewBinding does not have the util class that can generate an arbitrary bindng like `DataBindingUtil` for DataBinding, you need to override ` initializeViewBinding` to generate the instance of specified binding:
+Because ViewBinding does not have the util class that can generate an arbitrary binding like `DataBindingUtil` for DataBinding, you need to override ` initializeViewBinding` to generate the instance of specified binding:
 
 ```kotlin
 class MyLayoutItem: BindableItem<MyLayoutBinding>() {
