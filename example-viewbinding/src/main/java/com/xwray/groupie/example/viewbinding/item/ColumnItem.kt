@@ -9,9 +9,9 @@ class ColumnItem(
     Int, index: Int
 ) : CardItem(colorInt, index.toString()) {
 
-  init {
-    extras[INSET_TYPE_KEY] = INSET
-  }
+    init {
+        extras[INSET_TYPE_KEY] = INSET
+    }
 
-  override fun getSpanSize(spanCount: Int, position: Int): Int = spanCount / 2
+    override fun getSpanSize(spanCount: Int, position: Int): Int = spanCount / 2
 }

@@ -13,28 +13,28 @@ class ExpandableHeaderItem(
     @StringRes subtitleResId: Int
 ) : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
 
-  private var expandableGroup: ExpandableGroup? = null
+    private var expandableGroup: ExpandableGroup? = null
 
-  override fun bind(viewBinding: ItemHeaderBinding, position: Int) {
-    super.bind(viewBinding, position)
+    override fun bind(viewBinding: ItemHeaderBinding, position: Int) {
+        super.bind(viewBinding, position)
 
-    // Initial icon state -- not animated.
-    viewBinding.icon.visibility = View.VISIBLE
-    viewBinding.icon.setImageResource(if (expandableGroup!!.isExpanded) R.drawable.collapse else R.drawable.expand)
-    viewBinding.icon.setOnClickListener {
-      expandableGroup!!.onToggleExpanded()
-      bindIcon(viewBinding)
+        // Initial icon state -- not animated.
+        viewBinding.icon.visibility = View.VISIBLE
+        viewBinding.icon.setImageResource(if (expandableGroup!!.isExpanded) R.drawable.collapse else R.drawable.expand)
+        viewBinding.icon.setOnClickListener {
+            expandableGroup!!.onToggleExpanded()
+            bindIcon(viewBinding)
+        }
     }
-  }
 
-  private fun bindIcon(viewBinding: ItemHeaderBinding) {
-    viewBinding.icon.visibility = View.VISIBLE
-    viewBinding.icon.setImageResource(if (expandableGroup!!.isExpanded) R.drawable.collapse_animated else R.drawable.expand_animated)
-    val drawable = viewBinding.icon.drawable as Animatable
-    drawable.start()
-  }
+    private fun bindIcon(viewBinding: ItemHeaderBinding) {
+        viewBinding.icon.visibility = View.VISIBLE
+        viewBinding.icon.setImageResource(if (expandableGroup!!.isExpanded) R.drawable.collapse_animated else R.drawable.expand_animated)
+        val drawable = viewBinding.icon.drawable as Animatable
+        drawable.start()
+    }
 
-  override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
-    expandableGroup = onToggleListener
-  }
+    override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
+        expandableGroup = onToggleListener
+    }
 }

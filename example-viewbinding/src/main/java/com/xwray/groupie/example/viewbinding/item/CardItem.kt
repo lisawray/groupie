@@ -13,16 +13,16 @@ open class CardItem @JvmOverloads constructor(
     val text: CharSequence = ""
 ) : BindableItem<ItemCardBinding>() {
 
-  init {
-    extras[INSET_TYPE_KEY] = INSET
-  }
+    init {
+        extras[INSET_TYPE_KEY] = INSET
+    }
 
-  override fun getLayout(): Int = R.layout.item_card
+    override fun getLayout(): Int = R.layout.item_card
 
-  override fun initializeViewBinding(view: View): ItemCardBinding = ItemCardBinding.bind(view)
+    override fun initializeViewBinding(view: View): ItemCardBinding = ItemCardBinding.bind(view)
 
-  override fun bind(viewBinding: ItemCardBinding, position: Int) {
-    viewBinding.root.setBackgroundColor(colorInt)
-    viewBinding.text.text = text
-  }
+    override fun bind(viewBinding: ItemCardBinding, position: Int) {
+        viewBinding.root.setBackgroundColor(colorInt)
+        viewBinding.text.text = text
+    }
 }

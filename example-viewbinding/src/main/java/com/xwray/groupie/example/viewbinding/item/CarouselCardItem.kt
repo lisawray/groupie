@@ -13,12 +13,12 @@ class CarouselCardItem(
     @ColorInt private val colorInt: Int
 ) : BindableItem<ItemSquareCardBinding?>() {
 
-  override fun getLayout(): Int = R.layout.item_square_card
+    override fun getLayout(): Int = R.layout.item_square_card
 
-  override fun initializeViewBinding(view: View): ItemSquareCardBinding =
-      ItemSquareCardBinding.bind(view)
+    override fun initializeViewBinding(view: View): ItemSquareCardBinding =
+        ItemSquareCardBinding.bind(view)
 
-  override fun bind(viewBinding: ItemSquareCardBinding, position: Int) {
-    viewBinding.root.setBackgroundColor(colorInt)
-  }
+    override fun bind(viewBinding: ItemSquareCardBinding, position: Int) {
+        viewBinding.root.setBackgroundColor(colorInt)
+    }
 }

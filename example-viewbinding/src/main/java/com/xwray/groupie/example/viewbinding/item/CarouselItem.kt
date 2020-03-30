@@ -19,28 +19,28 @@ class CarouselItem(
     private val adapter: GroupAdapter<com.xwray.groupie.GroupieViewHolder>
 ) : BindableItem<ItemCarouselBinding>(), OnItemClickListener {
 
-  init {
-    adapter.setOnItemClickListener(this)
-  }
+    init {
+        adapter.setOnItemClickListener(this)
+    }
 
-  override fun initializeViewBinding(view: View): ItemCarouselBinding =
-      ItemCarouselBinding.bind(view)
+    override fun initializeViewBinding(view: View): ItemCarouselBinding =
+        ItemCarouselBinding.bind(view)
 
-  override fun createViewHolder(itemView: View): GroupieViewHolder<ItemCarouselBinding> =
-      super.createViewHolder(itemView).also {
-        it.binding.recyclerView.apply {
-          addItemDecoration(carouselDecoration)
-          layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+    override fun createViewHolder(itemView: View): GroupieViewHolder<ItemCarouselBinding> =
+        super.createViewHolder(itemView).also {
+            it.binding.recyclerView.apply {
+                addItemDecoration(carouselDecoration)
+                layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            }
         }
-      }
 
-  override fun bind(viewBinding: ItemCarouselBinding, position: Int) {
-    viewBinding.recyclerView.adapter = adapter
-  }
+    override fun bind(viewBinding: ItemCarouselBinding, position: Int) {
+        viewBinding.recyclerView.adapter = adapter
+    }
 
-  override fun getLayout(): Int = R.layout.item_carousel
+    override fun getLayout(): Int = R.layout.item_carousel
 
-  override fun onItemClick(item: Item<*>, view: View) {
-    adapter.remove(item)
-  }
+    override fun onItemClick(item: Item<*>, view: View) {
+        adapter.remove(item)
+    }
 }

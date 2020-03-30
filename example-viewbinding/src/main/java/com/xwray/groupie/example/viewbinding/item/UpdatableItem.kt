@@ -7,5 +7,5 @@ class UpdatableItem(
     private val index: Int
 ) : SmallCardItem(colorInt, index.toString()) {
 
-  override fun getId(): Long = index.toLong()
+    override fun getId(): Long = index.toLong()
 }
