@@ -279,6 +279,10 @@ class MyLayoutItem: BindableItem<MyLayoutBinding>() {
 }
 ```
 
+### Note:
+
+If you use `groupie-viewbinding` with data binding classes and your layouts have some variables or [observable objects](https://developer.android.com/topic/libraries/data-binding/observability), don't forget to run [`executePendingBindings`](https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding) at the last of `bind`.
+
 ### Kotlin AND data binding / view binding?
 Sure, why not?  Follow all the instructions from *both* sections above.  You only need to include the `groupie-databinding` or `groupie-viewbinding` dependency, and omit the references to `android-extensions`.  You'll make `BindableItem`s instead of importing and using Kotlin extensions.
 
