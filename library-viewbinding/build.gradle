@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+archivesBaseName = 'groupie-viewbinding'
+
+android {
+    compileSdkVersion rootProject.sdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minimumSdkVersion
+        targetSdkVersion rootProject.sdkVersion
+        versionCode 20
+        versionName "1.0"
+    }
+    signingConfigs {
+        release {
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compileOnly project(':library')
+    compileOnly("androidx.recyclerview:recyclerview:1.1.0")
+    compileOnly("androidx.databinding:viewbinding:$viewbinding_version") {
+        transitive = false
+    }
+    compileOnly("androidx.annotation:annotation:1.1.0")
+}
+
+apply from: rootProject.file('release-bintray.gradle')
+

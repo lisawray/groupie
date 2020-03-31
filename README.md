@@ -8,24 +8,35 @@ Groupie lets you treat your content as logical groups and handles change notific
 
 # Try it out:
 
+[ ![Download](https://api.bintray.com/packages/lisawray/maven/groupie/images/download.svg) ](https://bintray.com/lisawray/maven/groupie/_latestVersion)
+
 ```gradle
-implementation "com.xwray:groupie:2.7.0"
+implementation "com.xwray:groupie:$groupie_version"
 ```
 
 Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
 
 ```gradle
-implementation "com.xwray:groupie:2.7.0"
-implementation "com.xwray:groupie-kotlin-android-extensions:2.7.0"
+implementation "com.xwray:groupie:$groupie_version"
+implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
 ```
 
 Groupie also supports Android's [data binding](https://developer.android.com/topic/libraries/data-binding/index.html) to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-implementation "com.xwray:groupie:2.7.0"
-implementation "com.xwray:groupie-databinding:2.7.0" 
+implementation "com.xwray:groupie:$groupie_version"
+implementation "com.xwray:groupie-databinding:$groupie_version" 
 ```
 
+Groupie also has a support module for Android's [view binding](https://developer.android.com/topic/libraries/view-binding). This module also supports Android data binding, so if your project uses both data binding and view binding, you don't have to add the dependency on the data binding support module. [Setup here.](#view-binding)
+
+### Note:
+`groupie-viewbinding` can also be used for projects using only data binding when using Android Gradle Plugin 3.6.0 or higher.
+
+```gradle
+implementation "com.xwray:groupie:$groupie_version"
+implementation "com.xwray:groupie-viewbinding:$groupie_version" 
+```
 You can also use Groupie with Java and your existing ViewHolders. 
 
 Which one to choose?  It's up to you and what your project already uses. You can even use Kotlin and data binding together.[<sup>*</sup>](#kotlin-and-data-binding) Or all your existing hand-written Java ViewHolders, and one new Kotlin item to try it out. Go crazy!  
@@ -179,8 +190,8 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.xwray:groupie:[version]'
-    implementation 'com.xwray:groupie-kotlin-android-extensions:[version]'
+    implementation 'com.xwray:groupie:$groupie_version'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:$groupie_version'
 }
 ```
 
@@ -202,7 +213,8 @@ android {
 }
 
 dependencies {
-    compile 'com.xwray:groupie-databinding:[version]'
+    implementation "com.xwray:groupie:$groupie_version"
+    implementation "com.xwray:groupie-databinding:$groupie_version"
 }
 ```
 
@@ -236,8 +248,43 @@ Bindings are only generated for layouts wrapped with <layout/> tags, so there's 
 
 You can add a `<data>` section to directly bind a model or ViewModel, but you don't have to.  The generated view bindings alone are a huge time saver.  
 
-### Kotlin AND data binding?
-Sure, why not?  Follow all the instructions from *both* sections above.  You only need to include the `groupie-databinding` dependency, and omit the references to `android-extensions`.  You'll make `BindableItem`s instead of importing and using Kotlin extensions.
+## View binding
+
+Add to your app module's `build.gradle`:
+
+```gradle
+android {
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation "com.xwray:groupie:$groupie_version"
+    implementation "com.xwray:groupie-viewbinding:$groupie_version"
+}
+```
+
+Because ViewBinding does not have the util class that can generate an arbitrary binding like `DataBindingUtil` for DataBinding, you need to override ` initializeViewBinding` to generate the instance of specified binding:
+
+```kotlin
+class MyLayoutItem: BindableItem<MyLayoutBinding>() {
+
+    // You can also use `DataBindingUtil#bind` when using ViewBinding support with DataBinding classes
+    override fun initializeViewBinding(view: View): MyLayoutBinding {
+        return MyLayoutBinding.bind(view)
+    }
+
+    // Other implementations...
+}
+```
+
+### Note:
+
+If you use `groupie-viewbinding` with data binding classes and your layouts have some variables or [observable objects](https://developer.android.com/topic/libraries/data-binding/observability), don't forget to run [`executePendingBindings`](https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding) at the last of `bind`.
+
+### Kotlin AND data binding / view binding?
+Sure, why not?  Follow all the instructions from *both* sections above.  You only need to include the `groupie-databinding` or `groupie-viewbinding` dependency, and omit the references to `android-extensions`.  You'll make `BindableItem`s instead of importing and using Kotlin extensions.
 
 
 # Contributing

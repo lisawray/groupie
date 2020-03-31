@@ -1,14 +1,11 @@
-package com.xwray.groupie.databinding;
+package com.xwray.groupie.viewbinding;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.viewbinding.ViewBinding;
+
 import android.view.View;
 
 import com.xwray.groupie.Item;
-import com.xwray.groupie.OnItemClickListener;
-import com.xwray.groupie.OnItemLongClickListener;
 
 import java.util.List;
 
@@ -21,12 +18,9 @@ import java.util.List;
  * If you want to use Groups, because Item extends Group, you can mix and match adding Items and
  * other Groups directly to the adapter.
  *
- * @deprecated Use groupie-viewbinding
- *
- * @param <T> The ViewDataBinding subclass associated with this Item.
+ * @param <T> The ViewBinding subclass associated with this Item.
  */
-@Deprecated
-public abstract class BindableItem<T extends ViewDataBinding> extends Item<GroupieViewHolder<T>> {
+public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieViewHolder<T>> {
 
     public BindableItem() {
         super();
@@ -37,26 +31,13 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<Group
     }
 
     @NonNull
+    protected abstract T initializeViewBinding(@NonNull View view);
+
+    @NonNull
     @Override
     public GroupieViewHolder<T> createViewHolder(@NonNull View itemView) {
-        T viewDataBinding = DataBindingUtil.bind(itemView);
-        return new GroupieViewHolder<>(viewDataBinding);
-    }
-
-    /**
-     * Perform any actions required to set up the view for display.
-     *
-     * @param viewHolder          The viewHolder to bind
-     * @param position            The adapter position
-     * @param payloads            Any payloads (this list may be empty)
-     * @param onItemClickListener An optional adapter-level click listener
-     * @param onItemLongClickListener An optional adapter-level long click listener
-     */
-    @CallSuper
-    @Override
-    public void bind(@NonNull GroupieViewHolder<T> viewHolder, int position, @NonNull List<Object> payloads, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
-        super.bind(viewHolder, position, payloads, onItemClickListener, onItemLongClickListener);
-        viewHolder.binding.executePendingBindings();
+        T binding = initializeViewBinding(itemView);
+        return new GroupieViewHolder<>(binding);
     }
 
     @Override
