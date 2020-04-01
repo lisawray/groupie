@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TouchCallback touchCallback = new SwipeTouchCallback(gray) {
         @Override public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
+            return true;
         }
 
         @Override public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {

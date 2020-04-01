@@ -25,17 +25,7 @@ import com.xwray.groupie.example.core.SettingsActivity
 import com.xwray.groupie.example.core.decoration.CarouselItemDecoration
 import com.xwray.groupie.example.core.decoration.DebugItemDecoration
 import com.xwray.groupie.example.core.decoration.SwipeTouchCallback
-import com.xwray.groupie.example.item.CardItem
-import com.xwray.groupie.example.item.CarouselCardItem
-import com.xwray.groupie.example.item.CarouselItem
-import com.xwray.groupie.example.item.ColumnItem
-import com.xwray.groupie.example.item.FAVORITE
-import com.xwray.groupie.example.item.FullBleedCardItem
-import com.xwray.groupie.example.item.HeaderItem
-import com.xwray.groupie.example.item.HeartCardItem
-import com.xwray.groupie.example.item.SmallCardItem
-import com.xwray.groupie.example.item.SwipeToDeleteItem
-import com.xwray.groupie.example.item.UpdatableItem
+import com.xwray.groupie.example.item.*
 import com.xwray.groupie.groupiex.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -56,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private val infiniteLoadingSection = Section(HeaderItem(R.string.infinite_loading))
     private val swipeSection = Section(HeaderItem(R.string.swipe_to_delete))
+    private val dragSection = Section(HeaderItem(R.string.drag_to_reorder))
 
     // Normally there's no need to hold onto a reference to this list, but for demonstration
     // purposes, we'll shuffle this list and post an update periodically
@@ -190,9 +181,14 @@ class MainActivity : AppCompatActivity() {
 
         // Swipe to delete (with add button in header)
         for (i in 0..2) {
-            swipeSection += SwipeToDeleteItem(rainbow200[6])
+            swipeSection += SwipeToDeleteItem(rainbow200[i])
         }
         groupAdapter += swipeSection
+
+        for (i in 0..4) {
+            dragSection += DraggableItem(rainbow500[i])
+        }
+        groupAdapter += dragSection
 
         // Horizontal carousel
         groupAdapter += Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
@@ -373,7 +369,15 @@ class MainActivity : AppCompatActivity() {
         object : SwipeTouchCallback(gray) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                                 target: RecyclerView.ViewHolder): Boolean {
-                return false
+                val item = groupAdapter.getItem(viewHolder.adapterPosition)
+                val targetItem = groupAdapter.getItem(target.adapterPosition)
+
+                val dragItems = dragSection.groups
+                val targetIndex = dragItems.indexOf(targetItem)
+                dragItems.remove(item)
+                dragItems.add(targetIndex, item)
+                dragSection.update(dragItems)
+                return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

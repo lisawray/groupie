@@ -9,6 +9,7 @@
     <string name="expanding_group_subtitle">Tap on the header to expand or contract the group.</string>
     <string name="carousel_subtitle">Swipe this section horizontally to scroll its items.</string>
     <string name="swipe_to_delete">Swipe to delete</string>
+    <string name="drag_to_reorder">Drag to reorder</string>
     <string name="updating_group">Updating group</string>
     <string name="updating_group_subtitle">Click the shuffle icon to update the list with a random set of changes.</string>
     <string name="title_activity_settings">SettingsActivity</string>

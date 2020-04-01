@@ -117,6 +117,15 @@ public class Section extends NestedGroup {
     }
 
     /**
+     * Get the list of all groups in this section, wrapped in a new {@link ArrayList}. This
+     * does <strong>not include headers, footers or placeholders</strong>.
+     * @return The list of all groups in this section, wrapped in a new {@link ArrayList}
+     */
+    public List<Group> getGroups() {
+        return new ArrayList<>(this.children);
+    }
+
+    /**
      * Remove all existing body content.
      */
     public void clear() {
