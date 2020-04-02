@@ -53,7 +53,7 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
     /**
      * Perform any actions required to set up the view for display.
      *
-     * @param viewBinding The ViewDataBinding to bind
+     * @param viewBinding The ViewBinding to bind
      * @param position The adapter position
      */
     public abstract void bind(@NonNull T viewBinding, int position);
@@ -64,7 +64,7 @@ public abstract class BindableItem<T extends ViewBinding> extends Item<GroupieVi
      * If you don't specify how to handle payloads in your implementation, they'll be ignored and
      * the adapter will do a full rebind.
      *
-     * @param viewBinding The ViewDataBinding to bind
+     * @param viewBinding The ViewBinding to bind
      * @param position The adapter position
      * @param payloads A list of payloads (may be empty)
      */
