@@ -11,13 +11,11 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.reset;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpandableGroupTest {
@@ -25,7 +23,7 @@ public class ExpandableGroupTest {
     @Mock
     GroupAdapter groupAdapter;
 
-    class DummyExpandableItem extends DummyItem implements ExpandableItem {
+    static class DummyExpandableItem extends DummyItem implements ExpandableItem {
 
         @Override
         public void setExpandableGroup(@NonNull ExpandableGroup onToggleListener) {
@@ -33,7 +31,7 @@ public class ExpandableGroupTest {
         }
     }
 
-    DummyExpandableItem parent = new DummyExpandableItem();
+    private DummyExpandableItem parent = new DummyExpandableItem();
 
     @Test
     public void collapsedByDefault() {
@@ -343,7 +341,7 @@ public class ExpandableGroupTest {
         expandableGroup.add(0, newItem);
 
         assertEquals(1, expandableGroup.getItemCount());
-        verifyZeroInteractions(groupAdapter);
+        verifyNoMoreInteractions(groupAdapter);
     }
 
     @Test

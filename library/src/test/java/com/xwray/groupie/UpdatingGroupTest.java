@@ -3,7 +3,7 @@ package com.xwray.groupie;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class UpdatingGroupTest {
 
     @Test
     public void updateGroupChangesRange() {
-        List<Item> children = new ArrayList<Item>();
+        List<Item> children = new ArrayList<>();
         children.add(new AlwaysUpdatingItem(1));
         children.add(new AlwaysUpdatingItem(2));
 
@@ -37,7 +37,7 @@ public class UpdatingGroupTest {
 
     @Test
     public void changeAnItemNotifiesChange() {
-        List<Item> children = new ArrayList<Item>();
+        List<Item> children = new ArrayList<>();
         Item item = new DummyItem();
         children.add(item);
 
