@@ -1,27 +1,68 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  defalut:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-28
     environment:
-      JVM_OPTS: -Xmx3200m
+      JVM_OPTS: -Xmx1024m
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false'
+
+commands:
+  cache_gradle:
+    parameters:
+      version:
+        type: string
+        default: v1
     steps:
-      - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}
+          keys:
+            - gradle-cache-<< parameters.version >>-{{ checksum "build.gradle" }}
+            - gradle-cache-<< parameters.version >>-
       - run:
-          name: Run Lint
-          command: ./gradlew lint --console plain
-      - run:
-          name: Run Unit Tests
-          command: ./gradlew test --console plain
-      - store_artifacts:
-          path: build/lint-reports
-          destination: reports
-      - store_test_results:
-          path: library/build/test-results
+          name: Check android dependencies
+          command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}
+          key: gradle-cache-<< parameters.version >>-{{ checksum "build.gradle" }}
+
+  run_lint:
+    steps:
+      - run:
+          name: Run lint
+          command: ./gradlew lint --console plain
+      - store_artifacts:
+          path: build/lint-reports
+          destination: reports
+
+  run_unit_test:
+    steps:
+      - run:
+          name: Run unit test
+          command: ./gradlew test --console plain
+      - store_test_results:
+          path: library/build/test-results
+
+jobs:
+  test_lint:
+    executor:
+      name: defalut
+    steps:
+      - checkout
+      - cache_gradle
+      - run_lint
+  test_unit_test:
+    executor:
+      name: defalut
+    steps:
+      - checkout
+      - cache_gradle
+      - run_unit_test
+
+workflows:
+  test:
+    jobs:
+      - test_lint
+      - test_unit_test
