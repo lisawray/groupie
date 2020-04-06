@@ -45,6 +45,18 @@ commands:
       - store_test_results:
           path: library/build/test-results
 
+  create_local_properties:
+    steps:
+      - run:
+          name: Decode local.properties
+          command: echo $LOCAL_PROPERTIES_ENCODE | base64 -di | tee local.properties >/dev/null
+
+  run_upload_packages:
+    steps:
+      - run:
+          name: Upload packages
+          command: bintray_upload.sh
+
 jobs:
   test_lint:
     executor:
@@ -60,9 +72,25 @@ jobs:
       - checkout
       - cache_gradle
       - run_unit_test
+  upload_package:
+    executor:
+      name: defalut
+    steps:
+      - checkout
+      - cache_gradle
+      - create_local_properties
+      - run_upload_packages
 
 workflows:
   test:
     jobs:
       - test_lint
       - test_unit_test
+  upload_package:
+    jobs:
+      - upload_package:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^\d+\.\d+\.\d+$/
