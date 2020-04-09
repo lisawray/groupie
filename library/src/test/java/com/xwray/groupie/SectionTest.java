@@ -609,6 +609,7 @@ public class SectionTest {
         verify(groupAdapter).onItemRangeInserted(rootSection, 2, 2);
     }
 
+    @Test
     public void addAllWorksWithSets() {
         final Section testSection = new Section();
 
