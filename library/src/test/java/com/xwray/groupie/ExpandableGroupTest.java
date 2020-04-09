@@ -33,6 +33,8 @@ public class ExpandableGroupTest {
 
     private DummyExpandableItem parent = new DummyExpandableItem();
 
+    private final int dummyDataSize = 5;
+
     @Test
     public void collapsedByDefault() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
@@ -88,11 +90,7 @@ public class ExpandableGroupTest {
     @Test
     public void testGetGroup() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -121,11 +119,7 @@ public class ExpandableGroupTest {
     @Test
     public void testUnexpandedGroupCount() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -136,11 +130,7 @@ public class ExpandableGroupTest {
     @Test
     public void testUnexpandedChildCount() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -151,28 +141,21 @@ public class ExpandableGroupTest {
     @Test
     public void expandNotifies() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
-        verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 6);
+        int expectedItemCount = dummyDataSize + 1;
+        verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, expectedItemCount);
     }
 
     @Test
     public void collapseNotifies() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -180,17 +163,14 @@ public class ExpandableGroupTest {
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
-        verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, 6);
+        int expectedItemCount = dummyDataSize + 1;
+        verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, expectedItemCount);
     }
-    
+
     @Test
     public void setExpandedShouldntNotifiesExpandWhenTheValueNotChanged() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -204,11 +184,7 @@ public class ExpandableGroupTest {
     @Test
     public void setExpandedShouldntNotifiesCollapseWhenTheValueNotChanged() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -222,47 +198,37 @@ public class ExpandableGroupTest {
     @Test
     public void setExpandedShouldNotifiesExpandWhenTheValueChanged() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, false);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(true);
 
-        verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, 6);
+        int expectedItemCount = dummyDataSize + 1;
+        verify(groupAdapter).onItemRangeInserted(expandableGroup, 1, expectedItemCount);
         assertTrue(expandableGroup.isExpanded());
     }
 
     @Test
     public void setExpandedShouldNotifiesCollapseWhenTheValueChanged() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent, true);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.setExpanded(false);
 
-        verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, 6);
+        int expectedItemCount = dummyDataSize + 1;
+        verify(groupAdapter).onItemRangeRemoved(expandableGroup, 1, expectedItemCount);
         assertFalse(expandableGroup.isExpanded());
     }
 
     @Test
     public void testExpandedGroupCount() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -275,16 +241,13 @@ public class ExpandableGroupTest {
     @Test
     public void testExpandedGroupCountForAddAll() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
 
-        assertEquals(6, expandableGroup.getGroupCount());
+        int expected = dummyDataSize + 1;
+        assertEquals(expected, expandableGroup.getGroupCount());
     }
 
     @Test
@@ -347,11 +310,7 @@ public class ExpandableGroupTest {
     @Test
     public void testExpandedGroupCountForRemove() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
 
@@ -365,11 +324,7 @@ public class ExpandableGroupTest {
     @Test
     public void testGroupCountForRemoveAll() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
 
@@ -382,11 +337,7 @@ public class ExpandableGroupTest {
     @Test
     public void testExpandedChildCount() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        Section section = new Section();
-        int sectionSize = 5;
-        for (int i = 0; i < sectionSize; i++) {
-            section.add(new DummyItem());
-        }
+        Section section = createDummySection();
         expandableGroup.add(section);
         Item lastItem = new DummyItem();
         expandableGroup.add(lastItem);
@@ -399,11 +350,7 @@ public class ExpandableGroupTest {
     @Test
     public void testExpandedChildCountForAddAll() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
         expandableGroup.onToggleExpanded();
@@ -424,11 +371,7 @@ public class ExpandableGroupTest {
     @Test
     public void testExpandedChildCountForRemove() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
 
@@ -442,11 +385,7 @@ public class ExpandableGroupTest {
     @Test
     public void testChildCountForRemoveAll() {
         ExpandableGroup expandableGroup = new ExpandableGroup(parent);
-        List<DummyItem> items = new ArrayList<>();
-        int itemsCount = 5;
-        for (int i = 0; i < itemsCount; i++) {
-            items.add(new DummyItem());
-        }
+        List<DummyItem> items = createDummyItems();
         expandableGroup.addAll(items);
         expandableGroup.registerGroupDataObserver(groupAdapter);
 
@@ -454,5 +393,23 @@ public class ExpandableGroupTest {
 
         expandableGroup.onToggleExpanded();
         assertEquals(0, expandableGroup.getChildCount());
+    }
+
+    @NonNull
+    private List<DummyItem> createDummyItems() {
+        List<DummyItem> items = new ArrayList<>();
+        for (int i = 0; i < dummyDataSize; i++) {
+            items.add(new DummyItem());
+        }
+        return items;
+    }
+
+    @NonNull
+    private Section createDummySection() {
+        Section section = new Section();
+        for (int i = 0; i < dummyDataSize; i++) {
+            section.add(new DummyItem());
+        }
+        return section;
     }
 }
