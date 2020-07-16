@@ -373,8 +373,18 @@ class MainActivity : AppCompatActivity() {
                 val targetItem = groupAdapter.getItem(target.adapterPosition)
 
                 val dragItems = dragSection.groups
-                val targetIndex = dragItems.indexOf(targetItem)
+                var targetIndex = dragItems.indexOf(targetItem)
                 dragItems.remove(item)
+
+                // if item gets moved out of the boundary
+                if (targetIndex == -1) {
+                    targetIndex = if (target.adapterPosition < viewHolder.adapterPosition) {
+                        0
+                    } else {
+                        dragItems.size - 1
+                    }
+                }
+
                 dragItems.add(targetIndex, item)
                 dragSection.update(dragItems)
                 return true
