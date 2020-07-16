@@ -42,7 +42,10 @@ dependencies {
     compileOnly("androidx.databinding:databinding-common:$databinding_version") {
         transitive = false
     }
-    compileOnly("androidx.annotation:annotation:1.0.0")
+    compileOnly("androidx.databinding:viewbinding:$databinding_version") {
+        transitive = false
+    }
+    compileOnly("androidx.annotation:annotation:1.1.0")
 }
 
 apply from: rootProject.file('release-bintray.gradle')
