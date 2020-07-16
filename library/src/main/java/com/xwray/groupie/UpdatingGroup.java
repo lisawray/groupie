@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Deprecated.  Please use Section.update() instead.
+ * Deprecated.  Please use #{@link Section#update} instead.
  *
  * A group which accepts a list of items and diffs them against its previous contents,
  * generating the correct remove, add, move and change notifications to its parent observer,

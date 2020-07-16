@@ -1,10 +1,12 @@
 package com.xwray.groupie;
 
+import java.util.Objects;
+
 class ContentUpdatingItem extends DummyItem {
 
-    String content;
+    private String content;
 
-    public ContentUpdatingItem(int id, String content) {
+    ContentUpdatingItem(int id, String content) {
         super(id);
         this.content = content;
     }
@@ -16,7 +18,7 @@ class ContentUpdatingItem extends DummyItem {
 
         ContentUpdatingItem that = (ContentUpdatingItem) o;
 
-        return content != null ? content.equals(that.content) : that.content == null;
+        return Objects.equals(content, that.content);
     }
 
     @Override

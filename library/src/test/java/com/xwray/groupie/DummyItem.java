@@ -2,13 +2,15 @@ package com.xwray.groupie;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 class DummyItem extends Item {
 
-    public DummyItem() {
+    DummyItem() {
         super();
     }
 
-    protected DummyItem(long id) {
+    DummyItem(long id) {
         super(id);
     }
 
@@ -16,13 +18,14 @@ class DummyItem extends Item {
         return 0;
     }
 
+    @NonNull
     @Override
-    public GroupieViewHolder createViewHolder(View itemView) {
+    public GroupieViewHolder createViewHolder(@NonNull View itemView) {
         return null;
     }
 
     @Override
-    public void bind(GroupieViewHolder viewHolder, int position) {
+    public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
 
     }
 }

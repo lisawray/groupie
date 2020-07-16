@@ -1,25 +1,26 @@
 package com.xwray.groupie;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(MockitoJUnitRunner.class)
 public class GroupAdapterTest {
 
-    GroupAdapter groupAdapter;
+    private GroupAdapter<GroupieViewHolder> groupAdapter;
 
     @Before
-    public void setUp() throws Exception {
-        groupAdapter = new GroupAdapter();
+    public void setUp() {
+        groupAdapter = new GroupAdapter<>();
     }
 
     @Test(expected = RuntimeException.class)
@@ -50,7 +51,7 @@ public class GroupAdapterTest {
         groupSet.add(new DummyItem());
 
         groupAdapter.addAll(groupSet);
-        Assert.assertEquals(2, groupAdapter.getItemCount());
+        assertEquals(2, groupAdapter.getItemCount());
     }
 
 }

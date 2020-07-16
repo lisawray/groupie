@@ -2,7 +2,7 @@ package com.xwray.groupie;
 
 class AlwaysUpdatingItem extends DummyItem {
 
-    public AlwaysUpdatingItem(int id) {
+    AlwaysUpdatingItem(int id) {
         super(id);
     }
 

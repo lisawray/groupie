@@ -13,8 +13,8 @@ buildscript {
     ext.databinding_version = '3.6.2'
     ext.viewbinding_version = '3.6.2'
 
-    ext.junit_version = '4.12'
-    ext.mockito_version = '2.16.0'
+    ext.junit_version = '4.13'
+    ext.mockito_version = '3.3.3'
 
     repositories {
         google()
@@ -36,7 +36,7 @@ buildscript {
 allprojects { project ->
 
     repositories {
-        maven { url 'https://dl.bintray.com/lisawray/maven'}
+        maven { url 'https://dl.bintray.com/lisawray/maven' }
         google()
         jcenter()
     }
