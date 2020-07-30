@@ -26,7 +26,7 @@ dependencies {
     api "androidx.appcompat:appcompat:1.1.0"
     api "com.google.android.material:material:1.1.0"
     api "androidx.cardview:cardview:1.0.0"
-    api "androidx.preference:preference:1.1.0"
+    api "androidx.preference:preference:1.1.1"
     api "androidx.vectordrawable:vectordrawable:1.1.0"
     api "androidx.vectordrawable:vectordrawable-animated:1.1.0"
 }

@@ -41,7 +41,7 @@ dependencies {
     implementation project(':library-viewbinding')
     implementation project(':example-shared')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "androidx.core:core-ktx:1.3.1"
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
     implementation "com.google.android.material:material:1.1.0"
