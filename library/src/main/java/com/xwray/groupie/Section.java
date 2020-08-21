@@ -119,7 +119,6 @@ public class Section extends NestedGroup {
     /**
      * Get the list of all groups in this section, wrapped in a new {@link ArrayList}. This
      * does <strong>not include headers, footers or placeholders</strong>.
-     *
      * @return The list of all groups in this section, wrapped in a new {@link ArrayList}
      */
     public List<Group> getGroups() {
@@ -146,7 +145,7 @@ public class Section extends NestedGroup {
      * <p>
      * If you don't customize getId() or isSameAs() and hasSameContentAs(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
-     * <p>
+     *
      * This will default detectMoves to true.
      *
      * @param newBodyGroups The new content of the section
@@ -168,8 +167,8 @@ public class Section extends NestedGroup {
      * meaning your Group will consider every update a complete change of everything.
      *
      * @param newBodyGroups The new content of the section
-     * @param detectMoves   is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
-     *                      don't want DiffUtil to detect moved items.
+     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
+     *                    don't want DiffUtil to detect moved items.
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups, boolean detectMoves) {
         final List<Group> oldBodyGroups = new ArrayList<>(children);
@@ -179,7 +178,6 @@ public class Section extends NestedGroup {
 
     /**
      * Overloaded version of update method in which you can pass your own DiffUtil.DiffResult
-     *
      * @param newBodyGroups The new content of the section
      * @param diffResult
      */
