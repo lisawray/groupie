@@ -119,6 +119,7 @@ public class Section extends NestedGroup {
     /**
      * Get the list of all groups in this section, wrapped in a new {@link ArrayList}. This
      * does <strong>not include headers, footers or placeholders</strong>.
+     *
      * @return The list of all groups in this section, wrapped in a new {@link ArrayList}
      */
     public List<Group> getGroups() {
@@ -145,11 +146,11 @@ public class Section extends NestedGroup {
      * <p>
      * If you don't customize getId() or isSameAs() and hasSameContentAs(), the default implementations will return false,
      * meaning your Group will consider every update a complete change of everything.
-     *
+     * <p>
      * This will default detectMoves to true.
      *
-     * @see #update(Collection, boolean)
      * @param newBodyGroups The new content of the section
+     * @see #update(Collection, boolean)
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups) {
         update(newBodyGroups, true);
@@ -167,8 +168,8 @@ public class Section extends NestedGroup {
      * meaning your Group will consider every update a complete change of everything.
      *
      * @param newBodyGroups The new content of the section
-     * @param detectMoves is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
-     *                    don't want DiffUtil to detect moved items.
+     * @param detectMoves   is passed to {@link DiffUtil#calculateDiff(DiffUtil.Callback, boolean)}. Set to false if you
+     *                      don't want DiffUtil to detect moved items.
      */
     public void update(@NonNull final Collection<? extends Group> newBodyGroups, boolean detectMoves) {
         final List<Group> oldBodyGroups = new ArrayList<>(children);
@@ -178,6 +179,7 @@ public class Section extends NestedGroup {
 
     /**
      * Overloaded version of update method in which you can pass your own DiffUtil.DiffResult
+     *
      * @param newBodyGroups The new content of the section
      * @param diffResult
      */
@@ -378,15 +380,17 @@ public class Section extends NestedGroup {
     }
 
     public void setHeader(@NonNull Group header) {
+        //noinspection ConstantConditions
         if (header == null)
             throw new NullPointerException("Header can't be null.  Please use removeHeader() instead!");
         if (this.header != null) {
             this.header.unregisterGroupDataObserver(this);
         }
-        int previousHeaderItemCount = getHeaderItemCount();
+
+        Group previousHeader = this.header;
         this.header = header;
         header.registerGroupDataObserver(this);
-        notifyHeaderItemsChanged(previousHeaderItemCount);
+        notifyHeaderItemsChanged(previousHeader, header);
     }
 
     public void removeHeader() {
@@ -394,33 +398,31 @@ public class Section extends NestedGroup {
             return;
         }
 
+        Group header = this.header;
         this.header.unregisterGroupDataObserver(this);
-        int previousHeaderItemCount = getHeaderItemCount();
         this.header = null;
-        notifyHeaderItemsChanged(previousHeaderItemCount);
+        notifyHeaderItemsChanged(header, null);
     }
 
-    private void notifyHeaderItemsChanged(int previousHeaderItemCount) {
-        int newHeaderItemCount = getHeaderItemCount();
-        if (previousHeaderItemCount > 0) {
-            notifyItemRangeRemoved(0, previousHeaderItemCount);
-        }
-        if (newHeaderItemCount > 0) {
-            notifyItemRangeInserted(0, newHeaderItemCount);
-        }
+    private void notifyHeaderItemsChanged(
+            @Nullable final Group previousHeader,
+            @Nullable final Group newHeader
+    ) {
+        notifyHeaderOrFooterChanged(0, previousHeader, newHeader);
     }
-
 
     public void setFooter(@NonNull Group footer) {
+        //noinspection ConstantConditions
         if (footer == null)
             throw new NullPointerException("Footer can't be null.  Please use removeFooter() instead!");
         if (this.footer != null) {
             this.footer.unregisterGroupDataObserver(this);
         }
-        int previousFooterItemCount = getFooterItemCount();
+
+        Group previousFooter = this.footer;
         this.footer = footer;
         footer.registerGroupDataObserver(this);
-        notifyFooterItemsChanged(previousFooterItemCount);
+        notifyFooterItemsChanged(previousFooter, footer);
     }
 
     public void removeFooter() {
@@ -428,20 +430,59 @@ public class Section extends NestedGroup {
             return;
         }
 
+        Group previousFooter = this.footer;
         this.footer.unregisterGroupDataObserver(this);
-        int previousFooterItemCount = getFooterItemCount();
         this.footer = null;
-        notifyFooterItemsChanged(previousFooterItemCount);
+        notifyFooterItemsChanged(previousFooter, null);
     }
 
-    private void notifyFooterItemsChanged(int previousFooterItemCount) {
-        int newFooterItemCount = getFooterItemCount();
-        if (previousFooterItemCount > 0) {
-            notifyItemRangeRemoved(getItemCountWithoutFooter(), previousFooterItemCount);
+    private void notifyFooterItemsChanged(
+            @Nullable Group previousFooter,
+            @Nullable Group newFooter
+    ) {
+        notifyHeaderOrFooterChanged(getItemCountWithoutFooter(), previousFooter, newFooter);
+    }
+
+    private void notifyHeaderOrFooterChanged(
+            final int positionStart,
+            @Nullable final Group prevGroup,
+            @Nullable final Group newGroup
+    ) {
+        final int previousHeaderItemCount = prevGroup == null ? 0 : prevGroup.getItemCount();
+        final int newHeaderItemCount = newGroup == null ? 0 : newGroup.getItemCount();
+
+        if (previousHeaderItemCount == 0 && newHeaderItemCount == 0) return;
+        if (previousHeaderItemCount == 0) {
+            notifyItemRangeInserted(positionStart, newHeaderItemCount);
+            return;
+        } else if (newHeaderItemCount == 0) {
+            notifyItemRangeRemoved(positionStart, previousHeaderItemCount);
+            return;
         }
-        if (newFooterItemCount > 0) {
-            notifyItemRangeInserted(getItemCountWithoutFooter(), newFooterItemCount);
-        }
+
+        DiffUtil.Callback callback = new DiffCallback(prevGroup, newGroup);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback, true);
+        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
+            @Override
+            public void onInserted(int position, int count) {
+                notifyItemRangeChanged(position + positionStart, count);
+            }
+
+            @Override
+            public void onRemoved(int position, int count) {
+                notifyItemRangeRemoved(position + positionStart, count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                notifyItemMoved(fromPosition + positionStart, toPosition + positionStart);
+            }
+
+            @Override
+            public void onChanged(int position, int count, @Nullable Object payload) {
+                notifyItemRangeChanged(position + positionStart, count, payload);
+            }
+        });
     }
 
     public void setHideWhenEmpty(boolean hide) {
