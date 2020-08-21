@@ -463,7 +463,7 @@ public class Section extends NestedGroup {
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                notifyItemRangeChanged(position + positionStart, count);
+                notifyItemRangeInserted(position + positionStart, count);
             }
 
             @Override
