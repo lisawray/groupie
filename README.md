@@ -226,8 +226,8 @@ Add to your app module's `build.gradle`:
 
 ```gradle
 android {
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -264,8 +264,8 @@ Add to your app module's build.gradle:
 
 ```gradle
 android {
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
 }
 
