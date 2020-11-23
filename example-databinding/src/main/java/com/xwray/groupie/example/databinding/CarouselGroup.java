@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xwray.groupie.Group;
-import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupDataObserver;
+import com.xwray.groupie.GroupieAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.example.databinding.item.CarouselItem;
 
@@ -40,7 +40,7 @@ public class CarouselGroup implements Group {
         }
     };
 
-    public CarouselGroup(RecyclerView.ItemDecoration itemDecoration, GroupAdapter adapter) {
+    public CarouselGroup(RecyclerView.ItemDecoration itemDecoration, GroupieAdapter adapter) {
         this.adapter = adapter;
         carouselItem = new CarouselItem(itemDecoration, adapter);
         isEmpty = adapter.getItemCount() == 0;

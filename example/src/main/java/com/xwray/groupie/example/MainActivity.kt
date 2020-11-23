@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.OnItemLongClickListener
 import com.xwray.groupie.Section
@@ -34,7 +33,7 @@ const val INSET = "inset"
 
 class MainActivity : AppCompatActivity() {
 
-    private val groupAdapter = GroupAdapter<GroupieViewHolder>() //TODO get rid of this parameter
+    private val groupAdapter = GroupieAdapter()
     private lateinit var groupLayoutManager: GridLayoutManager
     private val prefs by lazy { Prefs.get(this) }
     private val handler = Handler()
@@ -329,7 +328,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeCarouselItem(): CarouselItem {
         val carouselDecoration = CarouselItemDecoration(gray, betweenPadding)
-        val carouselAdapter = GroupAdapter<GroupieViewHolder>()
+        val carouselAdapter = GroupieAdapter()
         for (i in 0..29) {
             carouselAdapter += CarouselCardItem(rainbow200[7])
         }

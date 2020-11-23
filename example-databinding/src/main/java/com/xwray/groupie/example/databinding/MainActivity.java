@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.xwray.groupie.ExpandableGroup;
 import com.xwray.groupie.Group;
-import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.GroupieAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.OnItemLongClickListener;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INSET = "inset";
 
     private ActivityMainBinding binding;
-    private GroupAdapter groupAdapter;
+    private GroupieAdapter groupAdapter;
     private GridLayoutManager layoutManager;
     private Prefs prefs;
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         rainbow200 = getResources().getIntArray(R.array.rainbow_200);
         rainbow500 = getResources().getIntArray(R.array.rainbow_500);
 
-        groupAdapter = new GroupAdapter();
+        groupAdapter = new GroupieAdapter();
         groupAdapter.setOnItemClickListener(onItemClickListener);
         groupAdapter.setOnItemLongClickListener(onItemLongClickListener);
         groupAdapter.setSpanCount(12);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Group makeCarouselGroup() {
         CarouselItemDecoration carouselDecoration = new CarouselItemDecoration(gray, betweenPadding);
-        GroupAdapter carouselAdapter = new GroupAdapter();
+        GroupieAdapter carouselAdapter = new GroupieAdapter();
         for (int i = 0; i < 10; i++) {
             carouselAdapter.add(new CarouselCardItem(rainbow200[i]));
         }
