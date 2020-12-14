@@ -3,7 +3,6 @@ package com.xwray.groupie.example.viewbinding
 import android.content.Intent
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -110,14 +109,13 @@ class MainActivity : AppCompatActivity() {
             val updatingHeader = HeaderItem(
                 R.string.updating_group,
                 R.string.updating_group_subtitle,
-                R.drawable.shuffle,
-                View.OnClickListener {
-                    updatingGroup.update(ArrayList(updatableItems).apply { shuffle() })
+                R.drawable.shuffle
+            ) {
+                updatingGroup.update(ArrayList(updatableItems).apply { shuffle() })
 
-                    // You can also do this by forcing a change with payload
-                    binding.recyclerView.post { binding.recyclerView.invalidateItemDecorations() }
-                }
-            )
+                // You can also do this by forcing a change with payload
+                binding.recyclerView.post { binding.recyclerView.invalidateItemDecorations() }
+            }
             setHeader(updatingHeader)
             updatableItems = ArrayList()
             for (i in 1..12) {
