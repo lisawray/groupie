@@ -9,7 +9,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_heart_card.*
 
-val FAVORITE = "FAVORITE"
+const val FAVORITE = "FAVORITE"
 
 class HeartCardItem(@ColorInt private val colorInt: Int, id: Long,
                     private val onFavoriteListener: (item: HeartCardItem, favorite: Boolean) -> Unit) :
@@ -19,7 +19,7 @@ class HeartCardItem(@ColorInt private val colorInt: Int, id: Long,
     private var inProgress = false
 
     init {
-        extras.put(INSET_TYPE_KEY, INSET)
+        extras[INSET_TYPE_KEY] = INSET
     }
 
     override fun getLayout() = R.layout.item_heart_card
