@@ -4,6 +4,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
@@ -18,6 +19,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
     protected GroupDataObserver parentDataObserver;
     private final long id;
     private Map<String, Object> extras = new HashMap<>();
+    private boolean isSelectable = false;
 
     public Item() {
         this(ID_COUNTER.decrementAndGet());
@@ -40,11 +42,14 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      * @param payloads            Any payloads (this list may be empty)
      * @param onItemClickListener An optional adapter-level click listener
      * @param onItemLongClickListener An optional adapter-level long click listener
+     * @param isSelected          An optional property stating if a selectable item is selected
      */
     @CallSuper
     public void bind(@NonNull VH viewHolder, int position, @NonNull List<Object> payloads,
                      @Nullable OnItemClickListener onItemClickListener,
-                     @Nullable OnItemLongClickListener onItemLongClickListener) {
+                     @Nullable OnItemLongClickListener onItemLongClickListener,
+                     boolean isSelected) {
+        isSelectable = isSelected;
         viewHolder.bind(this, onItemClickListener, onItemLongClickListener);
         bind(viewHolder, position, payloads);
     }
@@ -70,6 +75,7 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
      */
     @CallSuper
     public void unbind(@NonNull VH viewHolder) {
+        isSelectable = false;
         viewHolder.unbind();
     }
 
@@ -150,6 +156,10 @@ public abstract class Item<VH extends GroupieViewHolder> implements Group, SpanS
 
     public boolean isLongClickable() {
         return true;
+    }
+
+    public boolean isSelectable() {
+        return isSelectable;
     }
 
     public void notifyChanged() {

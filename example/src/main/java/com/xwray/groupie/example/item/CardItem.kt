@@ -1,5 +1,6 @@
 package com.xwray.groupie.example.item
 
+import android.graphics.Color
 import androidx.annotation.ColorInt
 import com.xwray.groupie.example.INSET
 import com.xwray.groupie.example.INSET_TYPE_KEY
@@ -17,7 +18,11 @@ open class CardItem (@ColorInt private val colorInt: Int, val text: CharSequence
     override fun getLayout() = R.layout.item_card
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.root.setBackgroundColor(colorInt)
+        if (isSelectable) {
+            viewHolder.root.setBackgroundColor(Color.GRAY)
+        } else {
+            viewHolder.root.setBackgroundColor(colorInt)
+        }
         viewHolder.text.text = text
     }
 }

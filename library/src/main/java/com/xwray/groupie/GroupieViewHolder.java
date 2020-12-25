@@ -2,6 +2,7 @@ package com.xwray.groupie;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
@@ -93,5 +94,20 @@ public class GroupieViewHolder extends RecyclerView.ViewHolder {
 
     public View getRoot() {
         return itemView;
+    }
+
+    public ItemDetailsLookup.ItemDetails<Long> getItemDetails() {
+        return new ItemDetailsLookup.ItemDetails<Long>(){
+            @Override
+            public int getPosition() {
+                return getAdapterPosition();
+            }
+
+            @Nullable
+            @Override
+            public Long getSelectionKey() {
+                return getItemId();
+            }
+        };
     }
 }

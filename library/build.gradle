@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
+    compileOnly "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
 }

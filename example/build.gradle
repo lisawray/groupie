@@ -41,6 +41,7 @@ dependencies {
     implementation project(':example-shared')
     implementation project(':library')
     implementation project(':library-kotlin-android-extensions')
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
 }
 
 repositories {
