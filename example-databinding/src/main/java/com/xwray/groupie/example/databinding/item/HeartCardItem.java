@@ -16,14 +16,12 @@ public class HeartCardItem extends BindableItem<ItemHeartCardBinding> {
 
     public static final String FAVORITE = "FAVORITE";
 
-    @ColorInt private int colorRes;
-    private OnFavoriteListener onFavoriteListener;
+    private final OnFavoriteListener onFavoriteListener;
     private boolean checked = false;
     private boolean inProgress = false;
 
-    public HeartCardItem(@ColorInt int colorRes, long id, OnFavoriteListener onFavoriteListener) {
+    public HeartCardItem(long id, OnFavoriteListener onFavoriteListener) {
         super(id);
-        this.colorRes = colorRes;
         this.onFavoriteListener = onFavoriteListener;
         getExtras().put(MainActivity.INSET_TYPE_KEY, MainActivity.INSET);
     }

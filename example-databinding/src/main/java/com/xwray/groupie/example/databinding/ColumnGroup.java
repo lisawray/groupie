@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class ColumnGroup implements Group {
 
-    private List<BindableItem> items = new ArrayList<>();
+    private List<BindableItem<?>> items = new ArrayList<>();
 
-    public ColumnGroup(List<? extends BindableItem> items) {
+    public ColumnGroup(List<? extends BindableItem<?>> items) {
         for (int i = 0; i < items.size(); i++) {
             // Rearrange items so that the adapter appears to arrange them in vertical columns
             int index;
@@ -29,7 +29,7 @@ public class ColumnGroup implements Group {
                 // meaning the second column's indices will all be increased by 1
                 if (items.size() % 2 == 1) index++;
             }
-            BindableItem trackItem = items.get(index);
+            BindableItem<?> trackItem = items.get(index);
             this.items.add(trackItem);
         }
     }
@@ -46,7 +46,7 @@ public class ColumnGroup implements Group {
 
     @NonNull
     @Override
-    public BindableItem getItem(int position) {
+    public BindableItem<?> getItem(int position) {
         return items.get(position);
     }
 

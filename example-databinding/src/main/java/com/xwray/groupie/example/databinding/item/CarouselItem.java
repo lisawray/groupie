@@ -18,8 +18,8 @@ import com.xwray.groupie.example.databinding.databinding.ItemCarouselBinding;
  */
 public class CarouselItem extends BindableItem<ItemCarouselBinding> implements OnItemClickListener {
 
-    private GroupieAdapter adapter;
-    private RecyclerView.ItemDecoration carouselDecoration;
+    private final GroupieAdapter adapter;
+    private final RecyclerView.ItemDecoration carouselDecoration;
 
     public CarouselItem(RecyclerView.ItemDecoration itemDecoration, GroupieAdapter adapter) {
         this.carouselDecoration = itemDecoration;
@@ -27,6 +27,7 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
         adapter.setOnItemClickListener(this);
     }
 
+    @NonNull
     @Override
     public GroupieViewHolder<ItemCarouselBinding> createViewHolder(@NonNull View itemView) {
         GroupieViewHolder<ItemCarouselBinding> viewHolder = super.createViewHolder(itemView);
@@ -45,7 +46,7 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
     }
 
     @Override
-    public void onItemClick(Item item, View view) {
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
         adapter.remove(item);
     }
 }

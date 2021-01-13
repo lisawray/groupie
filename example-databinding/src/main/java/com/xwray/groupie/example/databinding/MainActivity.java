@@ -2,6 +2,8 @@ package com.xwray.groupie.example.databinding;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
@@ -96,9 +98,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(groupAdapter);
         recyclerView.addOnScrollListener(new InfiniteScrollListener(layoutManager) {
             @Override public void onLoadMore(int currentPage) {
-                int color = rainbow200[currentPage % rainbow200.length];
                 for (int i = 0; i < 5; i++) {
-                    infiniteLoadingSection.add(new CardItem(color));
+                    infiniteLoadingSection.add(new CardItem());
                 }
             }
         });
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Full bleed item
         Section fullBleedItemSection = new Section(new HeaderItem(R.string.full_bleed_item));
-        fullBleedItemSection.add(new FullBleedCardItem(R.color.purple_200));
+        fullBleedItemSection.add(new FullBleedCardItem());
         groupAdapter.add(fullBleedItemSection);
 
         // Update in place group
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         updatingGroup = new Section();
         updatableItems = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
-            updatableItems.add(new UpdatableItem(rainbow200[i], i));
+            updatableItems.add(new UpdatableItem(i));
         }
         updatingGroup.update(updatableItems);
         updatingSection.add(updatingGroup);
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         ExpandableHeaderItem expandableHeaderItem = new ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle);
         ExpandableGroup expandableGroup = new ExpandableGroup(expandableHeaderItem);
         for (int i = 0; i < 2; i++) {
-            expandableGroup.add(new CardItem(rainbow200[1]));
+            expandableGroup.add(new CardItem());
         }
         groupAdapter.add(expandableGroup);
 
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         // Group showing even spacing with multiple columns
         Section multipleColumnsSection = new Section(new HeaderItem(R.string.multiple_columns));
         for (int i = 0; i < 12; i++) {
-            multipleColumnsSection.add(new SmallCardItem(rainbow200[5]));
+            multipleColumnsSection.add(new SmallCardItem());
         }
         groupAdapter.add(multipleColumnsSection);
 
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         // Update with payload
         Section updateWithPayloadSection = new Section(new HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle));
         for (int i = 0; i < rainbow500.length; i++) {
-            updateWithPayloadSection.add(new HeartCardItem(rainbow200[i], i, onFavoriteListener));
+            updateWithPayloadSection.add(new HeartCardItem(i, onFavoriteListener));
 
         }
         groupAdapter.add(updateWithPayloadSection);
@@ -205,11 +206,11 @@ public class MainActivity extends AppCompatActivity {
         List<ColumnItem> columnItems = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             // First five items are red -- they'll end up in a vertical column
-            columnItems.add(new ColumnItem(rainbow200[0], i));
+            columnItems.add(new ColumnItem(i));
         }
         for (int i = 6; i <= 10; i++) {
             // Next five items are pink
-            columnItems.add(new ColumnItem(rainbow200[1], i));
+            columnItems.add(new ColumnItem(i));
         }
         return new ColumnGroup(columnItems);
     }
@@ -254,8 +255,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private TouchCallback touchCallback = new SwipeTouchCallback(gray) {
-        @Override public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    private TouchCallback touchCallback = new SwipeTouchCallback() {
+        @Override public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             return true;
         }
 

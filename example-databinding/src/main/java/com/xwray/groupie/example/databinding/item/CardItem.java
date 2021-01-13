@@ -12,15 +12,13 @@ import static com.xwray.groupie.example.databinding.MainActivity.INSET_TYPE_KEY;
 
 public class CardItem extends BindableItem<ItemCardBinding> {
 
-    @ColorInt private int colorRes;
     private CharSequence text;
 
-    public CardItem(@ColorInt int colorRes) {
-        this(colorRes, "");
+    public CardItem() {
+        this("");
     }
 
-    public CardItem(@ColorInt int colorRes, CharSequence text) {
-        this.colorRes = colorRes;
+    public CardItem(CharSequence text) {
         this.text = text;
         getExtras().put(INSET_TYPE_KEY, INSET);
     }
@@ -30,15 +28,10 @@ public class CardItem extends BindableItem<ItemCardBinding> {
     }
 
     @Override public void bind(@NonNull ItemCardBinding viewBinding, int position) {
-        //viewBinding.getRoot().setBackgroundColor(colorRes);
         viewBinding.text.setText(text);
     }
 
-    public void setText(CharSequence text) {
-        this.text = text;
-    }
-
-    public CharSequence getText() {
+    public final CharSequence getText() {
         return text;
     }
 }

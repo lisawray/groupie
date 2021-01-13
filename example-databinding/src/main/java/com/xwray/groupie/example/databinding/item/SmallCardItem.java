@@ -1,15 +1,13 @@
 package com.xwray.groupie.example.databinding.item;
 
-import androidx.annotation.ColorInt;
-
 public class SmallCardItem extends CardItem {
 
-    public SmallCardItem(@ColorInt int colorRes) {
-        super(colorRes);
+    public SmallCardItem() {
+        super();
     }
 
-    public SmallCardItem(@ColorInt int colorRes, CharSequence text) {
-        super(colorRes, text);
+    public SmallCardItem(CharSequence text) {
+        super(text);
     }
 
     @Override public int getSpanSize(int spanCount, int position) {

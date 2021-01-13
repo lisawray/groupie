@@ -12,10 +12,10 @@ import com.xwray.groupie.example.databinding.databinding.ItemSquareCardBinding;
  */
 public class CarouselCardItem extends BindableItem<ItemSquareCardBinding> {
 
-    @ColorInt private int colorRes;
+    @ColorInt private int colorInt;
 
-    public CarouselCardItem(@ColorInt int colorRes) {
-        this.colorRes = colorRes;
+    public CarouselCardItem(@ColorInt int colorInt) {
+        this.colorInt = colorInt;
     }
 
     @Override public int getLayout() {
@@ -23,6 +23,6 @@ public class CarouselCardItem extends BindableItem<ItemSquareCardBinding> {
     }
 
     @Override public void bind(@NonNull ItemSquareCardBinding viewBinding, int position) {
-        viewBinding.getRoot().setBackgroundColor(colorRes);
+        viewBinding.getRoot().setBackgroundColor(colorInt);
     }
 }

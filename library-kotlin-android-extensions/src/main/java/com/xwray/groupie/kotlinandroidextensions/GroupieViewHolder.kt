@@ -8,6 +8,6 @@ import kotlinx.android.extensions.LayoutContainer
 
 // Need to specify ContainerOptions in order for caching to work.
 // See: https://youtrack.jetbrains.com/oauth?state=%2Fissue%2FKT-28617
+@Deprecated(message = "Kotlin-Android-Extensions is deprecated since 1.4.21, therefore so is the kotlin-android-extensions module in Groupie. Use `groupie-viewbinding` instead.")
 @ContainerOptions(cache = CacheImplementation.HASH_MAP)
-class GroupieViewHolder(override val containerView: View) : GroupieViewHolder(containerView),
-        LayoutContainer
+class GroupieViewHolder(override val containerView: View) : GroupieViewHolder(containerView), LayoutContainer

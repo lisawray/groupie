@@ -365,7 +365,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val touchCallback: SwipeTouchCallback by lazy {
-        object : SwipeTouchCallback(gray) {
+        object : SwipeTouchCallback() {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                                 target: RecyclerView.ViewHolder): Boolean {
                 val item = groupAdapter.getItem(viewHolder.adapterPosition)

@@ -5,14 +5,15 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     private final Paint paint;
-    private int sidePaddingPixels;
-    private int headerViewType;
+    private final int sidePaddingPixels;
+    private final int headerViewType;
 
     public HeaderItemDecoration(@ColorInt int background, int sidePaddingPixels, @LayoutRes int headerViewType) {
         this.sidePaddingPixels = sidePaddingPixels;
@@ -21,6 +22,7 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
         paint.setColor(background);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isHeader(View child, RecyclerView parent) {
         int viewType = parent.getLayoutManager().getItemViewType(child);
         return viewType == headerViewType;
@@ -33,7 +35,7 @@ public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
         outRect.right = sidePaddingPixels;
     }
 
-    @Override public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    @Override public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (!isHeader(child, parent)) continue;

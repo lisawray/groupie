@@ -23,8 +23,8 @@ public class InsetItemDecoration extends RecyclerView.ItemDecoration {
 
     private final Paint paint;
     private final int padding;
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
 
     public InsetItemDecoration(@ColorInt int backgroundColor, @Dimension int padding, String key, String value) {
         this.key = key;

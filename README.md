@@ -14,13 +14,6 @@ Groupie lets you treat your content as logical groups and handles change notific
 implementation "com.xwray:groupie:$groupie_version"
 ```
 
-Groupie includes a module for Kotlin and Kotlin Android extensions. Never write a ViewHolder again—Kotlin generates view references and Groupie uses a generic holder. [Setup here.](#kotlin) 
-
-```gradle
-implementation "com.xwray:groupie:$groupie_version"
-implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
-```
-
 Groupie also has a support module for Android's [view binding](https://developer.android.com/topic/libraries/view-binding). This module also supports Android [data binding](https://developer.android.com/topic/libraries/data-binding/index.html), so if your project uses both data binding and view binding, you don't have to add the dependency on the data binding support module. [Setup here.](#view-binding)
 
 ```gradle
@@ -31,7 +24,7 @@ implementation "com.xwray:groupie-viewbinding:$groupie_version"
 ### Note:
 If using `groupie-viewbinding` in a databinding project is only available when using Android Gradle Plugin 3.6.0 or higher.
 
-If using an older Gradle Plugin version with databinding the you can use the standalone `groupie-databinding` library to generate view holders. [Setup here.](#data-binding) This is deprecated and will be removed in a future version in favour of only using `groupie-viewbinding`.
+If using an older Gradle Plugin version with databinding the you can use the standalone `groupie-databinding` library to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
 implementation "com.xwray:groupie:$groupie_version"
@@ -100,15 +93,24 @@ Groupie tries not to assume what features your groups require.  Instead, groups 
     
 Life (and mobile design) is complicated, so groups are designed so that making new ones and defining their behavior is easy. You should make many small, simple, custom groups as the need strikes you.
 
-You can implement the `Group` interface directly if you want.  However, in most cases, you should extend `Section` or the base implementation, `NestedGroup`.  Section supports common RV paradigms like diffing, headers, footers, and placeholders.  NestedGroup provides support for arbitrary nesting of groups, registering/unregistering listeners, and fine-grained change notifications to support animations and updating the adapter.
+You can implement the `Group` interface directly if you want.  However, in most cases, you can extend `Section` or the base implementation, `NestedGroup`.  Section supports common RV paradigms like diffing, headers, footers, and placeholders.  NestedGroup provides support for arbitrary nesting of groups, registering/unregistering listeners, and fine-grained change notifications to support animations and updating the adapter.
     
 ## Items
 
 Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupieAdapter` and call it a day.
 
-### Item with Kotlin:
+### Item with Kotlin-Android-Extensions:
 
-The `Item` class gives you simple callbacks to bind your model object to the generated fields.  Because of Kotlin Android extensions, there's no need to write a view holder.
+**Note: `kotlin-android-extensions` is deprecated since Kotlin 1.4.20. Therefore, `groupie-kotlin-android-extensions` is also deprecated, and `viewbinding` should be preferred.**
+
+Groupie includes a module for Kotlin and Kotlin Android extensions. [Setup here.](#kotlin)
+
+```gradle
+implementation "com.xwray:groupie:$groupie_version"
+implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
+```
+
+The `Item` class gives you simple callbacks to bind your model object to the generated fields.
 
 ```kotlin
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -180,7 +182,7 @@ In your project level `build.gradle` file, include:
 
 ```
 buildscript {
-    ext.kotlin_version = '1.3.71'
+    ext.kotlin_version = '1.4.21'
     repositories {
         jcenter()
     }
@@ -191,6 +193,14 @@ buildscript {
 ```
 
 In your app `build.gradle` file, include:
+
+```
+implementation 'com.xwray:groupie:$groupie_version'
+```
+
+### Using with Kotlin-Android-Extensions (deprecated)
+
+If you are still relying on the deprecated `kotlin-android-extensions` module, then also apply the following:
 
 ```
 apply plugin: 'kotlin-android'
@@ -208,7 +218,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.xwray:groupie:$groupie_version'
     implementation 'com.xwray:groupie-kotlin-android-extensions:$groupie_version'
 }
@@ -237,13 +246,10 @@ dependencies {
 }
 ```
 
-#### WARNING: If using this with Databinding:
-Because ViewBinding does not have the util class that can generate an arbitrary binding like `DataBindingUtil` for DataBinding, you need to override ` initializeViewBinding` to generate the instance of the specified binding:
+Then:
 
 ```kotlin
 class MyLayoutItem: BindableItem<MyLayoutBinding>() {
-
-    // You can also use `DataBindingUtil#bind` when using ViewBinding support with DataBinding classes
     override fun initializeViewBinding(view: View): MyLayoutBinding {
         return MyLayoutBinding.bind(view)
     }
@@ -254,11 +260,9 @@ class MyLayoutItem: BindableItem<MyLayoutBinding>() {
 
 ### Note:
 
-If you use `groupie-viewbinding` with data binding classes and your layouts have some variables or [observable objects](https://developer.android.com/topic/libraries/data-binding/observability), don't forget to run [`executePendingBindings`](https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding) at the last point in `bind`.
+If you use `groupie-databinding` with data binding classes and your layouts have some variables or [observable objects](https://developer.android.com/topic/libraries/data-binding/observability), don't forget to run [`executePendingBindings`](https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding) at the last point in `bind`.
 
 ## Data binding
-
-### Data binding functionality is deprecated. Consider moving to [View binding.](#view-binding) instead, which supports data binding out of the box.
 
 Add to your app module's build.gradle:
 

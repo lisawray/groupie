@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 public class SwipeToDeleteItem extends CardItem {
     public SwipeToDeleteItem(@ColorInt int colorRes) {
-        super(colorRes);
+        super();
     }
 
     @Override public int getSwipeDirs() {

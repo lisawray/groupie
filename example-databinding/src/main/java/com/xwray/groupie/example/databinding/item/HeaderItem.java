@@ -11,10 +11,10 @@ import com.xwray.groupie.example.databinding.databinding.ItemHeaderBinding;
 
 public class HeaderItem extends BindableItem<ItemHeaderBinding> {
 
-    @StringRes private int titleStringResId;
-    @StringRes private int subtitleResId;
-    @DrawableRes private int iconResId;
-    private View.OnClickListener onIconClickListener;
+    @StringRes private final int titleStringResId;
+    @StringRes private final int subtitleResId;
+    @DrawableRes private final int iconResId;
+    private final View.OnClickListener onIconClickListener;
 
     public HeaderItem(@StringRes int titleStringResId) {
         this(titleStringResId, 0);
@@ -37,15 +37,15 @@ public class HeaderItem extends BindableItem<ItemHeaderBinding> {
 
     @Override public void bind(@NonNull ItemHeaderBinding viewBinding, int position) {
         viewBinding.title.setText(titleStringResId);
-        if (subtitleResId > 0) {
+        if (subtitleResId != 0) {
             viewBinding.subtitle.setText(subtitleResId);
         }
-        viewBinding.subtitle.setVisibility(subtitleResId > 0 ? View.VISIBLE : View.GONE);
+        viewBinding.subtitle.setVisibility(subtitleResId != 0 ? View.VISIBLE : View.GONE);
 
-        if (iconResId > 0) {
+        if (iconResId != 0) {
             viewBinding.icon.setImageResource(iconResId);
             viewBinding.icon.setOnClickListener(onIconClickListener);
         }
-        viewBinding.icon.setVisibility(iconResId > 0 ? View.VISIBLE : View.GONE);
+        viewBinding.icon.setVisibility(iconResId != 0 ? View.VISIBLE : View.GONE);
     }
 }
