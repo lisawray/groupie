@@ -148,6 +148,19 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     }
 
     /**
+     * Replaces the groups within the adapter without using DiffUtil, and therefore without animations.
+     *
+     * For animation support, use {@link GroupAdapter#update(Collection)} or {@link GroupAdapter#updateAsync(List)} instead.
+     *
+     * @param newGroups List of {@link Group}
+     */
+    @SuppressWarnings("unused")
+    public void replaceAll(@NonNull final Collection<? extends Group> newGroups) {
+        setNewGroups(newGroups);
+        notifyDataSetChanged();
+    }
+
+    /**
      * Updates the adapter with a new list that will be diffed on the <em>main</em> thread
      * and displayed once diff results are calculated. Not recommended for huge lists.
      *
@@ -521,6 +534,11 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
     public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
         int groupAdapterPosition = getAdapterPosition(group);
         notifyItemMoved(groupAdapterPosition + fromPosition, groupAdapterPosition + toPosition);
+    }
+
+    @Override
+    public void onDataSetInvalidated() {
+        notifyDataSetChanged();
     }
 
     /**

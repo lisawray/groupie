@@ -116,6 +116,21 @@ public class Section extends NestedGroup {
         refreshEmptyState();
     }
 
+    @Override
+    public void replaceAll(@NonNull Collection<? extends Group> groups) {
+        if (groups.isEmpty()) {
+            return;
+        }
+
+        super.replaceAll(groups);
+        children.clear();
+        children.addAll(groups);
+
+        notifyDataSetInvalidated();
+
+        refreshEmptyState();
+    }
+
     /**
      * Get the list of all groups in this section, wrapped in a new {@link ArrayList}. This
      * does <strong>not include headers, footers or placeholders</strong>.

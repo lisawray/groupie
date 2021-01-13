@@ -126,6 +126,19 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         }
     }
 
+    @CallSuper
+    public void replaceAll(@NonNull Collection<? extends Group> groups) {
+        final int groupCount = getGroupCount();
+
+        for (int i = groupCount - 1; i >= 0; i--) {
+            getGroup(i).unregisterGroupDataObserver(this);
+        }
+
+        for (Group group: groups) {
+            group.registerGroupDataObserver(this);
+        }
+    }
+
     /**
      * Every item in the group still exists but the data in each has changed (e.g. should rebind).
      *
@@ -192,6 +205,12 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
         observable.onItemMoved(this, groupPosition + fromPosition, groupPosition + toPosition);
     }
 
+    @CallSuper
+    @Override
+    public void onDataSetInvalidated() {
+        observable.onDataSetInvalidated();
+    }
+
     /**
      * A group should use this to notify that there is a change in itself.
      *
@@ -246,6 +265,11 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
     @CallSuper
     public void notifyItemRangeChanged(int positionStart, int itemCount, Object payload) {
         observable.onItemRangeChanged(this, positionStart, itemCount, payload);
+    }
+
+    @CallSuper
+    public void notifyDataSetInvalidated() {
+        observable.onDataSetInvalidated();
     }
 
     /**
@@ -328,6 +352,12 @@ public abstract class NestedGroup implements Group, GroupDataObserver {
             synchronized(observers) {
                 int index = observers.indexOf(observer);
                 observers.remove(index);
+            }
+        }
+
+        void onDataSetInvalidated() {
+            for (int i = observers.size() - 1; i >= 0; i--) {
+                observers.get(i).onDataSetInvalidated();
             }
         }
     }

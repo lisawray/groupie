@@ -22,4 +22,6 @@ public interface GroupDataObserver {
     void onItemRangeRemoved(@NonNull Group group, int positionStart, int itemCount);
 
     void onItemMoved(@NonNull Group group, int fromPosition, int toPosition);
+
+    void onDataSetInvalidated();
 }
