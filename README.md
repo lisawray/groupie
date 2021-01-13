@@ -44,17 +44,17 @@ Which one to choose?  It's up to you and what your project already uses. You can
     
 ## Get started
 
-Use a `GroupAdapter` anywhere you would normally use a `RecyclerView.Adapter`, and attach it to your RecyclerView as usual.
+Use a `GroupieAdapter` anywhere you would normally use a `RecyclerView.Adapter`, and attach it to your RecyclerView as usual.
 
 Kotlin
 ```kotlin
-val adapter = GroupAdapter()
+val adapter = GroupieAdapter()
 recyclerView.setAdapter(adapter)
 ```
 
 Java
 ```java
-GroupAdapter adapter = new GroupAdapter();
+GroupieAdapter adapter = new GroupieAdapter();
 recyclerView.setAdapter(adapter);
 ```
     
@@ -84,9 +84,9 @@ section.addAll(bodyItems);
 groupAdapter.add(section);
 ```
     
-Modifying the contents of the GroupAdapter in any way automatically sends change notifications.  Adding an item calls `notifyItemAdded()`; adding a group calls `notifyItemRangeAdded()`, etc.
+Modifying the contents of the GroupieAdapter in any way automatically sends change notifications.  Adding an item calls `notifyItemAdded()`; adding a group calls `notifyItemRangeAdded()`, etc.
 
-Modifying the contents of a Group automatically notifies its parent.  When notifications reach the GroupAdapter, it dispatches final change notifications.  There's never a need to manually notify or keep track of indices, no matter how you structure your data.
+Modifying the contents of a Group automatically notifies its parent.  When notifications reach the GroupieAdapter, it dispatches final change notifications.  There's never a need to manually notify or keep track of indices, no matter how you structure your data.
 
 ```java
 section.removeHeader(); // results in a remove event for 1 item in the adapter, at position 2
@@ -104,7 +104,7 @@ You can implement the `Group` interface directly if you want.  However, in most 
     
 ## Items
 
-Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupAdapter` and call it a day.
+Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupieAdapter` and call it a day.
 
 ### Item with Kotlin:
 

@@ -3,7 +3,7 @@ package com.xwray.groupie.example.viewbinding.item
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.example.viewbinding.R
@@ -16,7 +16,7 @@ import com.xwray.groupie.viewbinding.GroupieViewHolder
  */
 class CarouselItem(
     private val carouselDecoration: ItemDecoration,
-    private val adapter: GroupAdapter<com.xwray.groupie.GroupieViewHolder>
+    private val adapter: GroupieAdapter
 ) : BindableItem<ItemCarouselBinding>(), OnItemClickListener {
 
     init {
