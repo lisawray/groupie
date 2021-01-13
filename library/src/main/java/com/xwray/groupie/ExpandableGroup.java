@@ -94,6 +94,19 @@ public class ExpandableGroup extends NestedGroup {
     }
 
     @Override
+    public void replaceAll(@NonNull Collection<? extends Group> groups) {
+        if (isExpanded) {
+            super.replaceAll(groups);
+            children.clear();
+            children.addAll(groups);
+            notifyDataSetInvalidated();
+        } else {
+            children.clear();
+            children.addAll(groups);
+        }
+    }
+
+    @Override
     public void removeAll(@NonNull Collection<? extends Group> groups) {
         if (groups.isEmpty() || !this.children.containsAll(groups)) return;
         super.removeAll(groups);
@@ -230,6 +243,13 @@ public class ExpandableGroup extends NestedGroup {
     public void onItemMoved(@NonNull Group group, int fromPosition, int toPosition) {
         if (dispatchChildChanges(group)) {
             super.onItemMoved(group, fromPosition, toPosition);
+        }
+    }
+
+    @Override
+    public void onDataSetInvalidated() {
+        if (isExpanded) {
+            super.onDataSetInvalidated();
         }
     }
 }

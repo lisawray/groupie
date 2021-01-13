@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -318,6 +319,21 @@ public class ExpandableGroupTest {
 
         expandableGroup.onToggleExpanded();
         assertEquals(5, expandableGroup.getGroupCount());
+    }
+
+    @Test
+    public void testExpandedGroupCountForReplaceAll() {
+        ExpandableGroup expandableGroup = new ExpandableGroup(parent);
+        List<DummyItem> items = createDummyItems();
+        expandableGroup.addAll(items);
+        expandableGroup.registerGroupDataObserver(groupAdapter);
+
+        DummyItem item = items.get(0);
+        expandableGroup.replaceAll(Collections.singletonList(item));
+
+        assertEquals(1, expandableGroup.getGroupCount());
+        expandableGroup.onToggleExpanded();
+        assertEquals(2, expandableGroup.getGroupCount());
     }
 
 
