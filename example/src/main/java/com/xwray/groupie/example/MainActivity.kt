@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +59,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.refresh) {
+            recreateAdapter()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     // Hold a reference to the updating group, so we can, well, update it
     private var updatingGroup = Section()
 
@@ -97,132 +112,28 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
 
         prefs.registerListener(onSharedPrefChangeListener)
-
     }
 
     private fun recreateAdapter() {
         groupAdapter.clear()
 
+        val groups = createGroups()
+
         if (prefs.useAsync) {
-            populateAdapterAsync()
+            groupAdapter.updateAsync(groups)
         } else {
-            populateAdapter()
+            groupAdapter.update(groups)
         }
     }
 
-    private fun populateAdapter() {
-
+    private fun createGroups(): List<Group> = mutableListOf<Group>().apply {
         // Full bleed item
-        groupAdapter += Section(HeaderItem(R.string.full_bleed_item)).apply {
+        this += Section(HeaderItem(R.string.full_bleed_item)).apply {
             add(FullBleedCardItem(R.color.purple_200))
         }
 
         // Update in place group
-        groupAdapter += Section().apply {
-            val updatingHeader = HeaderItem(
-                    R.string.updating_group,
-                    R.string.updating_group_subtitle,
-                    R.drawable.shuffle,
-                    onShuffleClicked)
-            setHeader(updatingHeader)
-
-            updatingGroup.update(updatableItems)
-            add(updatingGroup)
-        }
-
-        // Expandable group
-        val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
-        groupAdapter += ExpandableGroup(expandableHeaderItem).apply {
-            for (i in 0..1) {
-                add(CardItem(rainbow200[1]))
-            }
-        }
-
-        // Reordering a Section of Expandable Groups
-        val section = Section(HeaderItem(R.string.reorderable_section))
-        val swappableExpandableGroup = mutableListOf<ExpandableGroup>()
-        var colorIndex = 0
-        for (i in 0..2) {
-            val header = ExpandableHeaderItem(R.string.reorderable_item_title, R.string.reorderable_item_subtitle)
-            val group = ExpandableGroup(header).apply {
-                val numChildren= i * 2 // groups will continue to grow by 2
-                for (j in 0..numChildren) {
-                    add(CardItem(rainbow200[colorIndex]))
-                    if (colorIndex + 1 >= rainbow200.size) {
-                        colorIndex = 0
-                    } else {
-                        colorIndex += 1
-                    }
-                }
-            }
-            header.clickListener = {
-                swappableExpandableGroup.remove(group)
-                swappableExpandableGroup.add(group)
-
-                section.update(swappableExpandableGroup)
-            }
-            swappableExpandableGroup.add(group)
-        }
-        section.addAll(swappableExpandableGroup)
-        groupAdapter += section
-
-        // Columns
-        groupAdapter += Section(HeaderItem(R.string.vertical_columns)).apply {
-            add(makeColumnGroup())
-        }
-
-        // Group showing even spacing with multiple columns
-        groupAdapter += Section(HeaderItem(R.string.multiple_columns)).apply {
-            for (i in 0..11) {
-                add(SmallCardItem(rainbow200[5]))
-            }
-        }
-
-        // Swipe to delete (with add button in header)
-        for (i in 0..2) {
-            swipeSection += SwipeToDeleteItem(rainbow200[i])
-        }
-        groupAdapter += swipeSection
-
-        for (i in 0..4) {
-            dragSection += DraggableItem(rainbow500[i])
-        }
-        groupAdapter += dragSection
-
-        // Horizontal carousel
-        groupAdapter += Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
-            add(makeCarouselItem())
-        }
-
-        // Update with payload
-        groupAdapter += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
-            rainbow500.indices.forEach { i ->
-                add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
-                    // Pretend to make a network request
-                    handler.postDelayed({
-                        // Network request was successful!
-                        item.setFavorite(favorite)
-                        item.notifyChanged(FAVORITE)
-                    }, 1000)
-                })
-            }
-        }
-
-        // Infinite loading section
-        groupAdapter += infiniteLoadingSection
-    }
-
-    private fun populateAdapterAsync() {
-
-        val allGroups = mutableListOf<Group>()
-
-        // Full bleed item
-        allGroups += Section(HeaderItem(R.string.full_bleed_item)).apply {
-            add(FullBleedCardItem(R.color.purple_200))
-        }
-
-        // Update in place group
-        allGroups += Section().apply {
+        this += Section().apply {
             val updatingHeader = HeaderItem(
                 R.string.updating_group,
                 R.string.updating_group_subtitle,
@@ -236,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
         // Expandable group
         val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
-        allGroups += ExpandableGroup(expandableHeaderItem).apply {
+        this += ExpandableGroup(expandableHeaderItem).apply {
             for (i in 0..1) {
                 add(CardItem(rainbow200[1]))
             }
@@ -268,33 +179,62 @@ class MainActivity : AppCompatActivity() {
             swappableExpandableGroup.add(group)
         }
         section.addAll(swappableExpandableGroup)
-        allGroups += section
+        this += section
 
         // Columns
-        allGroups += Section(HeaderItem(R.string.vertical_columns)).apply {
+        fun makeColumnGroup(): ColumnGroup {
+            val columnItems = ArrayList<ColumnItem>()
+            for (i in 1..5) {
+                // First five items are red -- they'll end up in a vertical column
+                columnItems += ColumnItem(rainbow200[0], i)
+            }
+            for (i in 6..10) {
+                // Next five items are pink
+                columnItems += ColumnItem(rainbow200[1], i)
+            }
+            return ColumnGroup(columnItems)
+        }
+
+        this += Section(HeaderItem(R.string.vertical_columns)).apply {
             add(makeColumnGroup())
         }
 
         // Group showing even spacing with multiple columns
-        allGroups += Section(HeaderItem(R.string.multiple_columns)).apply {
+        this += Section(HeaderItem(R.string.multiple_columns)).apply {
             for (i in 0..11) {
                 add(SmallCardItem(rainbow200[5]))
             }
         }
 
         // Swipe to delete (with add button in header)
+        swipeSection.clear()
         for (i in 0..2) {
-            swipeSection += SwipeToDeleteItem(rainbow200[6])
+            swipeSection += SwipeToDeleteItem(rainbow200[i])
         }
-        allGroups += swipeSection
+        this += swipeSection
+
+        dragSection.clear()
+        for (i in 0..4) {
+            dragSection += DraggableItem(rainbow500[i])
+        }
+        this += dragSection
 
         // Horizontal carousel
-        allGroups += Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
+        fun makeCarouselItem(): CarouselItem {
+            val carouselDecoration = CarouselItemDecoration(gray, betweenPadding)
+            val carouselAdapter = GroupieAdapter()
+            for (i in 0..29) {
+                carouselAdapter += CarouselCardItem(rainbow200[7])
+            }
+            return CarouselItem(carouselDecoration, carouselAdapter)
+        }
+
+        this += Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
             add(makeCarouselItem())
         }
 
         // Update with payload
-        allGroups += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
+        this += Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).apply {
             rainbow500.indices.forEach { i ->
                 add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
                     // Pretend to make a network request
@@ -308,31 +248,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Infinite loading section
-        allGroups += infiniteLoadingSection
-
-        groupAdapter.updateAsync(allGroups)
-    }
-
-    private fun makeColumnGroup(): ColumnGroup {
-        val columnItems = ArrayList<ColumnItem>()
-        for (i in 1..5) {
-            // First five items are red -- they'll end up in a vertical column
-            columnItems += ColumnItem(rainbow200[0], i)
-        }
-        for (i in 6..10) {
-            // Next five items are pink
-            columnItems += ColumnItem(rainbow200[1], i)
-        }
-        return ColumnGroup(columnItems)
-    }
-
-    private fun makeCarouselItem(): CarouselItem {
-        val carouselDecoration = CarouselItemDecoration(gray, betweenPadding)
-        val carouselAdapter = GroupieAdapter()
-        for (i in 0..29) {
-            carouselAdapter += CarouselCardItem(rainbow200[7])
-        }
-        return CarouselItem(carouselDecoration, carouselAdapter)
+        this += infiniteLoadingSection
     }
 
     private val onItemClickListener = OnItemClickListener { item, _ ->
@@ -399,8 +315,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val onSharedPrefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
-        // This is pretty evil, try not to do this
         recreateAdapter()
     }
-
 }
