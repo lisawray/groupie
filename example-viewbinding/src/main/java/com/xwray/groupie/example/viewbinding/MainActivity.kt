@@ -75,13 +75,13 @@ class MainActivity : AppCompatActivity() {
             spanSizeLookup = groupAdapter.spanSizeLookup
         }
 
-        binding.recyclerView.also {
-            it.layoutManager = layoutManager
-            it.addItemDecoration(HeaderItemDecoration(gray, betweenPadding))
-            it.addItemDecoration(InsetItemDecoration(gray, betweenPadding))
-            it.addItemDecoration(DebugItemDecoration(it.context))
-            it.adapter = groupAdapter
-            it.addOnScrollListener(object : InfiniteScrollListener(layoutManager) {
+        binding.recyclerView.apply {
+            this.layoutManager = layoutManager
+            addItemDecoration(HeaderItemDecoration(gray, betweenPadding))
+            addItemDecoration(InsetItemDecoration(gray, betweenPadding))
+            addItemDecoration(DebugItemDecoration(context))
+            adapter = groupAdapter
+            addOnScrollListener(object : InfiniteScrollListener(layoutManager) {
                 override fun onLoadMore(currentPage: Int) {
                     val color = rainbow200[currentPage % rainbow200.size]
                     for (i in 0..4) {
@@ -89,89 +89,114 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
-            ItemTouchHelper(touchCallback).attachToRecyclerView(it)
+            ItemTouchHelper(touchCallback).attachToRecyclerView(this)
         }
         binding.fab.setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
         prefs.registerListener(onSharedPrefChangeListener)
+
+        binding.update.setOnClickListener { populateAdapter() }
     }
 
     private fun populateAdapter() {
+        fun itemList() = listOf(
+            ExpandableGroup(
+                ExpandableHeaderItem(
+                    ExpandableHeaderItemData(
+                        R.string.expanding_group,
+                        R.string.expanding_group_subtitle,
+                        headerId = 0
+                    )
+                ),
+                true
+            ).also { expandableGroup ->
+                for (i in 0..1) {
+                    expandableGroup.add(CardItem(rainbow200[i]))
+                }
+            },
 
-        // Full bleed item
-        groupAdapter.add(Section(HeaderItem(R.string.full_bleed_item)).apply {
-            add(FullBleedCardItem(ContextCompat.getColor(this@MainActivity, R.color.purple_200)))
-        })
+            // Full bleed item
+            Section(HeaderItem(R.string.full_bleed_item)).apply {
+                add(FullBleedCardItem(ContextCompat.getColor(this@MainActivity, R.color.purple_200)))
+            },
 
-        // Update in place group
-        groupAdapter.add(Section().apply {
-            val updatingGroup = Section()
-            val updatingHeader = HeaderItem(
-                R.string.updating_group,
-                R.string.updating_group_subtitle,
-                R.drawable.shuffle
-            ) {
-                updatingGroup.update(ArrayList(updatableItems).apply { shuffle() })
+            // Update in place group
+            Section().apply {
+                val section = Section()
+                val updatingHeader = HeaderItem(
+                    R.string.updating_group,
+                    R.string.updating_group_subtitle,
+                    R.drawable.shuffle
+                ) {
+                    section.update(ArrayList(updatableItems).apply { shuffle() })
 
-                // You can also do this by forcing a change with payload
-                binding.recyclerView.post { binding.recyclerView.invalidateItemDecorations() }
-            }
-            setHeader(updatingHeader)
-            updatableItems = ArrayList()
-            for (i in 1..12) {
-                updatableItems.add(UpdatableItem(rainbow200[i], i))
-            }
-            updatingGroup.update(updatableItems)
-            add(updatingGroup)
-        })
+                    // You can also do this by forcing a change with payload
+                    binding.recyclerView.post { binding.recyclerView.invalidateItemDecorations() }
+                }
+                setHeader(updatingHeader)
+                updatableItems = ArrayList()
+                for (i in 1..12) {
+                    updatableItems.add(UpdatableItem(rainbow200[i], i))
+                }
+                section.update(updatableItems)
+                add(section)
+            },
 
-        // Expandable group
-        val expandableHeaderItem = ExpandableHeaderItem(R.string.expanding_group, R.string.expanding_group_subtitle)
-        groupAdapter.add(ExpandableGroup(expandableHeaderItem).apply {
-            for (i in 0..1) {
-                add(CardItem(rainbow200[1]))
-            }
-        })
+            // Expandable group
 
-        // Columns
-        groupAdapter.add(Section(HeaderItem(R.string.vertical_columns)).apply {
-            add(makeColumnGroup())
-        })
+            ExpandableGroup(ExpandableHeaderItem(ExpandableHeaderItemData(R.string.expanding_group, R.string.expanding_group_subtitle))).apply {
+                for (i in 0..1) {
+                    add(CardItem(rainbow200[1]))
+                }
+            },
 
-        // Group showing even spacing with multiple columns
-        groupAdapter.add(Section(HeaderItem(R.string.multiple_columns)).apply {
-            for (i in 0..11) {
-                add(SmallCardItem(rainbow200[5]))
-            }
-        })
+            // Columns
+            Section(HeaderItem(R.string.vertical_columns)).apply {
+                add(makeColumnGroup())
+            },
 
-        // Swipe to delete (with add button in header)
-        for (i in 0..2) {
-            swipeSection.add(SwipeToDeleteItem(rainbow200[6]))
+            // Group showing even spacing with multiple columns
+            Section(HeaderItem(R.string.multiple_columns)).apply {
+                for (i in 0..11) {
+                    add(SmallCardItem(rainbow200[5]))
+                }
+            },
+
+            // Swipe to delete (with add button in header)
+            swipeSection.also { swipe ->
+                for (i in 0..2) {
+                    swipe.add(SwipeToDeleteItem(rainbow200[6]))
+                }
+            },
+
+            // Horizontal carousel
+            Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
+                setHideWhenEmpty(true)
+                add(makeCarouselGroup())
+            },
+
+            // Update with payload
+            Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).also {
+                for (i in rainbow500.indices) {
+                    it.add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
+                        // Pretend to make a network request
+                        lifecycleScope.launch {
+                            delay(1000)
+                            item.setFavorite(favorite)
+                            item.notifyChanged(HeartCardItem.FAVORITE)
+                        }
+                    })
+                }
+            },
+
+            // Infinite loading section
+            /* infiniteLoadingSection */
+        )
+
+        if (!prefs.useAsync) {
+            groupAdapter.update(itemList())
+        } else {
+            groupAdapter.updateAsync(itemList())
         }
-        groupAdapter.add(swipeSection)
-
-        // Horizontal carousel
-        groupAdapter.add(Section(HeaderItem(R.string.carousel, R.string.carousel_subtitle)).apply {
-            setHideWhenEmpty(true)
-            add(makeCarouselGroup())
-        })
-
-        // Update with payload
-        groupAdapter.add(Section(HeaderItem(R.string.update_with_payload, R.string.update_with_payload_subtitle)).also {
-            for (i in rainbow500.indices) {
-                it.add(HeartCardItem(rainbow200[i], i.toLong()) { item, favorite ->
-                    // Pretend to make a network request
-                    lifecycleScope.launch {
-                        delay(1000)
-                        item.setFavorite(favorite)
-                        item.notifyChanged(HeartCardItem.FAVORITE)
-                    }
-                })
-            }
-        })
-
-        // Infinite loading section
-        groupAdapter.add(infiniteLoadingSection)
     }
 
     private fun makeColumnGroup(): ColumnGroup {

@@ -17,14 +17,14 @@ public class ExpandableGroup extends NestedGroup {
     private final Group parent;
     private final List<Group> children = new ArrayList<>();
 
-    public ExpandableGroup(Group expandableItem) {
+    public <T extends Group & ExpandableItem> ExpandableGroup(T expandableItem) {
         this.parent = expandableItem;
-        ((ExpandableItem) expandableItem).setExpandableGroup(this);
+        expandableItem.setExpandableGroup(this);
     }
 
-    public ExpandableGroup(Group expandableItem, boolean isExpanded) {
+    public <T extends Group & ExpandableItem> ExpandableGroup(T expandableItem, boolean isExpanded) {
         this.parent = expandableItem;
-        ((ExpandableItem) expandableItem).setExpandableGroup(this);
+        expandableItem.setExpandableGroup(this);
         this.isExpanded = isExpanded;
     }
 

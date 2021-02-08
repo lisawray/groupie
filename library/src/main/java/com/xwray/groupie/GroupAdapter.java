@@ -12,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An adapter that holds a list of Groups.
@@ -581,17 +585,69 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         return count;
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     private void setNewGroups(@NonNull Collection<? extends Group> newGroups) {
+        final Map<Item<?>, Item<?>> newItemsToOldItemsMap = new LinkedHashMap<>();
+        final Set<Item<?>> itemsToKeep = new LinkedHashSet<>();
+
+        final Map<ExpandableGroup, ExpandableGroup> newExpandableGroupsToOldExpandableGroupsMap = new LinkedHashMap<>();
+        final Set<ExpandableGroup> expandableGroupsToKeep = new LinkedHashSet<>();
+
+        for (Group group: groups) {
+            for (Group newGroup: newGroups) {
+                if (group instanceof ExpandableGroup && newGroup instanceof ExpandableGroup) {
+                    ExpandableGroup expandableGroup = (ExpandableGroup)group;
+                    ExpandableGroup newExpandableGroup = (ExpandableGroup)newGroup;
+
+                    Group parent = expandableGroup.getGroup(0); // get parent
+                    Group newParent = newExpandableGroup.getGroup(0); // get parent
+
+                    if (parent instanceof Item<?> && newParent instanceof Item<?>
+                            && ((Item<?>)parent).isSameAs((Item<?>)newParent)
+                            && ((Item<?>)parent).hasSameContentAs((Item<?>)newParent)
+                    ) { // retain observable registrations
+                        newExpandableGroupsToOldExpandableGroupsMap.put(newExpandableGroup, expandableGroup);
+                        expandableGroupsToKeep.add(expandableGroup);
+                    }
+                }
+
+                if (group instanceof Item<?> && newGroup instanceof Item<?>
+                        && ((Item<?>)group).isSameAs(((Item<?>)newGroup))
+                        && ((Item<?>)group).hasSameContentAs((Item<?>)newGroup)
+                ) { // retain observable registrations
+                    Item<?> oldItem = (Item<?>) group;
+                    Item<?> newItem = (Item<?>) newGroup;
+
+                    newItemsToOldItemsMap.put(newItem, oldItem); // track the old item so we can replace the new one with it
+                    itemsToKeep.add(oldItem);
+                }
+            }
+        }
+
         for (Group group : groups) {
-            group.unregisterGroupDataObserver(this);
+            if (!itemsToKeep.contains(group)
+                    && !expandableGroupsToKeep.contains(group)) {
+                group.unregisterGroupDataObserver(this);
+            }
         }
 
         groups.clear();
-        groups.addAll(newGroups);
+
+        for (Group newGroup: newGroups) {
+            if (newItemsToOldItemsMap.containsKey(newGroup)) {
+                groups.add(newItemsToOldItemsMap.get(newGroup));
+            } else if (newExpandableGroupsToOldExpandableGroupsMap.containsKey(newGroup)) {
+                groups.add(newExpandableGroupsToOldExpandableGroupsMap.get(newGroup));
+            } else {
+                groups.add(newGroup);
+            }
+        }
 
         for (Group group : newGroups) {
-            group.registerGroupDataObserver(this);
+            if (!newItemsToOldItemsMap.containsKey(group)
+                    && !newExpandableGroupsToOldExpandableGroupsMap.containsKey(group)) {
+                group.registerGroupDataObserver(this);
+            }
         }
     }
-
 }
