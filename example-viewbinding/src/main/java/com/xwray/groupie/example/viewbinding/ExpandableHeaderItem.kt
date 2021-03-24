@@ -5,13 +5,13 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
-import com.xwray.groupie.Item
 import com.xwray.groupie.example.viewbinding.databinding.ItemHeaderBinding
 import com.xwray.groupie.example.viewbinding.item.HeaderItem
 
 class ExpandableHeaderItem(
-    val itemData: ExpandableHeaderItemData
-) : HeaderItem(itemData.titleStringResId, itemData.subtitleResId), ExpandableItem {
+    @StringRes titleStringResId: Int,
+    @StringRes subtitleResId: Int
+) : HeaderItem(titleStringResId, subtitleResId), ExpandableItem {
 
     private var expandableGroup: ExpandableGroup? = null
 
@@ -37,21 +37,4 @@ class ExpandableHeaderItem(
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
         expandableGroup = onToggleListener
     }
-
-    override fun isSameAs(other: Item<*>): Boolean {
-        if (other !is ExpandableHeaderItem) return false
-        return itemData.headerId == other.itemData.headerId
-    }
-
-    override fun hasSameContentAs(other: Item<*>): Boolean {
-        if (other !is ExpandableHeaderItem) return false
-        return itemData.titleStringResId == other.itemData.titleStringResId &&
-            itemData.subtitleResId == other.itemData.subtitleResId
-    }
 }
-
-data class ExpandableHeaderItemData(
-    @StringRes val titleStringResId: Int,
-    @StringRes val subtitleResId: Int,
-    val headerId: Int? = null
-)
