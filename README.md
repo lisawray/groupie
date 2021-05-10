@@ -9,14 +9,14 @@ Groupie lets you treat your content as logical groups and handles change notific
 # Try it out:
 
 ```gradle
-implementation "com.xwray:groupie:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie:$groupie_version"
 ```
 
 Groupie also has a support module for Android's [view binding](https://developer.android.com/topic/libraries/view-binding). This module also supports Android [data binding](https://developer.android.com/topic/libraries/data-binding/index.html), so if your project uses both data binding and view binding, you don't have to add the dependency on the data binding support module. [Setup here.](#view-binding)
 
 ```gradle
-implementation "com.xwray:groupie:$groupie_version"
-implementation "com.xwray:groupie-viewbinding:$groupie_version" 
+implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version" 
 ```
 
 ### Note:
@@ -25,8 +25,8 @@ If using `groupie-viewbinding` in a databinding project is only available when u
 If using an older Gradle Plugin version with databinding the you can use the standalone `groupie-databinding` library to generate view holders. [Setup here.](#data-binding)
 
 ```gradle
-implementation "com.xwray:groupie:$groupie_version"
-implementation "com.xwray:groupie-databinding:$groupie_version" 
+implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie-databinding:$groupie_version" 
 ```
 
 You can also use Groupie with Java and your existing ViewHolders. 
@@ -104,8 +104,8 @@ Groupie abstracts away the complexity of multiple item view types.  Each Item de
 Groupie includes a module for Kotlin and Kotlin Android extensions. [Setup here.](#kotlin)
 
 ```gradle
-implementation "com.xwray:groupie:$groupie_version"
-implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:$groupie_version"
 ```
 
 The `Item` class gives you simple callbacks to bind your model object to the generated fields.
@@ -157,7 +157,7 @@ If you're converting existing ViewHolders, you can reference any named views (e.
 You can also mix and match `BindableItem` and other `Items` in the adapter, so you can leave legacy viewholders as they are by making an `Item<MyExistingViewHolder>`.  
 
 ### Legacy item (your own ViewHolder)
-You can leave legacy viewholders as they are by converting `MyExistingViewHolder` to extend `GroupieViewHolder` rather than `RecyclerView.ViewHolder`. Make sure to change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.GroupieViewHolder`. 
+You can leave legacy viewholders as they are by converting `MyExistingViewHolder` to extend `GroupieViewHolder` rather than `RecyclerView.ViewHolder`. Make sure to change the imports to `com.xwray.groupie.Item` and `com.xwray.groupie.GroupieViewHolder`.
 
 Finally, in your `Item<MyExistingViewHolder>`, override 
 
@@ -193,7 +193,7 @@ buildscript {
 In your app `build.gradle` file, include:
 
 ```
-implementation 'com.xwray:groupie:$groupie_version'
+implementation 'com.github.lisawray.groupie:groupie:$groupie_version'
 ```
 
 ### Using with Kotlin-Android-Extensions (deprecated)
@@ -216,8 +216,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.xwray:groupie:$groupie_version'
-    implementation 'com.xwray:groupie-kotlin-android-extensions:$groupie_version'
+    implementation 'com.github.lisawray.groupie:groupie:$groupie_version'
+    implementation 'com.github.lisawray.groupie:groupie-kotlin-android-extensions:$groupie_version'
 }
 ```
 
@@ -239,8 +239,8 @@ android {
 }
 
 dependencies {
-    implementation "com.xwray:groupie:$groupie_version"
-    implementation "com.xwray:groupie-viewbinding:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
 }
 ```
 
@@ -272,8 +272,8 @@ android {
 }
 
 dependencies {
-    implementation "com.xwray:groupie:$groupie_version"
-    implementation "com.xwray:groupie-databinding:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-databinding:$groupie_version"
 }
 ```
 
