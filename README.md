@@ -8,8 +8,6 @@ Groupie lets you treat your content as logical groups and handles change notific
 
 # Try it out:
 
-[ ![Download](https://api.bintray.com/packages/lisawray/maven/groupie/images/download.svg) ](https://bintray.com/lisawray/maven/groupie/_latestVersion)
-
 ```gradle
 implementation "com.xwray:groupie:$groupie_version"
 ```
@@ -184,7 +182,7 @@ In your project level `build.gradle` file, include:
 buildscript {
     ext.kotlin_version = '1.4.21'
     repositories {
-        jcenter()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
