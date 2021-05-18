@@ -181,11 +181,21 @@ In your project level `build.gradle` file, include:
 ```
 buildscript {
     ext.kotlin_version = '1.4.21'
+
     repositories {
-        maven { url "https://jitpack.io" }
+        mavenCentral()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 ```
