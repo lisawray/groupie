@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
 
     private AsyncDiffUtil.Callback diffUtilCallbacks = new AsyncDiffUtil.Callback() {
         @Override
-        public void onDispatchAsyncResult(@NonNull Collection<? extends Group> newGroups) {
-            setNewGroups(newGroups);
+        public void onUpdateComplete(List<Group> groups) {
+            setNewGroups(groups);
         }
 
         @Override
@@ -95,7 +96,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
-    public void updateAsync(@NonNull final List<? extends Group> newGroups) {
+    public void updateAsync(@NonNull final List<Group> newGroups) {
         this.updateAsync(newGroups, true, null);
     }
 
@@ -114,7 +115,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      * @param newGroups List of {@link Group}
      */
     @SuppressWarnings("unused")
-    public void updateAsync(@NonNull final List<? extends Group> newGroups, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+    public void updateAsync(@NonNull final List<Group> newGroups, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
         this.updateAsync(newGroups, true, onAsyncUpdateListener);
     }
 
@@ -132,7 +133,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
      *                    if you want DiffUtil to detect moved items.
      */
     @SuppressWarnings("unused")
-    public void updateAsync(@NonNull final List<? extends Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
+    public void updateAsync(@NonNull final List<Group> newGroups, boolean detectMoves, @Nullable final OnAsyncUpdateListener onAsyncUpdateListener) {
         // Fast simple first insert
         if (groups.isEmpty()) {
             update(newGroups, detectMoves);
@@ -144,7 +145,7 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
         final List<Group> oldGroups = new ArrayList<>(groups);
 
         final DiffCallback diffUtilCallback = new DiffCallback(oldGroups, newGroups);
-        asyncDiffUtil.calculateDiff(newGroups, diffUtilCallback, onAsyncUpdateListener, detectMoves);
+        asyncDiffUtil.calculateDiff(oldGroups, newGroups, diffUtilCallback, onAsyncUpdateListener, detectMoves);
     }
 
     /**
@@ -187,8 +188,6 @@ public class GroupAdapter<VH extends GroupieViewHolder> extends RecyclerView.Ada
                 new DiffCallback(oldGroups, newGroups),
                 detectMoves
         );
-
-        setNewGroups(newGroups);
 
         diffResult.dispatchUpdatesTo(diffUtilCallbacks);
     }
