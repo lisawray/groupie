@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An async task implementation that runs {@link DiffUtil#calculateDiff(DiffUtil.Callback)}
  * in a background thread.
- * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(Collection, Collection, DiffUtil.Callback, OnAsyncUpdateListener, boolean)}.
+ * <p>This task is executed via {@link AsyncDiffUtil#calculateDiff(List, List, OnAsyncUpdateListener, boolean)}.
  */
 class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     @NonNull
-    private final DiffUtil.Callback diffCallback;
+    private final DiffCallback diffCallback;
     private final WeakReference<AsyncDiffUtil> asyncListDiffer;
     private final int runGeneration;
     private final boolean detectMoves;
@@ -25,7 +26,7 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
     private Exception backgroundException = null;
 
     DiffTask(@NonNull AsyncDiffUtil asyncDiffUtil,
-             @NonNull DiffUtil.Callback callback,
+             @NonNull DiffCallback callback,
              int runGeneration,
              boolean detectMoves,
              @Nullable OnAsyncUpdateListener onAsyncUpdateListener) {
@@ -55,11 +56,17 @@ class DiffTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
             throw new RuntimeException(backgroundException);
         }
         AsyncDiffUtil async = asyncListDiffer.get();
-        if (shouldDispatchResult(diffResult, async)) {
-            diffResult.dispatchUpdatesTo(async.getAsyncDiffUtilCallback());
-            if (onAsyncUpdateListener != null && onAsyncUpdateListener.get() != null) {
-                onAsyncUpdateListener.get().onUpdateComplete();
-            }
+
+        if (!shouldDispatchResult(diffResult, async)) {
+            return;
+        }
+
+        AsyncDiffUtil.Callback asyncDiffUtilCallback = async.asyncDiffUtilCallback;
+        asyncDiffUtilCallback.onDispatchAsyncResult(diffCallback.mergeGroups());
+
+        diffResult.dispatchUpdatesTo(asyncDiffUtilCallback);
+        if (onAsyncUpdateListener != null && onAsyncUpdateListener.get() != null) {
+            onAsyncUpdateListener.get().onUpdateComplete();
         }
     }
 
