@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.xwray.groupie.ExpandableGroup;
 import com.xwray.groupie.Group;
 import com.xwray.groupie.GroupieAdapter;
+import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.OnItemLongClickListener;
@@ -34,6 +35,7 @@ import com.xwray.groupie.example.databinding.databinding.ActivityMainBinding;
 import com.xwray.groupie.example.databinding.item.CardItem;
 import com.xwray.groupie.example.databinding.item.CarouselCardItem;
 import com.xwray.groupie.example.databinding.item.ColumnItem;
+import com.xwray.groupie.example.databinding.item.DraggableItem;
 import com.xwray.groupie.example.databinding.item.FullBleedCardItem;
 import com.xwray.groupie.example.databinding.item.HeaderItem;
 import com.xwray.groupie.example.databinding.item.HeartCardItem;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Section infiniteLoadingSection;
     private Section swipeSection;
+    private Section dragSection;
 
     // Normally there's no need to hold onto a reference to this list, but for demonstration
     // purposes, we'll shuffle this list and post an update periodically
@@ -182,6 +185,13 @@ public class MainActivity extends AppCompatActivity {
         }
         groupAdapter.add(swipeSection);
 
+        dragSection = new Section(new HeaderItem(R.string.drag_to_reorder));
+        dragSection.clear();
+        for (int i = 0; i < 5; i++) {
+            dragSection.add(new DraggableItem(rainbow500[i]));
+        }
+        groupAdapter.add(dragSection);
+
         // Horizontal carousel
         Section carouselSection = new Section(new HeaderItem(R.string.carousel, R.string.carousel_subtitle));
         carouselSection.setHideWhenEmpty(true);
@@ -257,6 +267,24 @@ public class MainActivity extends AppCompatActivity {
 
     private TouchCallback touchCallback = new SwipeTouchCallback() {
         @Override public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            Item item = groupAdapter.getItem(viewHolder.getAdapterPosition());
+            Item targetItem = groupAdapter.getItem(target.getAdapterPosition());
+
+            List<Group> dragItems = dragSection.getGroups();
+            int targetIndex = dragItems.indexOf(targetItem);
+            dragItems.remove(item);
+
+            // if item gets moved out of the boundary
+            if (targetIndex == -1) {
+                if (target.getAdapterPosition() < viewHolder.getAdapterPosition()) {
+                    targetIndex = 0;
+                } else {
+                    targetIndex = dragItems.size() - 1;
+                }
+            }
+
+            dragItems.add(targetIndex, item);
+            dragSection.update(dragItems);
             return true;
         }
 
