@@ -13,16 +13,16 @@ import java.util.Map;
 class DiffCallback extends DiffUtil.Callback {
     private final int oldBodyItemCount;
     private final int newBodyItemCount;
-    private final List<Group> oldGroups;
-    private final List<Group> newGroups;
+    private final List<Item> oldList;
+    private final List<Item> newList;
 
     private final Map<Integer, Integer> changeMap = new HashMap<>();
 
     DiffCallback(Collection<? extends Group> oldGroups, Collection<? extends Group> newGroups) {
         this.oldBodyItemCount = GroupUtils.getItemCount(oldGroups);
         this.newBodyItemCount = GroupUtils.getItemCount(newGroups);
-        this.oldGroups = new ArrayList<>(oldGroups);
-        this.newGroups = new ArrayList<>(newGroups);
+        this.oldList = flatToItem(oldGroups);
+        this.newList = flatToItem(newGroups);
     }
 
     @Override
@@ -37,15 +37,15 @@ class DiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item oldItem = GroupUtils.getItem(oldList, oldItemPosition);
+        Item newItem = GroupUtils.getItem(newList, newItemPosition);
         return newItem.isSameAs(oldItem);
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item oldItem = GroupUtils.getItem(oldList, oldItemPosition);
+        Item newItem = GroupUtils.getItem(newList, newItemPosition);
         boolean sameContent = newItem.hasSameContentAs(oldItem);
 
         //false means changed
@@ -58,8 +58,8 @@ class DiffCallback extends DiffUtil.Callback {
     @Nullable
     @Override
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-        Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-        Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+        Item oldItem = GroupUtils.getItem(oldList, oldItemPosition);
+        Item newItem = GroupUtils.getItem(newList, newItemPosition);
         return oldItem.getChangePayload(newItem);
     }
 
@@ -67,15 +67,26 @@ class DiffCallback extends DiffUtil.Callback {
     public List<Group> mergeGroups() {
         ArrayList<Group> resultList = new ArrayList<>();
 
-        for (int i = 0; i < newGroups.size(); i++) {
+        for (int i = 0; i < newList.size(); i++) {
             Integer position = changeMap.get(i);
 
             if (position == null) {
-                resultList.add(newGroups.get(i));
+                resultList.add(newList.get(i));
             } else {
-                resultList.add(oldGroups.get(position));
+                resultList.add(oldList.get(position));
             }
         }
         return resultList;
+    }
+
+    private List<Item> flatToItem(Collection<? extends Group> groups) {
+        List<Item> result = new ArrayList<>();
+        for (Group group : groups) {
+            final int size = group.getItemCount();
+            for (int i = 0; i < size; i++) {
+                result.add(group.getItem(i));
+            }
+        }
+        return result;
     }
 }
