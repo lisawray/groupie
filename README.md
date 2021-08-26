@@ -200,6 +200,20 @@ allprojects {
 }
 ```
 
+In new projects, the `settings.gradle` file has a `dependencyResolutionManagement` block, which needs to specify the repository as well:
+
+```
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }  // <--
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+```
+
 In your app `build.gradle` file, include:
 
 ```
