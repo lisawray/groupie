@@ -38,7 +38,7 @@ android {
 
 dependencies {
     compileOnly project(':library')
-    compileOnly "androidx.recyclerview:recyclerview:1.1.0"
+    compileOnly "androidx.recyclerview:recyclerview:1.2.1"
     compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
     }
@@ -48,7 +48,7 @@ dependencies {
     compileOnly("androidx.databinding:viewbinding:$databinding_version") {
         transitive = false
     }
-    compileOnly("androidx.annotation:annotation:1.1.0")
+    compileOnly("androidx.annotation:annotation:1.2.0")
 }
 
 
