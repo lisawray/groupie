@@ -284,8 +284,8 @@ class MainActivity : AppCompatActivity() {
         object : SwipeTouchCallback() {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                                 target: RecyclerView.ViewHolder): Boolean {
-                val item = groupAdapter.getItem(viewHolder.adapterPosition)
-                val targetItem = groupAdapter.getItem(target.adapterPosition)
+                val item = groupAdapter.getItem(viewHolder.bindingAdapterPosition)
+                val targetItem = groupAdapter.getItem(target.bindingAdapterPosition)
 
                 val dragItems = dragSection.groups
                 var targetIndex = dragItems.indexOf(targetItem)
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity() {
 
                 // if item gets moved out of the boundary
                 if (targetIndex == -1) {
-                    targetIndex = if (target.adapterPosition < viewHolder.adapterPosition) {
+                    targetIndex = if (target.bindingAdapterPosition < viewHolder.bindingAdapterPosition) {
                         0
                     } else {
                         dragItems.size - 1
@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = groupAdapter.getItem(viewHolder.adapterPosition)
+                val item = groupAdapter.getItem(viewHolder.bindingAdapterPosition)
                 // Change notification to the adapter happens automatically when the section is
                 // changed.
                 swipeSection.remove(item)

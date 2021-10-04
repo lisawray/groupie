@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = groupAdapter.getItem(viewHolder.adapterPosition)
+                val item = groupAdapter.getItem(viewHolder.bindingAdapterPosition)
                 // Change notification to the adapter happens automatically when the section is
                 // changed.
                 swipeSection.remove(item)

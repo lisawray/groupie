@@ -267,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TouchCallback touchCallback = new SwipeTouchCallback() {
         @Override public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            Item item = groupAdapter.getItem(viewHolder.getAdapterPosition());
-            Item targetItem = groupAdapter.getItem(target.getAdapterPosition());
+            Item item = groupAdapter.getItem(viewHolder.getBindingAdapterPosition());
+            Item targetItem = groupAdapter.getItem(target.getBindingAdapterPosition());
 
             List<Group> dragItems = dragSection.getGroups();
             int targetIndex = dragItems.indexOf(targetItem);
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
             // if item gets moved out of the boundary
             if (targetIndex == -1) {
-                if (target.getAdapterPosition() < viewHolder.getAdapterPosition()) {
+                if (target.getBindingAdapterPosition() < viewHolder.getBindingAdapterPosition()) {
                     targetIndex = 0;
                 } else {
                     targetIndex = dragItems.size() - 1;
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            Item item = groupAdapter.getItem(viewHolder.getAdapterPosition());
+            Item item = groupAdapter.getItem(viewHolder.getBindingAdapterPosition());
             // Change notification to the adapter happens automatically when the section is
             // changed.
             swipeSection.remove(item);

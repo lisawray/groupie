@@ -17,7 +17,7 @@ public class GroupieViewHolder extends RecyclerView.ViewHolder {
         public void onClick(@NonNull View v) {
             // Discard click if the viewholder has been removed, but was still in the process of
             // animating its removal while clicked (unlikely, but technically possible)
-            if (onItemClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+            if (onItemClickListener != null && getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                 onItemClickListener.onItemClick(getItem(), v);
             }
         }
@@ -28,7 +28,7 @@ public class GroupieViewHolder extends RecyclerView.ViewHolder {
         public boolean onLongClick(@NonNull View v) {
             // Discard long click if the viewholder has been removed, but was still in the process of
             // animating its removal while long clicked (unlikely, but technically possible)
-            if (onItemLongClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+            if (onItemLongClickListener != null && getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                 return onItemLongClickListener.onItemLongClick(getItem(), v);
             }
             return false;
