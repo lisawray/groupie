@@ -6,12 +6,12 @@ def testResultsDir = "${rootProject.buildDir}/test-results"
 
 buildscript {
 
-    ext.kotlin_version = '1.4.21'
-    ext.android_plugin_version = '4.1.1'
-    ext.sdkVersion = 29
+    ext.kotlin_version = '1.6.21'
+    ext.android_plugin_version = '7.0.4'
+    ext.sdkVersion = 31
     ext.minimumSdkVersion = 14
-    ext.databinding_version = '4.1.1'
-    ext.viewbinding_version = '4.1.1'
+    ext.databinding_version = '7.1.3'
+    ext.viewbinding_version = '7.1.3'
 
     ext.junit_version = '4.13'
     ext.mockito_version = '3.3.3'
@@ -25,7 +25,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$android_plugin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
 
 

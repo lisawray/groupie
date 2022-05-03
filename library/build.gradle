@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
@@ -42,4 +42,71 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_version"
 }
 
+
+group = "com.github.lisawray.groupie"
+version = "2.10.1"
+
+task javadoc(type: Javadoc) {
+    configurations.implementation.canBeResolved(true)
+    configurations.api.canBeResolved(true)
+
+    failOnError false
+
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    //destinationDir = file("../javadoc/")
+    classpath += configurations.api
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "sources"
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+// Because the components are created only during the afterEvaluate phase, you must
+// configure your publications using the afterEvaluate() lifecycle method.
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                artifact(sourcesJar)
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.github.lisawray.groupie'
+                artifactId = 'groupie'
+                version = '2.10.1'
+
+                pom.withXml {
+                    def dependenciesNode = (asNode().get("dependencies") as groovy.util.NodeList).get(0) as groovy.util.Node
+                    def configurationNames = ["implementation", "api"]
+
+                    configurationNames.forEach { configurationName ->
+                        configurations[configurationName].allDependencies.forEach {
+                            if (it.group != null && it.version != "unspecified") {
+                                def dependencyNode = dependenciesNode.appendNode("dependency")
+                                dependencyNode.appendNode("groupId", it.group)
+                                dependencyNode.appendNode("artifactId", it.name)
+                                dependencyNode.appendNode("version", it.version)
+                                // dependencyNode.appendNode("scope", configurationName)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
