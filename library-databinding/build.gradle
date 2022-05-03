@@ -1,14 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-}
-
 archivesBaseName = 'groupie-databinding'
 
 android {
@@ -37,8 +29,8 @@ android {
 }
 
 dependencies {
-    compileOnly project(':library')
-    compileOnly "androidx.recyclerview:recyclerview:1.2.1"
+    implementation project(':library')
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
     compileOnly("androidx.databinding:databinding-runtime:$databinding_version") {
         transitive = false
     }
@@ -48,7 +40,7 @@ dependencies {
     compileOnly("androidx.databinding:viewbinding:$databinding_version") {
         transitive = false
     }
-    compileOnly("androidx.annotation:annotation:1.3.0")
+    implementation("androidx.annotation:annotation:1.3.0")
 }
 
 

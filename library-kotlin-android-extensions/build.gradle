@@ -3,17 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-    }
-}
 
 archivesBaseName = 'groupie-kotlin-android-extensions'
 
@@ -49,12 +38,8 @@ android {
 }
 
 dependencies {
-    compileOnly project(':library')
-    compileOnly "androidx.recyclerview:recyclerview:1.2.1"
-}
-
-repositories {
-    mavenCentral()
+    implementation project(':library')
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
 }
 
 tasks.withType(Javadoc).all {

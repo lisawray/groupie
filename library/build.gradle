@@ -1,14 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-}
-
 archivesBaseName = 'groupie'
 
 android {

@@ -180,7 +180,7 @@ In your project level `build.gradle` file, include:
 
 ```
 buildscript {
-    ext.kotlin_version = '1.4.21'
+    ext.kotlin_version = '1.6.21'
 
     repositories {
         mavenCentral()

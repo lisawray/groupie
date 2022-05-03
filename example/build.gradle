@@ -2,18 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-    }
-}
-
 androidExtensions {
     experimental = true
 }
@@ -43,9 +31,4 @@ dependencies {
     implementation project(':example-shared')
     implementation project(':library')
     implementation project(':library-kotlin-android-extensions')
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://jitpack.io" }
 }
