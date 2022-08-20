@@ -40,7 +40,7 @@ Use a `GroupieAdapter` anywhere you would normally use a `RecyclerView.Adapter`,
 Kotlin
 ```kotlin
 val adapter = GroupieAdapter()
-recyclerView.setAdapter(adapter)
+recyclerView.adapter = adapter
 ```
 
 Java
