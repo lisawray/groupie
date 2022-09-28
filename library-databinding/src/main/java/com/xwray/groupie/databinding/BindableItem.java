@@ -4,6 +4,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewTreeLifecycleOwner;
 import android.view.View;
 
 import com.xwray.groupie.Item;
@@ -86,5 +87,11 @@ public abstract class BindableItem<T extends ViewDataBinding> extends Item<Group
      */
     public void bind(@NonNull T viewBinding, int position, @NonNull List<Object> payloads) {
         bind(viewBinding, position);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull GroupieViewHolder<T> viewHolder) {
+        super.onViewAttachedToWindow(viewHolder);
+        viewHolder.binding.setLifecycleOwner(ViewTreeLifecycleOwner.get(viewHolder.binding.getRoot()));
     }
 }
