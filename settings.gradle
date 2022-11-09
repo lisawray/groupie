@@ -1,1 +1,1 @@
-include ':example-databinding', ':library-databinding', ':library', ':example', ':example-shared', ':library-kotlin-android-extensions', 'example-viewbinding', ':library-viewbinding'
+include ':example-databinding', ':library-databinding', ':library', ':example', ':example-shared', ':library-kotlin-android-extensions', ':library-groupie-ktx', 'example-viewbinding', ':library-viewbinding'

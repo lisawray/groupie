@@ -1,14 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 
 
-archivesBaseName = 'groupie-kotlin-android-extensions'
+archivesBaseName = 'groupie-ktx'
 
-androidExtensions {
-    experimental = true
-}
 
 android {
     compileSdkVersion rootProject.sdkVersion
@@ -17,11 +13,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minimumSdkVersion
         targetSdkVersion rootProject.sdkVersion
-        versionCode 1
+        versionCode 20
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     signingConfigs {
@@ -39,7 +32,6 @@ android {
 
 dependencies {
     implementation project(':library')
-    implementation project(':library-groupie-ktx')
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 }
 
@@ -91,7 +83,7 @@ afterEvaluate {
 
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.lisawray.groupie'
-                artifactId = 'groupie-kotlin-android-extensions'
+                artifactId = 'groupie-ktx'
                 version = '2.10.1'
 
                 pom.withXml {

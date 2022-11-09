@@ -55,13 +55,13 @@ Groups are the building block of Groupie.  An individual `Item` (the unit which 
 
 Kotlin
 ```kotlin
-groupAdapter += HeaderItem()
-groupAdapter += CommentItem()
+groupAdapter.add(HeaderItem())
+groupAdapter.add(CommentItem())
 
 val section = Section()
 section.setHeader(HeaderItem())
 section.addAll(bodyItems)
-groupAdapter += section
+groupAdapter.add(section)
 ```
 
 Java
@@ -167,6 +167,33 @@ Finally, in your `Item<MyExistingViewHolder>`, override
         return new MyExistingViewHolder(itemView);
     }
 ```
+
+### Add and remove items with `+=` and `-=` in Kotlin
+
+`groupie-ktx` provides Kotlin Extensions overriding the `plusAssign` and `minusAssign` operations on both group adapters and sections. This enables a cleaner syntax when creating and modifying layouts.
+
+```gradle
+implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+implementation "com.github.lisawray.groupie:groupie-ktx:$groupie_version"
+```
+
+Instances of `.add()`, `.addAll()`, and `.remove()` can be replaced with `+=` and `-=`
+
+```kotlin
+// Without groupie-ktx
+mySection.add(HeaderItem())
+mySection.remove(CommentItem())
+groupAdapter.add(mySection)
+groupAdapter.remove(DescriptionItem())
+
+// With groupie-ktx
+mySection += HeaderItem()
+mySection -= CommentItem()
+groupAdapter += mySection
+groupAdapter -= DescriptionItem()
+```
+
+Note: `groupie-ktx` is included with the deprecated `groupie-kotlin-android-extensions` module. If you depend on `groupie-kotlin-android-extensions`, you do not need to also depend on this module.
 
 ### Note: 
 
