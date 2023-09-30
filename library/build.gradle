@@ -82,7 +82,7 @@ afterEvaluate {
                 version = '2.10.1'
 
                 pom.withXml {
-                    def dependenciesNode = (asNode().get("dependencies") as groovy.util.NodeList).get(0) as groovy.util.Node
+                    def dependenciesNode = (asNode().get("dependencies") as NodeList).get(0) as Node
                     def configurationNames = ["implementation", "api"]
 
                     configurationNames.forEach { configurationName ->
