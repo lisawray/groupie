@@ -97,35 +97,6 @@ You can implement the `Group` interface directly if you want.  However, in most 
 
 Groupie abstracts away the complexity of multiple item view types.  Each Item declares a view layout id, and gets a callback to `bind` the inflated layout.  That's all you need; you can add your new item directly to a `GroupieAdapter` and call it a day.
 
-### Item with Kotlin-Android-Extensions:
-
-**Note: `kotlin-android-extensions` is deprecated since Kotlin 1.4.20. Therefore, `groupie-kotlin-android-extensions` is also deprecated, and `viewbinding` should be preferred.**
-
-Groupie includes a module for Kotlin and Kotlin Android extensions. [Setup here.](#kotlin)
-
-```gradle
-implementation "com.github.lisawray.groupie:groupie:$groupie_version"
-implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:$groupie_version"
-```
-
-The `Item` class gives you simple callbacks to bind your model object to the generated fields.
-
-```kotlin
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import kotlinx.android.synthetic.main.song.*
-
-class SongItem(private val song: Song) : Item() {
-
-    override fun getLayout() = R.layout.song
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.title.text = song.title
-        viewHolder.artist.text = song.artist
-    }
-}
-```
-
 ### Item with data binding:
 
 The `Item` class gives you simple callbacks to bind your model object to the generated binding.  Because of data binding, there's no need to write a view holder.  
@@ -220,37 +191,6 @@ In your app `build.gradle` file, include:
 implementation 'com.github.lisawray.groupie:groupie:$groupie_version'
 ```
 
-### Using with Kotlin-Android-Extensions (deprecated)
-
-If you are still relying on the deprecated `kotlin-android-extensions` module, then also apply the following:
-
-```
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-android {
-  ....
-  
-   // IMPORTANT!  Enables kotlin synthetic view properties.
-   // See: https://github.com/Kotlin/KEEP/blob/master/proposals/android-extensions-entity-caching.md
-    androidExtensions {
-        experimental = true
-    }
-	
-}
-
-dependencies {
-    implementation 'com.github.lisawray.groupie:groupie:$groupie_version'
-    implementation 'com.github.lisawray.groupie:groupie-kotlin-android-extensions:$groupie_version'
-}
-```
-
-Remember to include 
-```kotlin
-import kotlinx.android.synthetic.main.my_item_layout.*
-```
-in the corresponding Item class for generated view references.
-
 ## View binding
 
 Add to your app module's `build.gradle`:
@@ -332,8 +272,8 @@ Bindings are only generated for layouts wrapped with <layout/> tags, so there's 
 You can add a `<data>` section to directly bind a model or ViewModel, but you don't have to.  The generated view bindings alone are a huge time saver.
 
 ### Kotlin AND data binding / view binding?
-Sure, why not?  Follow all the instructions from *both* sections above.  You only need to include the `groupie-databinding` or `groupie-viewbinding` dependency, and omit the references to `android-extensions`.  You'll make `BindableItem`s instead of importing and using Kotlin extensions.
-
+Sure, why not?  Follow all the instructions from *both* sections above.
+You only need to include the `groupie-databinding` or `groupie-viewbinding` dependency.
 
 # Contributing
 Contributions you say?  Yes please!
