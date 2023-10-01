@@ -1,4 +1,4 @@
-name: Run Tests
+name: Build Example Apps and Run Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - name: Set up JDK
@@ -17,17 +17,15 @@ jobs:
 
     - name: Checkout Submodules
       uses: actions/checkout@v3
-
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
-
-    - name: Run Lint
-      run: ./gradlew lint --console plain
-
-    - name: Run Unit Tests
-      run: ./gradlew test --console plain
 
     - name: Build Example App - ViewBinding
       run: ./gradlew :example-viewbinding:assembleRelease
     - name: Build Example App - DataBinding
       run: ./gradlew :example-databinding:assembleRelease
+
+    - name: Run Lint
+      run: ./gradlew lint --console plain
+    - name: Run Unit Tests
+      run: ./gradlew test --console plain
