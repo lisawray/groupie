@@ -26,3 +26,8 @@ jobs:
 
     - name: Run Unit Tests
       run: ./gradlew test --console plain
+
+    - name: Build Example App - ViewBinding
+      run: ./gradlew :example-viewbinding:assembleRelease
+    - name: Build Example App - DataBinding
+      run: ./gradlew :example-databinding:assembleRelease
