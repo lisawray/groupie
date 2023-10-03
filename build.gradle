@@ -5,7 +5,6 @@ def testReportsDir = "${rootProject.buildDir}/test-reports"
 def testResultsDir = "${rootProject.buildDir}/test-results"
 
 buildscript {
-
     ext.kotlin_version = '1.6.21'
     ext.android_plugin_version = '7.0.4'
     ext.sdkVersion = 31
@@ -19,22 +18,18 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$android_plugin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
-
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
 allprojects { project ->
-
     repositories {
         google()
         mavenCentral()
